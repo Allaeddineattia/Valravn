@@ -10,7 +10,6 @@ class Video {
 private:
     unique_ptr<Multimedia> multimedia;
 
-
 public:
     Video(unique_ptr<Multimedia> multimedia);
 

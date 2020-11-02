@@ -1,7 +1,6 @@
 project(${CMAKE_PROJECT_NAME}_lib)
 
-set(HEADER_FILES
-        Math.h)
+set(HEADER_FILES)
 set(SOURCE_FILES
         Entity/Multimedia.cpp Entity/Multimedia.h Entity/Video.cpp Entity/Video.h)
 
