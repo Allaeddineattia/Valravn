@@ -1,19 +1,32 @@
 //
-// Created by alro on 18‏/10‏/2020.
+// Created by ismail on 7‏/11‏/2020.
 //
 
 #ifndef MYPROJECT_VIDEO_H
 #define MYPROJECT_VIDEO_H
-#include <Entity/Multimedia.h>
-
+#include "Entity/Multimedia.h"
+#include <stdio.h>
+#include <string>
+#include <memory>
 class Video {
 private:
-    unique_ptr<Multimedia> multimedia;
 
+    int id;
+    int duration ;
+    unique_ptr<Multimedia> multimedia ;
+    string resolution ;
 public:
-    Video(unique_ptr<Multimedia> multimedia);
+    int getId() const;
 
-    [[nodiscard]] const Multimedia &getMultimedia() const;
+    int getDuration() const;
+
+    const unique_ptr<Multimedia> &getMultimedia() const;
+
+    const string &getResolution() const;
+
+    Video(int id, int duration, unique_ptr<Multimedia> multimedia, const string &resolution);
+
+
 };
 
 

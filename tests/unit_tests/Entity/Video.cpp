@@ -7,6 +7,6 @@
 #include "Entity/Video.h"
 TEST(Video, Creation){
     auto multimedia = make_unique<Multimedia>(1, "path", 50, "type");
-    auto video = make_unique<Video>(move(multimedia));
+    auto video = make_unique<Video>(1 , 5 , move (multimedia) ,"140*150" );
 }
 
