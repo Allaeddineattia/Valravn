@@ -5,7 +5,6 @@
 #ifndef MYPROJECT_VIDEO_H
 #define MYPROJECT_VIDEO_H
 #include "Entity/Multimedia.h"
-#include <stdio.h>
 #include <string>
 #include <memory>
 class Video {
@@ -16,15 +15,15 @@ private:
     unique_ptr<Multimedia> multimedia ;
     string resolution ;
 public:
-    int getId() const;
+    [[nodiscard]]int getId() const;
 
-    int getDuration() const;
+    [[nodiscard]]int getDuration() const;
 
-    const unique_ptr<Multimedia> &getMultimedia() const;
+    [[nodiscard]]const unique_ptr<Multimedia> &getMultimedia() const;
 
-    const string &getResolution() const;
+    [[nodiscard]]string_view getResolution() const;
 
-    Video(int id, int duration, unique_ptr<Multimedia> multimedia, const string &resolution);
+    Video(int id, int duration, unique_ptr<Multimedia> multimedia, string_view resolution);
 
 
 };

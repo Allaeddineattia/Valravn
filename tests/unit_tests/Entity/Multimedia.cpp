@@ -16,4 +16,6 @@ TEST(Multimedia, testGetPath){
 
 TEST(Multimedia, testGetPathShort){
     Multimedia m(1, "path", 50, "type");
+    ASSERT_EQ(m.getPath(),"path");
+    ASSERT_EQ(m.getMimeType(),"type");
 }

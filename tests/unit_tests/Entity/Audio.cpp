@@ -10,4 +10,7 @@
 TEST(Audio, Creation) {
     auto multimedia = make_unique<Multimedia>(1, "path", 50, "type");
     auto audio = make_unique<Audio>(1, 13, move(multimedia));
+    ASSERT_EQ(audio->getMultimedia()->getPath(),"path");
+    ASSERT_EQ(audio->getMultimedia()->getMimeType(),"type");
+
 }

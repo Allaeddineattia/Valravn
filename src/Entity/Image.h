@@ -13,17 +13,18 @@ using namespace std;
 
 class Image {
 private:
+
     int id;
     string resolution ;
     unique_ptr<Multimedia> multimedia ;
 public:
-    Image(int id, const string &resolution,  unique_ptr<Multimedia> multimedia);
+    Image(int id, std::string_view resolution, unique_ptr<Multimedia> multimedia);
 
-    int getId() const;
+    [[nodiscard]]int getId() const;
 
-    const string &getResolution() const;
+    [[nodiscard]]string_view getResolution() const;
 
-    const unique_ptr<Multimedia> &getMultimedia() const;
+    [[nodiscard]]const unique_ptr<Multimedia> &getMultimedia() const;
 
 };
 

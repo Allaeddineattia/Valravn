@@ -15,11 +15,11 @@ private:
     int duration ;
     unique_ptr<Multimedia> multimedia ;
 public:
-    const unique_ptr<Multimedia> &getMultimedia() const;
+    [[nodiscard]]const unique_ptr<Multimedia> &getMultimedia() const;
 
-    int getId() const;
+    [[nodiscard]]int getId() const;
 
-    int getDuration() const;
+    [[nodiscard]]int getDuration() const;
 
     Audio(int id, int duration ,unique_ptr<Multimedia> multimedia);
 
