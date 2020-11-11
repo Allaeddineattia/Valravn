@@ -39,6 +39,7 @@ multimedia(move(multimedia))
             unsigned long size=resolution_data.size()-1;
             int min;
             min = pow(10, size);
+            resolution_data="0"+resolution_data;
             int i = stoi(resolution_data);
             if(i<=(min))
                 throw invalid_argument("Error:Resolution shape int:int");

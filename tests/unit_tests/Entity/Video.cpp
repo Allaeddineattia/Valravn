@@ -7,10 +7,10 @@
 #include "Entity/Video.h"
 TEST(Video, CreationError1){
     auto multimedia = make_unique<Multimedia>(1, "path", 50, "type");
-    auto video = make_unique<Video>(1 , 5 , move (multimedia) ,"140*150" );
+    auto video = make_unique<Video>(1 , 5 , move (multimedia) ,"a140:150" );
     ASSERT_EQ(video->getMultimedia()->getPath(),"path");
     ASSERT_EQ(video->getMultimedia()->getMimeType(),"type");
-    ASSERT_EQ(video->getResolution(),"140*150");
+    ASSERT_EQ(video->getResolution(),"a140:150");
 }
 
 TEST(Video, CreationError2){
