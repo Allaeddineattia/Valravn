@@ -24,22 +24,21 @@ id(id),
 multimedia(move(multimedia))
 {
     try{
-        string resolution_data= resolution.data();
-        int found=resolution_data.find(" ");
-        while(found!=string::npos){
-            resolution_data.erase(resolution_data.begin()+found);
-            found=resolution_data.find(" ");
-        }
-        found=resolution_data.find(":");
-        if((found==string::npos) || (found==0) || (found==resolution.size()))
-        {
+        int found=resolution.find(":");
+        if(found==string::npos){
             throw invalid_argument("Error:Resolution shape int:int");
         }
         else {
-
+            string resolution_data= resolution.data();
             resolution_data.erase(resolution_data.begin()+found);
+            found=resolution_data.find(" ");
+            while(found!=string::npos){
+                resolution_data.erase(resolution_data.begin()+found);
+                found=resolution_data.find(" ");
+            }
             unsigned long size=resolution_data.size()-1;
-            int min=pow(10,size);
+            int min;
+            min = pow(10, size);
             resolution_data="0"+resolution_data;
             int i = stoi(resolution_data);
             if(i<=(min))
