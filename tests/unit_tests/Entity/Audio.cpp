@@ -12,5 +12,4 @@ TEST(Audio, Creation) {
     auto audio = make_unique<Audio>(1, 13, move(multimedia));
     ASSERT_EQ(audio->getMultimedia()->getPath(),"path");
     ASSERT_EQ(audio->getMultimedia()->getMimeType(),"type");
-
 }
