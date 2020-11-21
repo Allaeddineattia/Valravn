@@ -8,9 +8,7 @@
 #include <string>
 #include "Multimedia.h"
 
-
 using namespace std;
-
 
 class Image {
 private:
@@ -19,6 +17,7 @@ private:
     string resolution ;
     unique_ptr<Multimedia> multimedia ;
 public:
+
     Image(int id, std::string_view resolution, unique_ptr<Multimedia> multimedia);
 
     [[nodiscard]]int getId() const;

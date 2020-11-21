@@ -14,6 +14,7 @@ private:
     int id;
     int duration ;
     unique_ptr<Multimedia> multimedia ;
+
 public:
     [[nodiscard]]const unique_ptr<Multimedia> &getMultimedia() const;
 
