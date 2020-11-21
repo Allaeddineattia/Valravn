@@ -6,8 +6,9 @@
 #include <cmath>
 #include "Video.h"
 #include "Tools.h"
+
 using namespace std;
-Video::Video(int id, int duration,  unique_ptr<Multimedia> multimedia, string_view resolution_input) :
+Video::Video(int id, int duration, unique_ptr<Multimedia, default_delete<Multimedia>> multimedia, string_view resolution_input) :
 id(id),
 duration(duration),
 multimedia(move(multimedia))
@@ -32,5 +33,10 @@ const unique_ptr<Multimedia> &Video::getMultimedia() const {
 
 string_view Video::getResolution() const {
     return resolution;
+}
+
+
+Video::~Video() {
+
 }
 

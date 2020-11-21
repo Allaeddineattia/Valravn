@@ -9,7 +9,8 @@
 #include "Entity/Multimedia.h"
 #include <string>
 #include <memory>
-class Video {
+
+class Video : public Playabale{
 private:
 
     int id;
@@ -17,6 +18,8 @@ private:
     unique_ptr<Multimedia> multimedia ;
     string resolution ;
 public:
+    virtual ~Video();
+
     [[nodiscard]]int getId() const;
 
     [[nodiscard]]int getDuration() const;
@@ -25,7 +28,10 @@ public:
 
     [[nodiscard]]string_view getResolution() const;
 
-    Video(int id, int duration, unique_ptr<Multimedia> multimedia, string_view resolution);
+    void play() ;
+    void stop() ;
+    void pause() ;
+    Video(int id, int duration, unique_ptr<Multimedia, default_delete<Multimedia>> multimedia, string_view resolution);
 
 
 };

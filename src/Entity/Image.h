@@ -12,13 +12,15 @@
 using namespace std;
 
 
-class Image {
+class Image : public Playabale{
 private:
 
     int id;
     string resolution ;
     unique_ptr<Multimedia> multimedia ;
 public:
+    virtual ~Image();
+
     Image(int id, std::string_view resolution, unique_ptr<Multimedia> multimedia);
 
     [[nodiscard]]int getId() const;
@@ -27,6 +29,9 @@ public:
 
     [[nodiscard]]const unique_ptr<Multimedia> &getMultimedia() const;
 
+    void play ();
+    void pause () ;
+    void stop () ;
 };
 
 

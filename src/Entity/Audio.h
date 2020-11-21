@@ -8,19 +8,23 @@
 #include <memory>
 #include "Multimedia.h"
 
-class Audio {
+class Audio : public Playabale{
 
 private:
     int id;
     int duration ;
     unique_ptr<Multimedia> multimedia ;
 public:
+    virtual ~Audio();
+
     [[nodiscard]]const unique_ptr<Multimedia> &getMultimedia() const;
 
     [[nodiscard]]int getId() const;
 
     [[nodiscard]]int getDuration() const;
-
+    void play() ;
+    void stop() ;
+    void pause() ;
     Audio(int id, int duration ,unique_ptr<Multimedia> multimedia);
 
 

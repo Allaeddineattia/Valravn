@@ -27,3 +27,8 @@ const unique_ptr<Multimedia> &Image::getMultimedia() const {
 }
 
 
+Image::~Image() {
+
+}
+
+

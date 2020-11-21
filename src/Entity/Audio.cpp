@@ -20,3 +20,7 @@ int Audio::getDuration() const {
 const unique_ptr<Multimedia> &Audio::getMultimedia() const {
     return multimedia;
 }
+
+Audio::~Audio() {
+
+}
