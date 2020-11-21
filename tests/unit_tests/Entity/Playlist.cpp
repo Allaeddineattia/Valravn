@@ -9,7 +9,7 @@
 #include <memory>
 using namespace std ;
 
-TEST(Playlist,ThrowErrorOnInvalidadd) {
+TEST(Playlist,ThrowErrorOnInvalidAdd) {
 
     auto multimedia = make_unique<Multimedia>(1, "path", 50, "type");
     auto video = make_unique<Video>(1, 5, move(multimedia), "140:80");
@@ -23,7 +23,7 @@ TEST(Playlist,ThrowErrorOnInvalidadd) {
 
     ASSERT_THROW(playlist->addPlayabal(move(video)),invalid_argument) ;
 }
-TEST(Playlist,ThrowErrorOnInvalidremove) {
+TEST(Playlist,ThrowErrorOnInvalidRemove) {
 
     auto multimedia = make_unique<Multimedia>(1, "path", 50, "type");
     auto video = make_unique<Video>(1, 5, move(multimedia), "140:80");
