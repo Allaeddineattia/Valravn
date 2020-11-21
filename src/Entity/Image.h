@@ -19,7 +19,7 @@ private:
     string resolution ;
     unique_ptr<Multimedia> multimedia ;
 public:
-    virtual ~Image();
+    virtual ~Image() = default;
 
     Image(int id, std::string_view resolution, unique_ptr<Multimedia> multimedia);
 
@@ -29,9 +29,11 @@ public:
 
     [[nodiscard]]const unique_ptr<Multimedia> &getMultimedia() const;
 
-    void play ();
-    void pause () ;
-    void stop () ;
+    void play () override;
+
+    void pause () override;
+
+    void stop () override;
 };
 
 

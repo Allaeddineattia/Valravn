@@ -15,16 +15,18 @@ private:
     int duration ;
     unique_ptr<Multimedia> multimedia ;
 public:
-    virtual ~Audio();
+    virtual ~Audio() = default;
 
     [[nodiscard]]const unique_ptr<Multimedia> &getMultimedia() const;
 
     [[nodiscard]]int getId() const;
 
     [[nodiscard]]int getDuration() const;
-    void play() ;
-    void stop() ;
-    void pause() ;
+
+    void play() override;
+    void stop() override;
+    void pause() override;
+
     Audio(int id, int duration ,unique_ptr<Multimedia> multimedia);
 
 

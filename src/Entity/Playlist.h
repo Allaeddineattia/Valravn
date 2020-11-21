@@ -14,21 +14,24 @@ class Playlist : public Playabale{
 private:
     int id;
     vector<unique_ptr<Playabale>> playlist;
+    int current;
 
 public:
-    int getId() const;
+    [[nodiscard]] int getId() const;
 
-    virtual ~Playlist();
+    ~Playlist() override = default;
 
     [[nodiscard]] vector<unique_ptr<Playabale>> getPlaylist();
     void addPlayabal(unique_ptr<Playabale> playabale);
     void removePlayabal(unique_ptr<Playabale> playabale);
 
-    void play ();
-    void pause () ;
-    void stop () ;
+    void play () override;
 
-    Playlist(vector<unique_ptr<Playabale>> vplaylist, int id);
+    void pause () override;
+
+    void stop () override;
+
+    Playlist(vector<unique_ptr<Playabale>> _playlist, int id);
 };
 
 

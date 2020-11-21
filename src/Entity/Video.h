@@ -18,7 +18,7 @@ private:
     unique_ptr<Multimedia> multimedia ;
     string resolution ;
 public:
-    virtual ~Video();
+    virtual ~Video() = default;
 
     [[nodiscard]]int getId() const;
 
@@ -28,9 +28,12 @@ public:
 
     [[nodiscard]]string_view getResolution() const;
 
-    void play() ;
-    void stop() ;
-    void pause() ;
+    void play() override ;
+
+    void stop() override ;
+
+    void pause() override;
+
     Video(int id, int duration, unique_ptr<Multimedia, default_delete<Multimedia>> multimedia, string_view resolution);
 
 

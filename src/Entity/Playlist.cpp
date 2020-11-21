@@ -5,10 +5,11 @@
 #include "Entity/Playlist.h"
 #include <vector>
 #include <algorithm>
+
 using namespace std;
 
 
-Playlist::Playlist(vector<unique_ptr<Playabale>> vplaylist, int id) : playlist(move(vplaylist)) {}
+Playlist::Playlist(vector<unique_ptr<Playabale>> _playlist, int id) : playlist(move(_playlist)) {}
 
  vector<unique_ptr<Playabale>> Playlist::getPlaylist()  {
     return move(playlist);
@@ -36,8 +37,17 @@ int Playlist::getId() const {
     return id;
 }
 
+void Playlist::play() {
+    for(current = 0; current < playlist.size(); current ++)
+        playlist[current]->play();
+}
 
-Playlist::~Playlist() {
+void Playlist::pause() {
+    playlist[current] -> pause();
+}
 
+void Playlist::stop() {
+    playlist[current] -> stop();
+    current = 0;
 }
 

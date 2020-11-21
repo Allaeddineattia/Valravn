@@ -13,7 +13,7 @@ set(SOURCE_FILES
         Entity/Tools.h
         Entity/Playabale.h
         Entity/Playlist.cpp
-        Entity/Playlist.h)
+        Entity/Playlist.h Shared/CustomError.h)
 
 # The library contains header and source files.
 add_library(${CMAKE_PROJECT_NAME}_lib STATIC
