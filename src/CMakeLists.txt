@@ -10,7 +10,12 @@ set(SOURCE_FILES
         Entity/Audio.h
         Entity/Image.cpp
         Entity/Image.h
-        Entity/Tools.h)
+        Entity/Tools.h
+        Entity/Parameter.h
+        Entity/Parameter.cpp
+        Entity/Schedule.h
+        Entity/Schedule.cpp
+        )
 
 # The library contains header and source files.
 add_library(${CMAKE_PROJECT_NAME}_lib STATIC
