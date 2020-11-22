@@ -7,7 +7,7 @@
 
 Audio::Audio(int id, int duration ,unique_ptr<Multimedia> multimedia) :
 id(id),
-duration(duration) ,
+duration(duration),
 multimedia(move(multimedia)){}
 
 int Audio::getId() const {

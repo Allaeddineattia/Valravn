@@ -4,7 +4,6 @@
 
 #ifndef MYPROJECT_TOOLS_H
 #define MYPROJECT_TOOLS_H
-
 #include <string_view>
 #include <regex>
 

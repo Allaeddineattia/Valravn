@@ -4,7 +4,6 @@
 
 #ifndef MYPROJECT_AUDIO_H
 #define MYPROJECT_AUDIO_H
-#include <stdio.h>
 #include <memory>
 #include "Multimedia.h"
 
@@ -12,8 +11,8 @@ class Audio : public Playabale{
 
 private:
     int id;
-    int duration ;
-    unique_ptr<Multimedia> multimedia ;
+    int duration;
+    unique_ptr<Multimedia> multimedia;
 public:
     virtual ~Audio() = default;
 
