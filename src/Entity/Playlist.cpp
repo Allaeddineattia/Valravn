@@ -46,5 +46,10 @@ void Playlist::stop() {
     current = 0;
 }
 
+void Playlist::next () {
+     current++;
+}
 
-
+void Playlist::previous (){
+    current--
+}

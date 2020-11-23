@@ -34,7 +34,7 @@ public:
 
     void pause() override;
 
-    Video(int id, int duration, unique_ptr<Multimedia, default_delete<Multimedia>> multimedia, string_view resolution);
+    Video(int id, int duration, unique_ptr<Multimedia> multimedia, string_view resolution);
 
 
 };

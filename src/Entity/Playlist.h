@@ -19,23 +19,20 @@ private:
 
 public:
     Playlist(int id);
-
-    [[nodiscard]] int getId() const;
-
     ~Playlist() override = default;
 
+    [[nodiscard]] int getId() const;
     [[nodiscard]] const vector<unique_ptr<MediaDisplay>> & getPlaylist();
     void addMediaDisplay(unique_ptr<MediaDisplay> _mediadisplay);
     void removePlayabal(int _position);
-
     void next ();
+    void previous ();
 
     void play () override;
 
     void pause () override;
 
     void stop () override;
-
 
 };
 
