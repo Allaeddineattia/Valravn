@@ -4,7 +4,7 @@
 
 #include "Parameter.h"
 
-Parameter::Parameter(bool fullscreen, int volume, int timeout, int speed) :
+Parameter::Parameter(bool fullscreen, int volume, int timeout, float speed) :
     fullscreen(fullscreen), volume(volume), timeout(timeout), speed(speed) {}
 
 bool Parameter::isFullscreen() const {
@@ -19,6 +19,6 @@ int Parameter::getTimeout() const {
     return timeout;
 }
 
-int Parameter::getSpeed() const {
+float Parameter::getSpeed() const {
     return speed;
 }

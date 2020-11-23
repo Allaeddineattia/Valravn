@@ -11,10 +11,10 @@ private:
     bool fullscreen;
     int volume;
     int timeout;
-    int speed;
+    float speed;
 
 public:
-    Parameter(bool fullscreen, int volume, int timeout, int speed);
+    Parameter(bool fullscreen, int volume, int timeout, float speed);
 
     [[nodiscard]] bool isFullscreen() const;
 
@@ -22,7 +22,7 @@ public:
 
     [[nodiscard]] int getTimeout() const;
 
-    [[nodiscard]] int getSpeed() const;
+    [[nodiscard]] float getSpeed() const;
 };
 
 

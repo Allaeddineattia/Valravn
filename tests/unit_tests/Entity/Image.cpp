@@ -5,7 +5,7 @@
 
 #include "Entity/Image.h"
 #include "gtest/gtest.h"
-
+#include "Shared/CustomError.h"
 #include "Entity/Multimedia.h"
 
 TEST(Image, ThrowErrorOnInvalidResolution1) {
@@ -37,4 +37,19 @@ TEST(Image, ThrowErrorOnInvalidResolution3) {
 TEST(Image, ThrowErrorOnInvalidResolution4) {
     auto multimedia = make_unique<Multimedia>(1, "path", 50, "type");
     ASSERT_THROW( make_unique<Image>(1, "140:80", move(multimedia)), invalid_argument);
+}
+TEST(Image ,Throw_error_on_play_NotImplementedException){
+    auto multimedia = make_unique<Multimedia>(1, "path", 50, "type");
+    auto image = make_unique<Image>(1, " 140:800", move(multimedia));
+    ASSERT_THROW(image->play(),NotImplementedException);
+}
+TEST(Image ,Throw_error_on_pause_NotImplementedException){
+    auto multimedia = make_unique<Multimedia>(1, "path", 50, "type");
+    auto image = make_unique<Image>(1, " 140:800", move(multimedia));
+    ASSERT_THROW(image->pause(),NotImplementedException);
+}
+TEST(Image ,Throw_error_on_stop_NotImplementedException){
+    auto multimedia = make_unique<Multimedia>(1, "path", 50, "type");
+    auto image = make_unique<Image>(1, " 140:800", move(multimedia));
+    ASSERT_THROW(image->stop(),NotImplementedException);
 }

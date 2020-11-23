@@ -12,22 +12,17 @@ using namespace std;
 Playlist::Playlist(int id) : id(id){}
 
 const vector<unique_ptr<MediaDisplay>> & Playlist::getPlaylist()  {
-    return playlist;
+    return display;
 }
 
-void Playlist::addPlayabal(unique_ptr<MediaDisplay> playabale) {
-    auto vit = find(playlist.begin(), playlist.end(), playabale);
-    if (vit != playlist.end())
-        throw  invalid_argument("Element  already exists ");
-    else
-        playlist.push_back(move(playabale));
+void Playlist::addMediaDisplay(unique_ptr<MediaDisplay> _mediadisplay) {
+    display.push_back(move(_mediadisplay));
 }
 
 
-void Playlist::removePlayabal(unique_ptr<MediaDisplay> playabale) {
-    vector<unique_ptr<MediaDisplay>>::iterator vit = find(playlist.begin(), playlist.end(),playabale);
-    if (vit != playlist.end())
-        playlist.erase(vit);
+void Playlist::removePlayabal(int _position) {
+    if ((_position < display.size())&&(_position >= 0))
+        display.erase(display.begin()+_position);
     else
         throw  invalid_argument("Element  NOT exists ");
 
@@ -38,16 +33,16 @@ int Playlist::getId() const {
 }
 
 void Playlist::play() {
-    for(current = 0; current < playlist.size(); current ++)
-        playlist[current]->getPlayabale()->play();
+    for(current = 0; current < display.size(); current ++)
+        display[current]->getPlayabale()->play();
 }
 
 void Playlist::pause() {
-    playlist[current] -> getPlayabale()-> pause();
+    display[current] -> getPlayabale()-> pause();
 }
 
 void Playlist::stop() {
-    playlist[current] -> getPlayabale()-> stop();
+    display[current] -> getPlayabale()-> stop();
     current = 0;
 }
 

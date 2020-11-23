@@ -14,7 +14,7 @@ using namespace std;
 class Playlist : public Playabale{
 private:
     int id;
-    vector<unique_ptr<MediaDisplay>> playlist;
+    vector<unique_ptr<MediaDisplay>> display;
     int current;
 
 public:
@@ -25,8 +25,10 @@ public:
     ~Playlist() override = default;
 
     [[nodiscard]] const vector<unique_ptr<MediaDisplay>> & getPlaylist();
-    void addPlayabal(unique_ptr<MediaDisplay> playabale);
-    void removePlayabal(unique_ptr<MediaDisplay> playabale);
+    void addMediaDisplay(unique_ptr<MediaDisplay> _mediadisplay);
+    void removePlayabal(int _position);
+
+    void next ();
 
     void play () override;
 
