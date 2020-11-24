@@ -4,7 +4,7 @@
 
 #include "Schedule.h"
 
-//Schedule::Schedule(time_t time, unique_ptr<Playlist> playlist) : time(time), playlist(move(playlist)) {}
+Schedule::Schedule(time_t time, unique_ptr<Playlist> playlist) : time(time), playlist(move(playlist)) {}
 
 time_t Schedule::getTime() const {
     return time;

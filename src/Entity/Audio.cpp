@@ -3,6 +3,7 @@
 //
 
 #include "Audio.h"
+#include "Shared/CustomError.h"
 
 Audio::Audio(int id, int duration ,unique_ptr<Multimedia> multimedia) :
 id(id),
@@ -20,3 +21,19 @@ int Audio::getDuration() const {
 const unique_ptr<Multimedia> &Audio::getMultimedia() const {
     return multimedia;
 }
+
+
+
+void Audio::play() {
+    throw NotImplementedException();
+}
+
+void Audio::stop() {
+    throw NotImplementedException();
+}
+
+void Audio::pause() {
+    throw NotImplementedException();
+}
+
+

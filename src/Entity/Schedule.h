@@ -7,19 +7,19 @@
 
 #include <ctime>
 #include <memory>
-//#include <Entity/Playlist.h>
+#include <Entity/Playlist.h>
 #include <Entity/Parameter.h>
 
 class Schedule {
 private:
     time_t time;
 
-    //std::unique_ptr<Playlist> playlist;
+    std::unique_ptr<Playlist> playlist;
 
     std::unique_ptr<Parameter> parameter;
 
 public:
-    //Schedule(time_t time, unique_ptr<Playlist> playlist);
+    Schedule(time_t time, unique_ptr<Playlist> playlist);
 
     [[nodiscard]] time_t getTime() const;
 };

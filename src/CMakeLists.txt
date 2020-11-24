@@ -11,6 +11,12 @@ set(SOURCE_FILES
         Entity/Image.cpp
         Entity/Image.h
         Entity/Tools.h
+        Entity/Playabale.h
+        Entity/Playlist.cpp
+        Entity/Playlist.h
+        Shared/CustomError.h
+        Entity/MediaDisplay.cpp
+        Entity/MediaDisplay.h
         Entity/Parameter.h
         Entity/Parameter.cpp
         Entity/Schedule.h

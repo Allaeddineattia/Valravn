@@ -4,7 +4,7 @@
 #include<string_view>
 #include "Tools.h"
 #include "Image.h"
-
+#include "Shared/CustomError.h"
 Image::Image(int id, string_view resolution_input, unique_ptr<Multimedia>multimedia) :
              id(id), multimedia(move(multimedia))
 {
@@ -24,6 +24,19 @@ string_view Image::getResolution() const {
 
 const unique_ptr<Multimedia> &Image::getMultimedia() const {
     return multimedia;
+}
+
+
+void Image::play() {
+    throw NotImplementedException();
+}
+
+void Image::pause() {
+    throw NotImplementedException();
+}
+
+void Image::stop() {
+    throw NotImplementedException();
 }
 
 

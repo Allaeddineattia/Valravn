@@ -6,8 +6,10 @@
 #include <cmath>
 #include "Video.h"
 #include "Tools.h"
+#include "Shared/CustomError.h"
+
 using namespace std;
-Video::Video(int id, int duration,  unique_ptr<Multimedia> multimedia, string_view resolution_input) :
+Video::Video(int id, int duration, unique_ptr<Multimedia> multimedia, string_view resolution_input) :
 id(id),
 duration(duration),
 multimedia(move(multimedia))
@@ -32,5 +34,17 @@ const unique_ptr<Multimedia> &Video::getMultimedia() const {
 
 string_view Video::getResolution() const {
     return resolution;
+}
+
+void Video::play() {
+    throw NotImplementedException();
+}
+
+void Video::stop() {
+    throw NotImplementedException();
+}
+
+void Video::pause() {
+    throw NotImplementedException();
 }
 
