@@ -9,6 +9,7 @@
 #include "Entity/Multimedia.h"
 #include <string>
 #include <memory>
+#include "Playabale.h"
 
 class Video : public Playabale{
 private:

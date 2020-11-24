@@ -4,6 +4,7 @@
 
 #ifndef MYPROJECT_TOOLS_H
 #define MYPROJECT_TOOLS_H
+
 #include <string_view>
 #include <regex>
 
@@ -11,6 +12,7 @@ using namespace std;
 
 class Tools{
 public:
+
     static void remove_blanks(string & str){
         int found = str.find(" ");
         while(found != string::npos){

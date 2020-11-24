@@ -6,12 +6,12 @@
 #include "MediaDisplay.h"
 
 
-const unique_ptr<Playabale> &MediaDisplay::getPlayabale() const {
-    return playabale;
+Playabale & MediaDisplay::getPlayabale()  {
+    return *playabale;
 }
 
-const unique_ptr<Parameter> &MediaDisplay::getParameter() const {
-    return parameter;
+Parameter & MediaDisplay::getParameter() {
+    return *parameter;
 }
 
 MediaDisplay::MediaDisplay(unique_ptr<Playabale> playabale,  unique_ptr<Parameter> parameter) : playabale(move(playabale)), parameter(move(parameter)) {}

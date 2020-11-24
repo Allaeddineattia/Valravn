@@ -19,9 +19,9 @@ public:
     MediaDisplay( unique_ptr<Playabale> playabale,  unique_ptr<Parameter> parameter);
 
 
-    const unique_ptr<Playabale> &getPlayabale() const;
+    Playabale &getPlayabale() ;
 
-    const unique_ptr<Parameter> &getParameter() const;
+    Parameter &getParameter() ;
 };
 
 

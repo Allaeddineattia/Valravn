@@ -6,6 +6,7 @@
 #define MYPROJECT_AUDIO_H
 #include <memory>
 #include "Multimedia.h"
+#include "Playabale.h"
 
 class Audio : public Playabale{
 
