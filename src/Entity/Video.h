@@ -9,9 +9,9 @@
 #include "Entity/Multimedia.h"
 #include <string>
 #include <memory>
-#include "Playabale.h"
+#include "IPlayable.h"
 
-class Video : public Playabale{
+class Video : public IPlayable{
 private:
 
     int id;

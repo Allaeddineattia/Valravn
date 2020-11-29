@@ -4,14 +4,31 @@ project(MyProject)
 set(CMAKE_CXX_STANDARD 17)
 
 set(SOURCE_FILES main.cpp)
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
+
+find_package(Boost COMPONENTS system REQUIRED)
+find_package(Boost COMPONENTS )
+find_package(Boost COMPONENTS filesystem system REQUIRED)
+find_package(SQLite3 REQUIRED)
+find_package(LIBVLC REQUIRED)
+include_directories(${Boost_INCLUDE_DIRS})
+
+set(Boost_USE_STATIC_LIBS OFF)
+set(Boost_USE_MULTITHREADED ON)
+set(Boost_USE_STATIC_RUNTIME OFF)
+
 add_executable(${CMAKE_PROJECT_NAME}_run ${SOURCE_FILES})
 
+
 include_directories(src)
+
+
+
 
 add_subdirectory(src)
 add_subdirectory(tests)
 
-target_link_libraries(${CMAKE_PROJECT_NAME}_run ${CMAKE_PROJECT_NAME}_lib)
+
 
 # Doxygen Build
 option(BUILD_DOC "Build Documentation" ON)
@@ -36,3 +53,9 @@ if(DOXYGEN_FOUND)
 else(DOXYGEN_FOUND)
     message("Doxygen needs to be installed to generate the documentation.")
 endif(DOXYGEN_FOUND)
+
+target_link_libraries(${CMAKE_PROJECT_NAME}_run ${CMAKE_PROJECT_NAME}_lib)
+target_link_libraries (${CMAKE_PROJECT_NAME}_run ${Boost_SYSTEM_LIBRARY})
+target_link_libraries (${CMAKE_PROJECT_NAME}_run ${Boost_FILESYSTEM_LIBRARY})
+target_link_libraries (${CMAKE_PROJECT_NAME}_run ${LIBVLC_LIBRARY})
+target_link_libraries (${CMAKE_PROJECT_NAME}_run ${SQLITE3_LIBRARY})

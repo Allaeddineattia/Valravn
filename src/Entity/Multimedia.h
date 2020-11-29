@@ -7,11 +7,11 @@
 #include <string>
 #include <string_view>
 #include <memory>
-
+#include <DataBase/Contracts/IRepository.h>
 
 using namespace std;
 
-class Multimedia {
+class Multimedia : IRepository<Multimedia>{
 private:
     int id;
     string path;
@@ -29,6 +29,15 @@ public:
 
     [[nodiscard]] string_view getMimeType() const;
 
+    bool save() override;
+
+    bool remove() override;
+
+    static unique_ptr<Multimedia> fetch_by_id(int T);
+
+    static vector<unique_ptr<Multimedia>> get_all();
+
+    bool operator==(const Multimedia &rhs) const;
 };
 
 

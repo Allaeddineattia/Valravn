@@ -2,7 +2,7 @@
 // Created by ismail on 7‏/11‏/2020.
 //
 #include<string_view>
-#include "Tools.h"
+#include "Shared/Tools.h"
 #include "Image.h"
 #include "Shared/CustomError.h"
 Image::Image(int id, string_view resolution_input, unique_ptr<Multimedia>multimedia) :
@@ -22,8 +22,8 @@ string_view Image::getResolution() const {
     return resolution;
 }
 
-const unique_ptr<Multimedia> &Image::getMultimedia() const {
-    return multimedia;
+const Multimedia &Image::getMultimedia() const {
+    return *multimedia;
 }
 
 
@@ -37,6 +37,29 @@ void Image::pause() {
 
 void Image::stop() {
     throw NotImplementedException();
+}
+
+bool Image::save() {
+
+}
+
+bool Image::remove() {
+
+}
+
+unique_ptr<Image> Image::fetch_by_id(int id) {
+    return nullptr;
+}
+
+
+
+vector<unique_ptr<Image>> Image::get_all() {
+    return vector<unique_ptr<Image>>();
+}
+
+bool Image::operator==(const Image &rhs) const {
+    return *multimedia == *(rhs.multimedia)&&
+           this->resolution == rhs.resolution;
 }
 
 

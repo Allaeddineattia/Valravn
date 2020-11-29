@@ -16,16 +16,14 @@ TEST(Image, ThrowErrorOnInvalidResolution1) {
 TEST(Image, ThrowErrorOnInvalidResolution2) {
     auto multimedia = make_unique<Multimedia>(1, "path", 50, "type");
     ASSERT_THROW( make_unique<Image>(1, "14080", move(multimedia)), invalid_argument);
-
 }
 
 TEST(Image, CreationImage) {
     auto multimedia = make_unique<Multimedia>(1, "path", 50, "type");
     auto image = make_unique<Image>(1, " 140:800", move(multimedia));
-    ASSERT_EQ(image->getMultimedia()->getPath(),"path");
-    ASSERT_EQ(image->getMultimedia()->getMimeType(),"type");
+    ASSERT_EQ(image->getMultimedia().getPath(),"path");
+    ASSERT_EQ(image->getMultimedia().getMimeType(),"type");
     ASSERT_EQ(image->getResolution()," 140:800");
-
 }
 
 TEST(Image, ThrowErrorOnInvalidResolution3) {
@@ -52,4 +50,9 @@ TEST(Image ,Throw_error_on_stop_NotImplementedException){
     auto multimedia = make_unique<Multimedia>(1, "path", 50, "type");
     auto image = make_unique<Image>(1, " 140:800", move(multimedia));
     ASSERT_THROW(image->stop(),NotImplementedException);
+}
+
+TEST(Image, Static){
+    Image::get_all();
+    Image::fetch_by_id(4);
 }

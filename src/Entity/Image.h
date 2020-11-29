@@ -7,17 +7,16 @@
 
 #include <string>
 #include "Multimedia.h"
-#include "Playabale.h"
-
+#include "IPlayable.h"
+#include <DataBase/Contracts/IRepository.h>
 using namespace std;
 
 
-class Image : public Playabale{
+class Image : public IPlayable, IRepository<Image>{
 private:
-
     int id;
-    string resolution ;
-    unique_ptr<Multimedia> multimedia ;
+    string resolution;
+    unique_ptr<Multimedia> multimedia;
 public:
     virtual ~Image() = default;
 
@@ -27,13 +26,23 @@ public:
 
     [[nodiscard]]string_view getResolution() const;
 
-    [[nodiscard]]const unique_ptr<Multimedia> &getMultimedia() const;
+    [[nodiscard]]const Multimedia &getMultimedia() const;
 
     void play () override;
 
     void pause () override;
 
     void stop () override;
+
+    bool save() override;
+
+    bool remove() override;
+
+    static unique_ptr<Image> fetch_by_id(int T);
+
+    static vector<unique_ptr<Image>> get_all();
+
+    bool operator==(const Image &rhs) const;
 };
 
 

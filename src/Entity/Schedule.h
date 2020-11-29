@@ -16,12 +16,13 @@ private:
 
     std::unique_ptr<Playlist> playlist;
 
-    std::unique_ptr<Parameter> parameter;
 
 public:
     Schedule(time_t time, unique_ptr<Playlist> playlist);
 
     [[nodiscard]] time_t getTime() const;
+
+    const Playlist & getPlaylist() const;
 };
 
 

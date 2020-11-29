@@ -5,7 +5,7 @@
 #include <iostream>
 #include <cmath>
 #include "Video.h"
-#include "Tools.h"
+#include "Shared/Tools.h"
 #include "Shared/CustomError.h"
 
 using namespace std;
