@@ -6,44 +6,49 @@
 #define MYPROJECT_IMAGE_H
 
 #include <string>
+#include <optional>
 #include "Multimedia.h"
 #include "IPlayable.h"
-#include <DataBase/Contracts/IRepository.h>
+#include "DataBase/Contracts/Savable.h"
+
+
 using namespace std;
 
+class Image;
 
-class Image : public IPlayable, IRepository<Image>{
-private:
-    int id;
-    string resolution;
-    unique_ptr<Multimedia> multimedia;
-public:
-    virtual ~Image() = default;
+    class Image : public IPlayable, public Savable<Image>{
+    private:
+        unsigned int id;
+        string resolution;
+        unique_ptr<Multimedia> multimedia;
 
-    Image(int id, std::string_view resolution, unique_ptr<Multimedia> multimedia);
+    public:
+        ~Image() override = default;
 
-    [[nodiscard]]int getId() const;
+        Image(int id, std::string_view resolution, unique_ptr<Multimedia> multimedia);
 
-    [[nodiscard]]string_view getResolution() const;
+        [[nodiscard]] unsigned int getId() const override;
 
-    [[nodiscard]]const Multimedia &getMultimedia() const;
+        [[nodiscard]]string_view getResolution() const;
 
-    void play () override;
+        [[nodiscard]]const Multimedia &getMultimedia() const;
 
-    void pause () override;
+        const Image & getSavable() override{
+            return *this;
+        }
 
-    void stop () override;
+        void play () override;
 
-    bool save() override;
+        void pause () override;
 
-    bool remove() override;
+        void stop () override;
 
-    static unique_ptr<Image> fetch_by_id(int T);
+        bool operator==(const Image &rhs) const;
 
-    static vector<unique_ptr<Image>> get_all();
 
-    bool operator==(const Image &rhs) const;
-};
+    };
+
+
 
 
 #endif //MYPROJECT_IMAGE_H

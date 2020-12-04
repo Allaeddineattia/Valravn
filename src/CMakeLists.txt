@@ -21,7 +21,14 @@ set(SOURCE_FILES
         Entity/Parameter.cpp
         Entity/Schedule.h
         Entity/Schedule.cpp
-        DataBase/Contracts/IRepository.h DataBase/Imp/DataBase.cpp DataBase/Contracts/DataBase.h DataBase/Imp/Repos/MultimediaRepo.cpp DataBase/Contracts/Repos/MultimediaRepo.h Shared/DependencyInjector.h DataBase/Imp/Repos/ImageRepo.cpp DataBase/Contracts/Repos/ImageRepo.h)
+        DataBase/Contracts/IRepository.h
+        DataBase/Imp/DataBase.cpp
+        DataBase/Contracts/DataBase.h
+        DataBase/Imp/Repos/MultimediaRepo.cpp
+        DataBase/Contracts/Repos/MultimediaRepo.h
+        Entity/DependencyInjector.h
+        DataBase/Imp/Repos/ImageRepo.cpp
+        DataBase/Contracts/Repos/ImageRepo.h)
 
 # The library contains header and source files.
 add_library(${CMAKE_PROJECT_NAME}_lib STATIC

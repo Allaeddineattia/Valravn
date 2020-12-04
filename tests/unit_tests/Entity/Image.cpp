@@ -52,7 +52,4 @@ TEST(Image ,Throw_error_on_stop_NotImplementedException){
     ASSERT_THROW(image->stop(),NotImplementedException);
 }
 
-TEST(Image, Static){
-    Image::get_all();
-    Image::fetch_by_id(4);
-}
+

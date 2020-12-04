@@ -243,14 +243,14 @@ bool DataBase::delete_by_feature(string_view table_name, const string_pair &feat
 }
 
 
-string to_sql_string(string_view s) {
+string DataBase::to_sql_string(string_view s) {
     string result = "\"";
     result += s;
     result += "\"";
     return result;
 }
 
-string to_sql_date_time(time_t t) {
+string DataBase::to_sql_date_time(time_t t) {
     string result = "datetime(";
     result += to_string(t);
     result += ", 'unixepoch')";

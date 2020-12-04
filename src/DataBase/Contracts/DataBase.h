@@ -69,13 +69,17 @@ public:
 
     vector<string_map> get_all(string_view table_name);
 
+    static string to_sql_string(string_view s);
+
+    static string to_sql_date_time(time_t t);
+
 
 
 };
 
-string to_sql_string(string_view s);
 
-string to_sql_date_time(time_t t);
+
+
 
 
 

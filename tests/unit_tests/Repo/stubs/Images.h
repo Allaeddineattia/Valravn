@@ -7,7 +7,7 @@
 
 #include <Entity/Image.h>
 #include <memory>
-#include <Shared/DependencyInjector.h>
+#include <Entity/DependencyInjector.h>
 
 using namespace std;
 namespace Unit_testing {

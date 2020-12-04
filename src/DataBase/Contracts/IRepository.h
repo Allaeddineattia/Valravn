@@ -5,23 +5,19 @@
 #ifndef MYPROJECT_IREPOSITORY_H
 #define MYPROJECT_IREPOSITORY_H
 #include <vector>
+#include <optional>
 #include <Shared/CustomError.h>
 #include <memory>
 using namespace std;
 
-template<class T>
+template<class Entity>
 class IRepository {
 public:
-    virtual bool save() = 0;
-    virtual bool remove() = 0;
-    static unique_ptr<T> fetch_by_id(int id){
-        throw NotImplementedException();
-    };
-    static vector<unique_ptr<T>> get_all(){
-        throw NotImplementedException();
-    };
-
-
+    [[nodiscard]] virtual const string & get_table_name() const = 0;
+    virtual bool save(const Entity&) = 0;
+    virtual bool delete_by_id(unsigned int id) = 0;
+    virtual optional<unique_ptr<Entity>> get_by_id(unsigned  int id) = 0;
+    virtual vector<unique_ptr<Entity>> get_all() = 0;
 };
 
 

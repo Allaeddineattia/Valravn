@@ -2,7 +2,7 @@
 // Created by alro on 29‏/11‏/2020.
 //
 
-#include <Shared/DependencyInjector.h>
+#include <Entity/DependencyInjector.h>
 #include "gtest/gtest.h"
 #include "tools/Database.h"
 #include "stubs/Images.h"
@@ -28,9 +28,9 @@ TEST(image_updating, update_path){
                                               image->getMultimedia().getMimeType());
     auto updated_image = make_unique<Image>(image->getId(), image->getResolution(), move(updated_multimedia));
 
-    ASSERT_EQ(image_repo->save(*updated_image), true);
+    ASSERT_EQ(updated_image->save(), true);
 
-    auto res = image_repo->get_by_id(image->getId());
+    auto res = Image::fetchById(image->getId());
 
     ASSERT_EQ(*(res.value()), *updated_image);
 
@@ -46,6 +46,7 @@ TEST(image_updating, update_size_image){
     ASSERT_EQ( Database::init_database(di), true);
     ASSERT_EQ( Images::seed_db_with_images(di), true);
     auto image_repo = di->get_image_repo(di);
+    Image::installRepo(image_repo);
     auto image = Images::get_image_1();
 
     unsigned int new_size = 4040;
@@ -56,9 +57,9 @@ TEST(image_updating, update_size_image){
                                                       image->getMultimedia().getMimeType());
     auto updated_image = make_unique<Image>(image->getId(), image->getResolution(), move(updated_multimedia));
 
-    ASSERT_EQ(image_repo->save(*updated_image), true);
+    ASSERT_EQ(updated_image->save(), true);
 
-    auto res = image_repo->get_by_id(image->getId());
+    auto res = Image::fetchById(image->getId());
 
     ASSERT_EQ(*(res.value()), *updated_image);
 
@@ -74,6 +75,7 @@ TEST(image_updating, update_mime_type){
     ASSERT_EQ( Database::init_database(di), true);
     ASSERT_EQ( Images::seed_db_with_images(di), true);
     auto image_repo = di->get_image_repo(di);
+    Image::installRepo(image_repo);
     auto image = Images::get_image_1();
 
     string new_mime_type = "new mime type";
@@ -84,9 +86,9 @@ TEST(image_updating, update_mime_type){
                                                       new_mime_type);
     auto updated_image = make_unique<Image>(image->getId(), image->getResolution(), move(updated_multimedia));
 
-    ASSERT_EQ(image_repo->save(*updated_image), true);
+    ASSERT_EQ(updated_image->save(), true);
 
-    auto res = image_repo->get_by_id(image->getId());
+    auto res = Image::fetchById(image->getId());
 
     ASSERT_EQ(*(res.value()), *updated_image);
 
@@ -116,9 +118,9 @@ TEST(image_updating, update_may_fields_image){
                                                       new_mime_type);
     auto updated_image = make_unique<Image>(image->getId(), new_resolution, move(updated_multimedia));
 
-    ASSERT_EQ(image_repo->save(*updated_image), true);
+    ASSERT_EQ(updated_image->save(), true);
 
-    auto res = image_repo->get_by_id(image->getId());
+    auto res = Image::fetchById(image->getId());
 
     ASSERT_EQ(*(res.value()), *updated_image);
 

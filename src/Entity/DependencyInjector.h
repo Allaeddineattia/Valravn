@@ -4,17 +4,23 @@
 
 #ifndef MYPROJECT_DEPENDENCYINJECTOR_H
 #define MYPROJECT_DEPENDENCYINJECTOR_H
+#include "Image.h"
 
 #include <DataBase/Contracts/DataBase.h>
 #include <DataBase/Contracts/Repos/MultimediaRepo.h>
+
 #include <cassert>
+
+
+#include <DataBase/Contracts/IRepository.h>
 #include <DataBase/Contracts/Repos/ImageRepo.h>
+
 
 class DependencyInjector {
 private:
     unique_ptr<DataBase> data_base = nullptr;
-    unique_ptr<MultimediaRepo> multimedia_repo = nullptr;
-    unique_ptr<ImageRepo> image_repo = nullptr;
+    unique_ptr<IRepository<Multimedia>> multimedia_repo = nullptr;
+    unique_ptr<IRepository<Image>> image_repo = nullptr;
 
 public:
     DependencyInjector()= default;
@@ -34,9 +40,9 @@ public:
         multimedia_repo = make_unique<MultimediaRepo>(d);
         return true;
     };
-    shared_ptr<MultimediaRepo> get_multimedia_repo(const shared_ptr<DependencyInjector>& d){
+    shared_ptr<IRepository<Multimedia>> get_multimedia_repo(const shared_ptr<DependencyInjector>& d){
         assert(multimedia_repo);
-        return shared_ptr<MultimediaRepo>(d, multimedia_repo.get());
+        return shared_ptr<IRepository<Multimedia>>(d, multimedia_repo.get());
     };
 
     bool install_image_repo(const shared_ptr<DependencyInjector>& d){
@@ -44,9 +50,9 @@ public:
         image_repo = make_unique<ImageRepo>(d);
         return true;
     }
-    shared_ptr<ImageRepo> get_image_repo(const shared_ptr<DependencyInjector>& d){
+    shared_ptr<IRepository<Image>> get_image_repo(const shared_ptr<DependencyInjector>& d){
         assert(image_repo);
-        return shared_ptr<ImageRepo>(d, image_repo.get());
+        return shared_ptr<IRepository<Image>>(d, image_repo.get());
     }
 
 

@@ -5,6 +5,8 @@
 #include "Shared/Tools.h"
 #include "Image.h"
 #include "Shared/CustomError.h"
+
+
 Image::Image(int id, string_view resolution_input, unique_ptr<Multimedia>multimedia) :
              id(id), multimedia(move(multimedia))
 {
@@ -14,7 +16,7 @@ Image::Image(int id, string_view resolution_input, unique_ptr<Multimedia>multime
     this->resolution = resolution_input;
 }
 
-int Image::getId() const {
+unsigned int Image::getId() const {
     return id;
 }
 
@@ -25,7 +27,6 @@ string_view Image::getResolution() const {
 const Multimedia &Image::getMultimedia() const {
     return *multimedia;
 }
-
 
 void Image::play() {
     throw NotImplementedException();
@@ -39,27 +40,13 @@ void Image::stop() {
     throw NotImplementedException();
 }
 
-bool Image::save() {
-
-}
-
-bool Image::remove() {
-
-}
-
-unique_ptr<Image> Image::fetch_by_id(int id) {
-    return nullptr;
-}
-
-
-
-vector<unique_ptr<Image>> Image::get_all() {
-    return vector<unique_ptr<Image>>();
-}
 
 bool Image::operator==(const Image &rhs) const {
     return *multimedia == *(rhs.multimedia)&&
            this->resolution == rhs.resolution;
 }
+
+
+
 
 

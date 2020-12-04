@@ -4,7 +4,7 @@
 
 #include "Multimedia.h"
 
-int Multimedia::getId() const {
+unsigned int Multimedia::getId() const {
     return id;
 }
 
@@ -20,17 +20,9 @@ string_view Multimedia::getMimeType() const {
     return mimeType;
 }
 
-Multimedia::Multimedia(int id, string_view path, size_t size, string_view mimeType) : id(id), path(path),
+Multimedia::Multimedia(unsigned int id, string_view path, size_t size, string_view mimeType) : id(id), path(path),
                                                                                       size(size),
                                                                                       mimeType(mimeType) {}
-
-bool Multimedia::save() {
-    return false;
-}
-
-bool Multimedia::remove() {
-    return false;
-}
 
 unique_ptr<Multimedia> Multimedia::fetch_by_id(int T) {
     return unique_ptr<Multimedia>();
@@ -45,5 +37,9 @@ bool Multimedia::operator==(const Multimedia &rhs) const {
            path == rhs.path &&
            mimeType == rhs.mimeType &&
            size == rhs.size;
+}
+
+Multimedia::~Multimedia() {
+
 }
 
