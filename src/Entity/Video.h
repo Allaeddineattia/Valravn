@@ -9,8 +9,9 @@
 #include "Entity/Multimedia.h"
 #include <string>
 #include <memory>
+#include <Entity/MediaPlayingStates/Video/VideoStateHandler.h>
 #include "IPlayable.h"
-
+class VideoStateHandler;
 class Video : public IPlayable{
 private:
 
@@ -18,6 +19,7 @@ private:
     int duration ;
     unique_ptr<Multimedia> multimedia ;
     string resolution ;
+    unique_ptr<VideoStateHandler> stateHandler;
 public:
     virtual ~Video() = default;
 

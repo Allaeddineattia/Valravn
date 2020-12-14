@@ -16,11 +16,11 @@ private:
     unique_ptr<Parameter> parameter;
 
 public:
-    MediaDisplay(unique_ptr<IPlayable> playabale, unique_ptr<Parameter> parameter);
+    MediaDisplay(unique_ptr<IPlayable> playable, unique_ptr<Parameter> parameter);
 
-    IPlayable &getPlayabale() ;
+    IPlayable & getPlayable();
 
-    Parameter &getParameter() ;
+    Parameter & getParameter();
 };
 
 

@@ -34,15 +34,15 @@ int Playlist::getId() const {
 
 void Playlist::play() {
     for(current = 0; current < display.size(); current ++)
-        display[current]->getPlayabale().play();
+        display[current]->getPlayable().play();
 }
 
 void Playlist::pause() {
-    display[current]->getPlayabale().pause();
+    display[current]->getPlayable().pause();
 }
 
 void Playlist::stop() {
-    display[current] -> getPlayabale().stop();
+    display[current]->getPlayable().stop();
     current = 0;
 }
 

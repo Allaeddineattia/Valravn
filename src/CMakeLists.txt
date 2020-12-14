@@ -28,7 +28,7 @@ set(SOURCE_FILES
         DataBase/Contracts/Repos/MultimediaRepo.h
         Entity/DependencyInjector.h
         DataBase/Imp/Repos/ImageRepo.cpp
-        DataBase/Contracts/Repos/ImageRepo.h)
+        DataBase/Contracts/Repos/ImageRepo.h Shared/Timer.h MediaPlayer/VLC_Wrapper.cpp MediaPlayer/VLC_Wrapper.h Entity/MediaPlayingStates/Video/VideoStoppedState.cpp Entity/MediaPlayingStates/Video/VideoStoppedState.h Entity/MediaPlayingStates/Video/VideoPlayingState.cpp Entity/MediaPlayingStates/Video/VideoPlayingState.h Entity/MediaPlayingStates/Video/VideoPausedState.cpp Entity/MediaPlayingStates/Video/VideoPausedState.h Entity/MediaPlayingStates/Video/VideoStateHandler.cpp Entity/MediaPlayingStates/Video/VideoStateHandler.h)
 
 # The library contains header and source files.
 add_library(${CMAKE_PROJECT_NAME}_lib STATIC
