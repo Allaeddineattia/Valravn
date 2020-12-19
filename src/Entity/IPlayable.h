@@ -2,13 +2,13 @@
 // Created by ismail on 16‏/11‏/2020.
 //
 
-#ifndef MYPROJECT_PLAYABALE_H
-#define MYPROJECT_PLAYABALE_H
+#ifndef MYPROJECT_IPLAYABLE_H
+#define MYPROJECT_IPLAYABLE_H
 
 
-class Playabale {
+class IPlayable {
 public:
-    virtual ~Playabale() {
+    virtual ~IPlayable() {
 
     }
 
@@ -20,4 +20,4 @@ public:
 };
 
 
-#endif //MYPROJECT_PLAYABALE_H
+#endif //MYPROJECT_IPLAYABLE_H

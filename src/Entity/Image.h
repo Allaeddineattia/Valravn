@@ -6,35 +6,49 @@
 #define MYPROJECT_IMAGE_H
 
 #include <string>
+#include <optional>
 #include "Multimedia.h"
-#include "Playabale.h"
+#include "IPlayable.h"
+#include "DataBase/Contracts/Savable.h"
+
 
 using namespace std;
 
+class Image;
 
-class Image : public Playabale{
-private:
+    class Image : public IPlayable, public Savable<Image>{
+    private:
+        unsigned int id;
+        string resolution;
+        unique_ptr<Multimedia> multimedia;
 
-    int id;
-    string resolution ;
-    unique_ptr<Multimedia> multimedia ;
-public:
-    virtual ~Image() = default;
+    public:
+        ~Image() override = default;
 
-    Image(int id, std::string_view resolution, unique_ptr<Multimedia> multimedia);
+        Image(int id, std::string_view resolution, unique_ptr<Multimedia> multimedia);
 
-    [[nodiscard]]int getId() const;
+        [[nodiscard]] unsigned int getId() const override;
 
-    [[nodiscard]]string_view getResolution() const;
+        [[nodiscard]]string_view getResolution() const;
 
-    [[nodiscard]]const unique_ptr<Multimedia> &getMultimedia() const;
+        [[nodiscard]]const Multimedia &getMultimedia() const;
 
-    void play () override;
+        const Image & getSavable() override{
+            return *this;
+        }
 
-    void pause () override;
+        void play () override;
 
-    void stop () override;
-};
+        void pause () override;
+
+        void stop () override;
+
+        bool operator==(const Image &rhs) const;
+
+
+    };
+
+
 
 
 #endif //MYPROJECT_IMAGE_H

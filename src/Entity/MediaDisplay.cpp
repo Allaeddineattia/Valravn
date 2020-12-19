@@ -6,13 +6,13 @@
 #include "MediaDisplay.h"
 
 
-Playabale & MediaDisplay::getPlayabale()  {
-    return *playabale;
+IPlayable & MediaDisplay::getPlayable()  {
+    return *playable;
 }
 
 Parameter & MediaDisplay::getParameter() {
     return *parameter;
 }
 
-MediaDisplay::MediaDisplay(unique_ptr<Playabale> playabale,  unique_ptr<Parameter> parameter) : playabale(move(playabale)), parameter(move(parameter)) {}
+MediaDisplay::MediaDisplay(unique_ptr<IPlayable> playable, unique_ptr<Parameter> parameter) : playable(move(playable)), parameter(move(parameter)) {}
 

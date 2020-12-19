@@ -27,18 +27,3 @@ TEST(Video, ThrowErrorOnInvalidResolution3){
     auto multimedia = make_unique<Multimedia>(1, "path", 50, "type");
     ASSERT_THROW(make_unique<Video>(1 , 5 , move (multimedia) ," :140150"), invalid_argument);
 }
-TEST(Video ,Throw_error_on_play_NotImplementedException){
-    auto multimedia = make_unique<Multimedia>(1, "path", 50, "type");
-    auto video = make_unique<Video>(1 , 5 , move (multimedia) ,"140:150" );
-    ASSERT_THROW(video->play(),NotImplementedException);
-}
-TEST(Video ,Throw_error_on_pause_NotImplementedException){
-    auto multimedia = make_unique<Multimedia>(1, "path", 50, "type");
-    auto video = make_unique<Video>(1 , 5 , move (multimedia) ,"140:150" );
-    ASSERT_THROW(video->pause(),NotImplementedException);
-}
-TEST(Video ,Throw_error_on_stop_NotImplementedException){
-    auto multimedia = make_unique<Multimedia>(1, "path", 50, "type");
-    auto video = make_unique<Video>(1 , 5 , move (multimedia) ,"140:150" );
-    ASSERT_THROW(video->stop(),NotImplementedException);
-}

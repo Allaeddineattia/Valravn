@@ -27,6 +27,12 @@ public:
             throw invalid_argument("Error:Resolution shape int:int");
         }
     }
+
+    template <class T>
+    static bool unique_ptr_vec_comparator (const unique_ptr<T> &  left, const unique_ptr<T> &  right){
+        if(!left || !right) return false;
+        return *left == *right;
+    };
 };
 
 

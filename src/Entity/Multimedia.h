@@ -7,21 +7,22 @@
 #include <string>
 #include <string_view>
 #include <memory>
-
+#include <DataBase/Contracts/IRepository.h>
+#include "DataBase/Contracts/Savable.h"
 
 using namespace std;
 
-class Multimedia {
+class Multimedia : Savable<Multimedia>{
 private:
-    int id;
+    unsigned int id;
     string path;
     size_t size;
     string mimeType;
 
 public:
-    Multimedia(int id, string_view path, size_t size, string_view mimeType);
+    Multimedia(unsigned int id, string_view path, size_t size, string_view mimeType);
 
-    [[nodiscard]] int getId() const;
+    [[nodiscard]] unsigned int getId() const override;
 
     [[nodiscard]] string_view getPath() const;
 
@@ -29,6 +30,17 @@ public:
 
     [[nodiscard]] string_view getMimeType() const;
 
+    const Multimedia & getSavable() override {
+        return *this;
+    }
+
+    static unique_ptr<Multimedia> fetch_by_id(int);
+
+    static vector<unique_ptr<Multimedia>> get_all();
+
+    bool operator==(const Multimedia &rhs) const;
+
+    virtual ~Multimedia();
 };
 
 

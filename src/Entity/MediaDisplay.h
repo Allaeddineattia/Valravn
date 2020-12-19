@@ -6,22 +6,21 @@
 #define MYPROJECT_MEDIADISPLAY_H
 
 #include <memory>
-#include <Entity/Playabale.h>
+#include <Entity/IPlayable.h>
 #include <Entity/Parameter.h>
 using namespace std;
 
 class MediaDisplay {
 private:
-    unique_ptr<Playabale> playabale;
+    unique_ptr<IPlayable> playable;
     unique_ptr<Parameter> parameter;
 
 public:
-    MediaDisplay( unique_ptr<Playabale> playabale,  unique_ptr<Parameter> parameter);
+    MediaDisplay(unique_ptr<IPlayable> playable, unique_ptr<Parameter> parameter);
 
+    IPlayable & getPlayable();
 
-    Playabale &getPlayabale() ;
-
-    Parameter &getParameter() ;
+    Parameter & getParameter();
 };
 
 

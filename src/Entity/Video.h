@@ -9,15 +9,17 @@
 #include "Entity/Multimedia.h"
 #include <string>
 #include <memory>
-#include "Playabale.h"
-
-class Video : public Playabale{
+#include <Entity/MediaPlayingStates/Video/VideoStateHandler.h>
+#include "IPlayable.h"
+class VideoStateHandler;
+class Video : public IPlayable{
 private:
 
     int id;
     int duration ;
     unique_ptr<Multimedia> multimedia ;
     string resolution ;
+    unique_ptr<VideoStateHandler> stateHandler;
 public:
     virtual ~Video() = default;
 

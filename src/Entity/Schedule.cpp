@@ -10,3 +10,7 @@ time_t Schedule::getTime() const {
     return time;
 }
 
+const Playlist &Schedule::getPlaylist() const {
+    return *playlist;
+}
+

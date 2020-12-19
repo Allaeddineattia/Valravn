@@ -3,7 +3,7 @@
 //
 #include "gtest/gtest.h"
 #include <string>
-#include "Entity/Tools.h"
+#include "Shared/Tools.h"
 using namespace std ;
 TEST(Tools, Valid_remove_blanks) {
     string str = "120 : 120";

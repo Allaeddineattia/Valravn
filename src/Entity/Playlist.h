@@ -4,14 +4,14 @@
 
 #ifndef MYPROJECT_PLAYLIST_H
 #define MYPROJECT_PLAYLIST_H
-#include "Playabale.h"
+#include "IPlayable.h"
 #include <memory>
 #include <vector>
 #include <Entity/MediaDisplay.h>
 using namespace std;
 
 
-class Playlist : public Playabale{
+class Playlist : public IPlayable{
 private:
     int id;
     vector<unique_ptr<MediaDisplay>> display;

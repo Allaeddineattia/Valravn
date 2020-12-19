@@ -5,14 +5,15 @@
 #include <iostream>
 #include <cmath>
 #include "Video.h"
-#include "Tools.h"
+#include "Shared/Tools.h"
 #include "Shared/CustomError.h"
 
 using namespace std;
 Video::Video(int id, int duration, unique_ptr<Multimedia> multimedia, string_view resolution_input) :
 id(id),
 duration(duration),
-multimedia(move(multimedia))
+multimedia(move(multimedia)),
+stateHandler(make_unique<VideoStateHandler>(*this))
 {
     string vResolution = resolution_input.data();
     Tools::remove_blanks(vResolution);
@@ -37,14 +38,14 @@ string_view Video::getResolution() const {
 }
 
 void Video::play() {
-    throw NotImplementedException();
+    stateHandler->play();
 }
 
 void Video::stop() {
-    throw NotImplementedException();
+    stateHandler->stop();
 }
 
 void Video::pause() {
-    throw NotImplementedException();
+    stateHandler->pause();
 }
 

@@ -6,9 +6,9 @@
 #define MYPROJECT_AUDIO_H
 #include <memory>
 #include "Multimedia.h"
-#include "Playabale.h"
+#include "IPlayable.h"
 
-class Audio : public Playabale{
+class Audio : public IPlayable{
 
 private:
     int id;
