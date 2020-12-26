@@ -8,13 +8,14 @@
 
 class Parameter {
 private:
+    int id;
     bool fullscreen;
     int volume;
     int timeout;
     float speed;
 
 public:
-    Parameter(bool fullscreen, int volume, int timeout, float speed);
+    Parameter(int id,bool fullscreen, int volume, int timeout, float speed);
 
     [[nodiscard]] bool isFullscreen() const;
 

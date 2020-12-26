@@ -28,17 +28,17 @@ DataBase::DataBase(string_view dbPath) {
     }
 }
 
-bool DataBase::init_db() {
-    is_db_initialised = activate_foreign_keys();
+bool DataBase::InitDb() {
+    IsDbInitialised = activate_foreign_keys();
     for (auto &i: tables_creation_sql) {
-        if (!is_db_initialised) break;
-        is_db_initialised = is_db_initialised && create_table_from_sql(i);
+        if (!IsDbInitialised) break;
+        IsDbInitialised = IsDbInitialised && CreateTableFromSql(i);
     }
-    return is_db_initialised;
+    return IsDbInitialised;
 }
 
-string_view DataBase::get_db_path () {
-    return db_path;
+string_view DataBase::GetDbPath () {
+    return DbPath;
 }
 
 
@@ -48,9 +48,9 @@ DataBase::~DataBase() {
 }
 
 
-bool DataBase::execute_sql(
+bool DataBase::ExecuteSql(
         string_view sql,
-        string_view success_msg = "[DataBase] OPERATION_SUCCEEDED",
+        string_view SuccessMsg = "[DataBase] OPERATION_SUCCEEDED",
         const function<bool(string_view error_msg)> &do_if_error =
         [](string_view error_msg) -> bool {
             cout << "[DataBase] SQL error: " << error_msg << endl;
@@ -80,20 +80,20 @@ bool DataBase::execute_sql(
         sqlite3_free(zErrMsg);
         return result;
     } else {
-        cout << success_msg << endl;
+        cout << SuccessMsg << endl;
         return true;
     }
 }
 
-string_map DataBase::get_by_id(string_view table_name, string_view id) {
+string_map DataBase::GetById(string_view TableName, string_view id) {
     string sql = "select * from ";
-    sql += table_name;
+    sql += TableName;
     sql += " where ID=";
     sql += id;
     string_map result;
-    execute_sql(sql, "[DataBase] Retrieve By id succeeded",
-                [&](string_view error_msg) -> bool {
-                    throw Exceptions::DataBaseRetrievingError(table_name, id);
+    ExecuteSql(sql, "[DataBase] Retrieve By id succeeded",
+                [&](string_view ErrorMsg) -> bool {
+                    throw Exceptions::DataBaseRetrievingError(TableName, id);
                 },
                 [&result](const string_map& map) mutable -> bool {
                     result = map;
@@ -105,21 +105,21 @@ string_map DataBase::get_by_id(string_view table_name, string_view id) {
 }
 
 
-bool DataBase::create_table_from_sql(string_view sql) {
+bool DataBase::CreateTableFromSql(string_view sql) {
 
-    return execute_sql(sql, "[DataBase] Table created successfully\n",
-                       [](string_view error_msg) -> bool {
-                        cerr << "[DataBase] QL error: " << error_msg << endl;
-                        return error_msg.find("table") != std::string::npos
+    return ExecuteSql(sql, "[DataBase] Table created successfully\n",
+                       [](string_view ErrorMsg) -> bool {
+                        cerr << "[DataBase] QL error: " << ErrorMsg << endl;
+                        return ErrorMsg.find("table") != std::string::npos
                                &&
-                               error_msg.find("already exists") != std::string::npos;
+                               ErrorMsg.find("already exists") != std::string::npos;
                         });
 
 }
 
-string DataBase::get_insert_sql(string_view table_name, const string_map &map) const {
+string DataBase::GetInsertSql(string_view TableName, const string_map &map) const {
     string sql1 = "insert into ";
-    sql1 += table_name;
+    sql1 += TableName;
     sql1 += "(";
     string sql2 = ") values (";
     for (auto &itr : map) {
@@ -132,17 +132,17 @@ string DataBase::get_insert_sql(string_view table_name, const string_map &map) c
     return sql;
 }
 
-bool DataBase::insert_into_table(string_view table_name, const string_map &map) {
+bool DataBase::InsertIntoTable(string_view TableName, const string_map &map) {
 
-    string sql = get_insert_sql(table_name, map);
-    return execute_sql(sql, "[DataBase] Row inserted successfully");
+    string sql = GetInsertSql(TableName, map);
+    return ExecuteSql(sql, "[DataBase] Row inserted successfully");
 
 }
 
 
-string DataBase::get_update_sql(string_view table_name, const string_pair &feature, const string_map &map) {
+string DataBase::GetUpdateSql(string_view TableName, const string_pair &feature, const string_map &map) {
     string sql = "UPDATE ";
-    sql += table_name;
+    sql += TableName;
     sql += " SET";
     for (auto &itr : map) {
         sql += " " + itr.first + " = " + itr.second + ",";
@@ -152,43 +152,43 @@ string DataBase::get_update_sql(string_view table_name, const string_pair &featu
     return sql;
 }
 
-bool DataBase::update_into_table(string_view table_name, const string_pair &select_feature, const string_map &map) {
-    string sql = get_update_sql(table_name, select_feature, map);
-    return execute_sql(sql, "[DataBase] Row updated successfully");
+bool DataBase::UpdateIntoTable(string_view TableName, const string_pair &SelectFeature, const string_map &map) {
+    string sql = GetUpdateSql(TableName, SelectFeature, map);
+    return ExecuteSql(sql, "[DataBase] Row updated successfully");
 }
 
-bool DataBase::activate_foreign_keys() {
+bool DataBase::ActivateForeignKeys() {
 
     string sql = "PRAGMA foreign_keys=on;";
-    return execute_sql(sql, "[DataBase] Foreign keys activated");
+    return ExecuteSql(sql, "[DataBase] Foreign keys activated");
 
 }
 
-bool DataBase::begin_transaction() {
+bool DataBase::BeginTransaction() {
     string sql = "BEGIN TRANSACTION;";
-    return execute_sql(sql, "[DataBase] Transaction started");
+    return ExecuteSql(sql, "[DataBase] Transaction started");
 
 }
 
-bool DataBase::end_transaction() {
+bool DataBase::EndTransaction() {
     string sql = "END TRANSACTION;";
-    return execute_sql(sql, "[DataBase] Transaction ended");
+    return ExecuteSql(sql, "[DataBase] Transaction ended");
 
 }
 
-void DataBase::add_table_creation_sql(string_view sql) {
+void DataBase::AddTableCreationSql(string_view sql) {
     string str;
     str = sql;
     tables_creation_sql.push_back(str);
 }
 
 
-time_t DataBase::string_to_time_t(string_view str) {
-    string sql = "SELECT strftime('%s'," + to_sql_string(str) + ");";
+time_t DataBase::StringToTimeT(string_view str) {
+    string sql = "SELECT strftime('%s'," + ToSqlString(str) + ");";
     time_t result;
-    execute_sql(sql, "[DataBase] Retrieve time_t succeeded",
-                [](string_view error_msg) -> bool {
-                    cerr<<"SQL error: %s\n"<< error_msg<<endl;
+    ExecuteSql(sql, "[DataBase] Retrieve time_t succeeded",
+                [](string_view ErrorMsg) -> bool {
+                    cerr<<"SQL error: %s\n"<< ErrorMsg<<endl;
                     throw Exceptions::DataBaseRetrievingError("Time_T", "str");
                 },
                 [&result](const string_map& map) mutable -> bool {
@@ -198,15 +198,15 @@ time_t DataBase::string_to_time_t(string_view str) {
     return result;
 }
 
-vector<string_map> DataBase::get_all_by_feature(string_view table_name, const string_pair &feature) {
+vector<string_map> DataBase::GetAllByFeature(string_view TableName, const string_pair &feature) {
     string sql = "select * from ";
-    sql += table_name;
+    sql += TableName;
     sql += " where " + feature.first + "=" + feature.second;
     vector<string_map> result;
-    execute_sql(sql, "[DataBase] Retrieve many succeeded",
-                [&](string_view error_msg) -> bool {
-                    cerr<<"[DataBase] SQL error: %s\n"<< error_msg<<endl;
-                    throw Exceptions::DataBaseRetrievingError(table_name, feature.first, feature.second);
+    ExecuteSql(sql, "[DataBase] Retrieve many succeeded",
+                [&](string_view ErrorMsg) -> bool {
+                    cerr<<"[DataBase] SQL error: %s\n"<< ErrorMsg<<endl;
+                    throw Exceptions::DataBaseRetrievingError(TableName, feature.first, feature.second);
                 },
                 [&result](const string_map& map) mutable -> bool {
                     result.push_back(map);
@@ -217,14 +217,14 @@ vector<string_map> DataBase::get_all_by_feature(string_view table_name, const st
 }
 
 
-vector<string_map> DataBase::get_all(string_view table_name) {
+vector<string_map> DataBase::GetAll(string_view TableName) {
     string sql = "select * from ";
-    sql += table_name;
+    sql += TableName;
     vector<string_map> result;
-    execute_sql(sql, "[DataBase] Retrieve many succeeded",
-                [&](string_view error_msg) -> bool {
-                    cerr<<"SQL error: %s\n"<< error_msg<<endl;
-                    throw Exceptions::DataBaseRetrievingError(table_name);
+    ExecuteSql(sql, "[DataBase] Retrieve many succeeded",
+                [&](string_view ErrorMsg) -> bool {
+                    cerr<<"SQL error: %s\n"<< ErrorMsg<<endl;
+                    throw Exceptions::DataBaseRetrievingError(TableName);
                 },
                 [&result](const string_map& map) mutable -> bool {
                     result.push_back(map);
@@ -234,23 +234,23 @@ vector<string_map> DataBase::get_all(string_view table_name) {
     return result;
 }
 
-bool DataBase::delete_by_feature(string_view table_name, const string_pair &feature) {
+bool DataBase::DeleteByFeature(string_view TableName, const string_pair &feature) {
     string sql = "delete from ";
-    sql += table_name;
+    sql += TableName;
     sql += " where " + feature.first + "=" + feature.second;
-    return execute_sql(sql, "[DataBase] Delete succeeded");
+    return ExecuteSql(sql, "[DataBase] Delete succeeded");
 
 }
 
 
-string DataBase::to_sql_string(string_view s) {
+string DataBase::ToSqlString(string_view s) {
     string result = "\"";
     result += s;
     result += "\"";
     return result;
 }
 
-string DataBase::to_sql_date_time(time_t t) {
+string DataBase::ToSqlDateTime(time_t t) {
     string result = "datetime(";
     result += to_string(t);
     result += ", 'unixepoch')";
