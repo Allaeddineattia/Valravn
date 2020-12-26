@@ -112,15 +112,15 @@ MultimediaRepo::MultimediaRepo(Dependency dependency_injector) {
     mImpl = make_unique<Impl>(dependency_injector);
 }
 
-const string &MultimediaRepo::get_table_name() const {
+const string &MultimediaRepo::getTableName() const {
     return mImpl->get_table_name();
 }
 
-optional<unique_ptr<Multimedia>> MultimediaRepo::get_by_id(unsigned int id) {
+optional<unique_ptr<Multimedia>> MultimediaRepo::getById(unsigned int id) {
     return mImpl->get_by_id(id);
 }
 
-vector<unique_ptr<Multimedia>> MultimediaRepo::get_all() {
+vector<unique_ptr<Multimedia>> MultimediaRepo::getAll() {
     return mImpl->get_all();
 }
 
@@ -128,7 +128,7 @@ bool MultimediaRepo::save(const Multimedia &element) {
     return mImpl->save(element);
 }
 
-bool MultimediaRepo::delete_by_id(unsigned int id) {
+bool MultimediaRepo::deleteById(unsigned int id) {
     return mImpl->delete_by_id(id);
 }
 

@@ -21,15 +21,15 @@ public:
     template<class Dependency>
     explicit MultimediaRepo(Dependency dependency_injector);
 
-    [[nodiscard]] const string & get_table_name() const;
+    [[nodiscard]] const string & getTableName() const;
 
-    optional<unique_ptr<Multimedia>> get_by_id(unsigned int id) override;
+    optional<unique_ptr<Multimedia>> getById(unsigned int id) override;
 
-    [[nodiscard]] vector<unique_ptr<Multimedia>> get_all() override;
+    [[nodiscard]] vector<unique_ptr<Multimedia>> getAll() override;
 
     bool save(const Multimedia& element) override;
 
-    bool delete_by_id(unsigned int id) override;
+    bool deleteById(unsigned int id) override;
 
     virtual ~MultimediaRepo();
 };

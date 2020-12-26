@@ -17,7 +17,7 @@ private:
                 "ID INT PRIMARY KEY NOT NULL,"\
                 "MULTIMEDIA_ID INT NOT NULL,"\
                 "RESOLUTION TEXT NOT NULL,"\
-                "FOREIGN KEY(MULTIMEDIA_ID) REFERENCES " + multimedia_repo->get_table_name() + "(ID)"\
+                "FOREIGN KEY(MULTIMEDIA_ID) REFERENCES " + multimedia_repo->getTableName() + "(ID)"\
                 ");";
     }
 
@@ -43,7 +43,7 @@ private:
     get_entity_from_map(const string_map &map) {
         int  id = stoi(map.find("ID")->second);
         string resolution = map.find("RESOLUTION")->second;
-        auto multimedia = multimedia_repo->get_by_id(stoi(map.find("MULTIMEDIA_ID")->second)).value();
+        auto multimedia = multimedia_repo->getById(stoi(map.find("MULTIMEDIA_ID")->second)).value();
         return make_unique<Image>(id, resolution, move(multimedia));
     }
 
@@ -91,7 +91,7 @@ public:
         vector<string_map> vector_res = data_base->get_all(table_name);
         vector<unique_ptr<Image>> images;
         for(auto &image_map: vector_res) {
-            auto multimedia = multimedia_repo->get_by_id(stoi(image_map.find("MULTIMEDIA_ID")->second));
+            auto multimedia = multimedia_repo->getById(stoi(image_map.find("MULTIMEDIA_ID")->second));
             if(multimedia) images.push_back(get_entity_from_map(image_map));
         }
         return  images;
@@ -113,22 +113,22 @@ public:
         bool result = data_base->begin_transaction();
         result = result && data_base->delete_by_feature(table_name, feature_selection);
         if(result)
-            result = multimedia_repo->delete_by_id(image.value()->getMultimedia().getId());
+            result = multimedia_repo->deleteById(image.value()->getMultimedia().getId());
         return result && data_base->end_transaction();
     }
 
 
 };
 
-const string &ImageRepo::get_table_name() const {
+const string &ImageRepo::getTableName()  const {
     return mImpl->get_table_name();
 }
 
-optional<unique_ptr<Image>> ImageRepo::get_by_id(unsigned int id) {
+optional<unique_ptr<Image>> ImageRepo::getById(unsigned int id) {
     return mImpl->get_by_id(id);
 }
 
-vector<unique_ptr<Image>> ImageRepo::get_all() {
+vector<unique_ptr<Image>> ImageRepo::getAll() {
     return mImpl->get_all();
 }
 
@@ -136,7 +136,7 @@ bool ImageRepo::save(const Image &element) {
     return mImpl->save(element);
 }
 
-bool ImageRepo::delete_by_id(unsigned int id) {
+bool ImageRepo::deleteById(unsigned int id) {
     return mImpl->delete_by_id(id);
 }
 
