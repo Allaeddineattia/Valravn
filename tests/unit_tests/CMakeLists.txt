@@ -19,11 +19,11 @@ add_executable(Unit_Tests_run
         Entity/Playlist.cpp
         Entity/Parameter.cpp
         Entity/Tools.cpp
-        Repo/SaveImage.cpp
+        Repo/image/SaveImage.cpp
         Repo/stubs/Images.h
         Repo/stubs/Images.cpp
         Repo/tools/Database.h
-        Repo/tools/Database.cpp Repo/UpdateImage.cpp Repo/DeleteImage.cpp MediaPlaying/Video/VideoPlaying.cpp)
+        Repo/tools/Database.cpp Repo/image/UpdateImage.cpp Repo/image/DeleteImage.cpp MediaPlaying/Video/VideoPlaying.cpp Repo/tools.cpp)
 
 target_link_libraries(Unit_Tests_run gtest gtest_main)
 target_link_libraries(Unit_Tests_run ${CMAKE_PROJECT_NAME}_lib)

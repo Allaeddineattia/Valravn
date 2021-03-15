@@ -37,6 +37,8 @@ public:
 
     bool delete_by_id(unsigned int id) override;
 
+    unsigned int get_available_id() override;
+
     virtual ~ImageRepo();
 };
 

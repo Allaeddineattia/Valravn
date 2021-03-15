@@ -4,8 +4,8 @@
 
 #include <Entity/DependencyInjector.h>
 #include "gtest/gtest.h"
-#include "tools/Database.h"
-#include "stubs/Images.h"
+#include "../tools/Database.h"
+#include "../stubs/Images.h"
 using namespace std;
 
 TEST(image_creation, create_valid_image){
@@ -23,4 +23,6 @@ TEST(image_creation, create_valid_image){
     ASSERT_EQ(res, true);
 
 }
+
+
 

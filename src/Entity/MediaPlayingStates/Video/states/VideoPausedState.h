@@ -8,7 +8,7 @@
 
 #include <Entity/IPlayable.h>
 #include <Entity/Video.h>
-#include "VideoStateHandler.h"
+#include "Entity/MediaPlayingStates/Video/VideoStateHandler.h"
 class VideoStateHandler;
 
 class VideoPausedState: public IPlayable {

@@ -60,7 +60,6 @@ private:
     }
 
     [[nodiscard]] bool update_element(const Multimedia& old_element, const Multimedia& new_element) const {
-
         string_map map = get_update_string_map(old_element, new_element);
         if(!map.empty()){
             string_pair id ("ID",to_string(old_element.getId()));
@@ -68,6 +67,8 @@ private:
         }
         return false;
     }
+
+
 
 public:
     template<class Dependency>
@@ -105,6 +106,10 @@ public:
         return data_base->delete_by_feature(table_name, feature_selection);
     }
 
+    unsigned int get_available_id() {
+        return 0;
+    }
+
 };
 
 template<class Dependency>
@@ -132,8 +137,10 @@ bool MultimediaRepo::delete_by_id(unsigned int id) {
     return mImpl->delete_by_id(id);
 }
 
-MultimediaRepo::~MultimediaRepo() {
+MultimediaRepo::~MultimediaRepo() = default;
 
+unsigned int MultimediaRepo::get_available_id() {
+    return mImpl->get_available_id();
 }
 
 namespace DO_NOT_EXECUTE{

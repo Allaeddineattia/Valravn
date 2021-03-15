@@ -7,9 +7,9 @@
 
 
 #include <Entity/Video.h>
-#include "VideoPlayingState.h"
-#include "VideoPausedState.h"
-#include "VideoStoppedState.h"
+#include "Entity/MediaPlayingStates/Video/states/VideoPlayingState.h"
+#include "Entity/MediaPlayingStates/Video/states/VideoPausedState.h"
+#include "Entity/MediaPlayingStates/Video/states/VideoStoppedState.h"
 
 class VideoPlayingState;
 class VideoPausedState;
@@ -22,8 +22,11 @@ class VideoStateHandler: public IPlayable {
     unique_ptr<VideoPausedState> pausedState;
     unique_ptr<VideoStoppedState> stoppedState;
     IPlayable * state;
+
 public:
+
     Video & video;
+
     VideoStateHandler(Video &video);
 
     VideoPlayingState * getPlayingState() const;

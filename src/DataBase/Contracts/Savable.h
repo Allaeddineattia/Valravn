@@ -50,5 +50,4 @@ public:
 };
 
 
-
 #endif //MYPROJECT_SAVABLE_H

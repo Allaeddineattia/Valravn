@@ -1,6 +1,8 @@
 project(${CMAKE_PROJECT_NAME}_lib)
 
-set(HEADER_FILES)
+set(HEADER_FILES RestServer/dto/StatusDto.h RestServer/AppComponent.h RestServer/ErrorHandler.h RestServer/SwaggerComponent.h RestServer/Controller/ImageController.h RestServer/dto/output/ImageDTO.h RestServer/dto/output/MultimediaDto.h
+
+        RestServer/dto/input/ImageInputDto.h RestServer/dto/input/MultimediaInputDto.h)
 set(SOURCE_FILES
         Entity/Multimedia.cpp
         Entity/Multimedia.h
@@ -28,7 +30,22 @@ set(SOURCE_FILES
         DataBase/Contracts/Repos/MultimediaRepo.h
         Entity/DependencyInjector.h
         DataBase/Imp/Repos/ImageRepo.cpp
-        DataBase/Contracts/Repos/ImageRepo.h Shared/Timer.h MediaPlayer/VLC_Wrapper.cpp MediaPlayer/VLC_Wrapper.h Entity/MediaPlayingStates/Video/VideoStoppedState.cpp Entity/MediaPlayingStates/Video/VideoStoppedState.h Entity/MediaPlayingStates/Video/VideoPlayingState.cpp Entity/MediaPlayingStates/Video/VideoPlayingState.h Entity/MediaPlayingStates/Video/VideoPausedState.cpp Entity/MediaPlayingStates/Video/VideoPausedState.h Entity/MediaPlayingStates/Video/VideoStateHandler.cpp Entity/MediaPlayingStates/Video/VideoStateHandler.h)
+        DataBase/Contracts/Repos/ImageRepo.h
+        Shared/Timer.h
+        MediaPlayer/VLC_Wrapper.cpp
+        MediaPlayer/VLC_Wrapper.h
+        Entity/MediaPlayingStates/Video/states/VideoStoppedState.cpp
+        Entity/MediaPlayingStates/Video/states/VideoStoppedState.h
+        Entity/MediaPlayingStates/Video/states/VideoPlayingState.cpp
+        Entity/MediaPlayingStates/Video/states/VideoPlayingState.h
+        Entity/MediaPlayingStates/Video/states/VideoPausedState.cpp
+        Entity/MediaPlayingStates/Video/states/VideoPausedState.h
+        Entity/MediaPlayingStates/Video/VideoStateHandler.cpp
+        Entity/MediaPlayingStates/Video/VideoStateHandler.h
+        Entity/MediaPlayingStates/Video/states/VideoTerminatedState.cpp
+        Entity/MediaPlayingStates/Video/states/VideoTerminatedState.h
+
+        DataBase/Contracts/Repos/Tools.h)
 
 # The library contains header and source files.
 add_library(${CMAKE_PROJECT_NAME}_lib STATIC

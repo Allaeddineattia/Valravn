@@ -22,6 +22,8 @@ class Image;
         string resolution;
         unique_ptr<Multimedia> multimedia;
 
+        int state = 0;
+
     public:
         ~Image() override = default;
 

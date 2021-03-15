@@ -4,8 +4,8 @@
 
 #include <Entity/DependencyInjector.h>
 #include "gtest/gtest.h"
-#include "tools/Database.h"
-#include "stubs/Images.h"
+#include "../tools/Database.h"
+#include "../stubs/Images.h"
 using namespace std;
 using namespace Unit_testing;
 

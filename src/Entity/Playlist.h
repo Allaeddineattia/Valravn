@@ -24,7 +24,7 @@ public:
     [[nodiscard]] int getId() const;
     [[nodiscard]] const vector<unique_ptr<MediaDisplay>> & getPlaylist();
     void addMediaDisplay(unique_ptr<MediaDisplay> _mediadisplay);
-    void removePlayabal(int _position);
+    void removePlayable(int _position);
     void next ();
     void previous ();
 

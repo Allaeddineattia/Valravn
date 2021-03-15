@@ -18,6 +18,7 @@ public:
     virtual bool delete_by_id(unsigned int id) = 0;
     virtual optional<unique_ptr<Entity>> get_by_id(unsigned  int id) = 0;
     virtual vector<unique_ptr<Entity>> get_all() = 0;
+    virtual unsigned int get_available_id() = 0;
 };
 
 

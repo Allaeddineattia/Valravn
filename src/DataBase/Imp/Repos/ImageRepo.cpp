@@ -4,7 +4,7 @@
 
 #include <Entity/DependencyInjector.h>
 #include "DataBase/Contracts/Repos/ImageRepo.h"
-
+#include "DataBase/Contracts/Repos/Tools.h"
 class ImageRepo::Impl{
 
 private:
@@ -117,6 +117,12 @@ public:
         return result && data_base->end_transaction();
     }
 
+    unsigned int get_available_id() {
+        unsigned int id = Tools::generate_random_value();
+        while(get_by_id(id).has_value())
+            id = Tools::generate_random_value();
+        return id;
+    }
 
 };
 
@@ -145,12 +151,14 @@ ImageRepo::ImageRepo(shared_ptr<Dependency> dependency_injector) {
     mImpl = make_unique<Impl>(dependency_injector);
 }
 
-ImageRepo::~ImageRepo() {
+ImageRepo::~ImageRepo() = default;
 
+unsigned int ImageRepo::get_available_id() {
+    return mImpl->get_available_id();
 }
 
 namespace DO_NOT_EXECUTE{
-    void conf_template_ad_repo(){
+    void conf_template_image_repo(){
         auto di = std::make_shared<DependencyInjector>();
         ImageRepo a(di);
     }

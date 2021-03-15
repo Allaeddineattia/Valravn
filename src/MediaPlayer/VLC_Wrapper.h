@@ -16,7 +16,7 @@ class VLC_Wrapper {
     libvlc_media_player_t  * mediaPlayer;
     libvlc_event_manager_t * mediaPlayerEventManager;
 
-
+    
 
 
 

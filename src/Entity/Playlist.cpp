@@ -20,7 +20,7 @@ void Playlist::addMediaDisplay(unique_ptr<MediaDisplay> _mediadisplay) {
 }
 
 
-void Playlist::removePlayabal(int _position) {
+void Playlist::removePlayable(int _position) {
     if ((_position < display.size())&&(_position >= 0))
         display.erase(display.begin()+_position);
     else

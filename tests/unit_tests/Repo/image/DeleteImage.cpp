@@ -6,8 +6,8 @@
 #include <Shared/Tools.h>
 #include <Entity/Image.h>
 #include "gtest/gtest.h"
-#include "tools/Database.h"
-#include "stubs/Images.h"
+#include "../tools/Database.h"
+#include "../stubs/Images.h"
 using namespace std;
 
 TEST(image_deleting, delete_saved_image){
