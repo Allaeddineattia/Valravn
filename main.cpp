@@ -4,7 +4,28 @@
 #include "src/RestServer/Controller/ImageController.h"
 #include "oatpp/network/Server.hpp"
 
+
 #include <iostream>
+#include <Entity/DependencyInjector.h>
+
+void init_imagerepo(){
+    string fileName = "tttestdata.db";
+    shared_ptr<DependencyInjector> di = make_shared<DependencyInjector> ();
+    di->install_data_base(fileName);
+    di->install_multimedia_repo(di);
+    di->install_image_repo(di);
+
+    auto db = di->get_data_base(di);
+    db->init_db();
+
+    auto multimedia_repo = di->get_multimedia_repo(di);
+    Multimedia::installRepo(multimedia_repo);
+
+    auto image_repo = di->get_image_repo(di);
+    Image::installRepo(image_repo);
+
+}
+
 void run() {
 
     AppComponent components; // Create scope Environment components
@@ -46,6 +67,8 @@ void run() {
  *  main
  */
 int main(int argc, const char * argv[]) {
+
+    init_imagerepo();
 
     oatpp::base::Environment::init();
 

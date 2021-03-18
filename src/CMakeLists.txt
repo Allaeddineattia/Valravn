@@ -2,7 +2,7 @@ project(${CMAKE_PROJECT_NAME}_lib)
 
 set(HEADER_FILES RestServer/dto/StatusDto.h RestServer/AppComponent.h RestServer/ErrorHandler.h RestServer/SwaggerComponent.h RestServer/Controller/ImageController.h RestServer/dto/output/ImageDTO.h RestServer/dto/output/MultimediaDto.h
 
-        RestServer/dto/input/ImageInputDto.h RestServer/dto/input/MultimediaInputDto.h)
+        RestServer/dto/input/ImageCreationDto.h RestServer/dto/input/MultimediaInputDto.h)
 set(SOURCE_FILES
         Entity/Multimedia.cpp
         Entity/Multimedia.h

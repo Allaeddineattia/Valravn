@@ -12,7 +12,7 @@
 
 using namespace std;
 
-class Multimedia : Savable<Multimedia>{
+class Multimedia : public Savable<Multimedia>{
 private:
     unsigned int id;
     string path;

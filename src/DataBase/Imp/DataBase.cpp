@@ -53,7 +53,7 @@ bool DataBase::execute_sql(
         string_view success_msg = "[DataBase] OPERATION_SUCCEEDED",
         const function<bool(string_view error_msg)> &do_if_error =
         [](string_view error_msg) -> bool {
-            cout << "[DataBase] SQL error: " << error_msg << endl;
+            cerr << "[DataBase] SQL error: " << error_msg << endl;
             return false;
         },
         const function<bool (const string_map&)>& callback = nullptr ) {
@@ -109,11 +109,16 @@ bool DataBase::create_table_from_sql(string_view sql) {
 
     return execute_sql(sql, "[DataBase] Table created successfully\n",
                        [](string_view error_msg) -> bool {
-                        cerr << "[DataBase] QL error: " << error_msg << endl;
-                        return error_msg.find("table") != std::string::npos
+                           if  (error_msg.find("table") != std::string::npos
                                &&
-                               error_msg.find("already exists") != std::string::npos;
-                        });
+                               error_msg.find("already exists") != std::string::npos){
+                               cout << "[DataBase] QL Warning: " << error_msg << endl;
+                               return true;
+                           };
+                           cerr << "[DataBase] QL error: " << error_msg << endl;
+                           return false;
+                           }
+                       );
 
 }
 

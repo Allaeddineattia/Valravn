@@ -7,12 +7,13 @@
 
 
 #include "oatpp/web/server/api/ApiController.hpp"
+#include "oatpp/web/server/handler/ErrorHandler.hpp"
 #include "oatpp/parser/json/mapping/ObjectMapper.hpp"
 #include "oatpp/core/macro/codegen.hpp"
 #include "oatpp/web/protocol/http/Http.hpp"
 #include "oatpp/core/macro/component.hpp"
 #include "RestServer/dto/output/ImageDTO.h"
-#include "RestServer/dto/input/ImageInputDto.h"
+#include "RestServer/dto/input/ImageCreationDto.h"
 #include "../dto/StatusDto.h"
 #include <iostream>
 
@@ -38,21 +39,26 @@ public:
     ENDPOINT_INFO(createImage) {
         info->summary = "Create new Image";
 
-        info->addConsumes<Object<ImageInputDto>>("application/json");
+        info->addConsumes < Object < ImageCreationDto >> ("application/json");
 
         info->addResponse<Object<ImageDto>>(Status::CODE_200, "application/json");
         info->addResponse<Object<StatusDto>>(Status::CODE_404, "application/json");
         info->addResponse<Object<StatusDto>>(Status::CODE_500, "application/json");
     }
     ENDPOINT("POST", "images", createImage,
-             BODY_DTO(Object<ImageInputDto>, imageDto))
+             BODY_DTO(Object<ImageCreationDto>, imageDto))
     {
         std::cout<<imageDto->resolution->c_str()<<std::endl;
         std::cout<<imageDto->mulitmedia->path->c_str()<<std::endl;
         std::cout<<imageDto->mulitmedia->size<<std::endl;
         std::cout<<imageDto->mulitmedia->mimeType->c_str()<<std::endl;
         auto image = imageDto->createEntityFromDto();
-       // image->save();
+        try{
+            image->save();
+        }catch (const std::exception& ex){
+            return handleError(Status::CODE_404, ex.what());
+        }
+
         Object<ImageDto> dto(ImageDto::createDtoFromEntity(*image));
 
         return createDtoResponse(Status::CODE_200, dto);
