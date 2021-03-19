@@ -16,7 +16,7 @@
 class ImageCreationDto : public oatpp::DTO {
 
     DTO_INIT(ImageCreationDto, DTO)
-    DTO_FIELD(String, resolution);
+    DTO_FIELD(String, resolution) = "";
     DTO_FIELD(Object<MultimediaInputDto> , mulitmedia);
 
 

@@ -138,9 +138,16 @@ string DataBase::get_insert_sql(string_view table_name, const string_map &map) c
 }
 
 bool DataBase::insert_into_table(string_view table_name, const string_map &map) {
+    try{
+        string sql = get_insert_sql(table_name, map);
+        return execute_sql(sql, "[DataBase] Row inserted successfully", [](string_view error_msg) -> bool {
+            cerr << "[DataBase] SQL error: " << error_msg << endl;
+            throw error_msg;
+        });
+    }catch (const char * str){
+        throw str;
+    }
 
-    string sql = get_insert_sql(table_name, map);
-    return execute_sql(sql, "[DataBase] Row inserted successfully");
 
 }
 

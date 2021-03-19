@@ -55,8 +55,12 @@ public:
         auto image = imageDto->createEntityFromDto();
         try{
             image->save();
+
         }catch (const std::exception& ex){
-            return handleError(Status::CODE_404, ex.what());
+            return handleError(Status::CODE_404,  ex.what());
+        }catch (const char * str){
+            cerr << str <<endl;
+            return handleError(Status::CODE_404, str);
         }
 
         Object<ImageDto> dto(ImageDto::createDtoFromEntity(*image));
@@ -98,6 +102,16 @@ public:
              PATH(Int32, imageId))
     {
         //return createDtoResponse(Status::CODE_200, m_imageService.getImageById(imageId));
+        auto opt_image= Image::fetchById(imageId);
+        if(opt_image.has_value() ){
+            auto image = move(opt_image.value());
+            if(image){
+                auto dto = ImageDto::createDtoFromEntity(*image);
+                return createDtoResponse(Status::CODE_200, dto);
+            }
+        }
+        string error_msg = "image with id " + to_string(imageId) + " not found";
+        return handleError(Status::CODE_404, error_msg.data());
     }
 
 

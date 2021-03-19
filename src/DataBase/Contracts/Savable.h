@@ -25,7 +25,12 @@ public:
 
     bool save() {
         assert(repo);
-        return repo->save(getSavable());
+        try{
+            return repo->save(getSavable());
+        }catch (const char * str){
+            throw str;
+        }
+
     };
 
     bool remove() {

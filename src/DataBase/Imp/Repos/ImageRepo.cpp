@@ -48,11 +48,16 @@ private:
     }
 
     [[nodiscard]] bool create_element(const Image& element) const {
-        if(multimedia_repo->save(element.getMultimedia())){
-            string_map map = get_string_map(element);
-            return data_base->insert_into_table(table_name, map);
+        try{
+            if(multimedia_repo->save(element.getMultimedia())){
+                string_map map = get_string_map(element);
+                return data_base->insert_into_table(table_name, map);
+            }
+            return false;
+        }catch (const char * str){
+            throw str;
         }
-        return false;
+
     }
 
     [[nodiscard]] bool update_element(const Image& old_element, const Image& new_element) const {
@@ -98,10 +103,15 @@ public:
     };
 
     [[nodiscard]] bool save(const Image& element) {
-        auto exist = get_by_id(element.getId());
-        if(exist.has_value())
-            return update_element(*exist.value(), element);
-        return create_element(element);
+        try{
+            auto exist = get_by_id(element.getId());
+            if(exist.has_value())
+                return update_element(*exist.value(), element);
+            return create_element(element);
+        }catch (const char * str){
+            throw str;
+        }
+
     };
 
     bool delete_by_id(unsigned int id) {
@@ -139,7 +149,12 @@ vector<unique_ptr<Image>> ImageRepo::get_all() {
 }
 
 bool ImageRepo::save(const Image &element) {
-    return mImpl->save(element);
+    try{
+        return mImpl->save(element);
+    }catch (const char * str){
+        throw str;
+    }
+
 }
 
 bool ImageRepo::delete_by_id(unsigned int id) {
