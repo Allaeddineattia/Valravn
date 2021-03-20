@@ -6,10 +6,10 @@
 #define MYPROJECT_VIDEO_H
 
 
-#include "Entity/Multimedia.h"
+#include "Multimedia.h"
 #include <string>
 #include <memory>
-#include <Entity/MediaPlayingStates/Video/VideoStateHandler.h>
+#include <Entity/Contract/VideoState/VideoStateHandler.h>
 #include "IPlayable.h"
 class VideoStateHandler;
 class Video : public IPlayable{

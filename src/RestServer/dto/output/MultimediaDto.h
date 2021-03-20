@@ -4,7 +4,7 @@
 
 #ifndef MYPROJECT_MULTIMEDIADTO_H
 #define MYPROJECT_MULTIMEDIADTO_H
-#include <Entity/Multimedia.h>
+#include <Entity/Contract/Multimedia.h>
 #include "oatpp/core/macro/codegen.hpp"
 #include "oatpp/core/Types.hpp"
 
@@ -21,6 +21,7 @@ class MultimediaDto : public oatpp::DTO {
 
 
 public:
+
     static Object<MultimediaDto> createDtoFromEntity(const Multimedia & multimedia){
         auto dto = make_shared<MultimediaDto>();
         dto->id = multimedia.getId();

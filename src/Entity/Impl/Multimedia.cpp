@@ -2,7 +2,7 @@
 // Created by alro on 18‏/10‏/2020.
 //
 
-#include "Multimedia.h"
+#include "Entity/Contract/Multimedia.h"
 
 unsigned int Multimedia::getId() const {
     return id;

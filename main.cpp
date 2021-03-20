@@ -6,10 +6,10 @@
 
 
 #include <iostream>
-#include <Entity/DependencyInjector.h>
+#include <Entity/Contract/DependencyInjector.h>
 
 void init_imagerepo(){
-    string fileName = "tttestdata.db";
+    string fileName = "test.db";
     shared_ptr<DependencyInjector> di = make_shared<DependencyInjector> ();
     di->install_data_base(fileName);
     di->install_multimedia_repo(di);

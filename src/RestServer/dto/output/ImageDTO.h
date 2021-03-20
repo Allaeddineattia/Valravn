@@ -5,7 +5,7 @@
 #ifndef MYPROJECT_IMAGEDTO_H
 #define MYPROJECT_IMAGEDTO_H
 
-#include <Entity/Image.h>
+#include <Entity/Contract/Image.h>
 #include "oatpp/core/macro/codegen.hpp"
 #include "oatpp/core/Types.hpp"
 #include "MultimediaDto.h"
@@ -30,6 +30,23 @@ public:
         dto->mulitmedia = MultimediaDto::createDtoFromEntity(image.getMultimedia());
         return Object<ImageDto>(dto);
     }
+
+    static oatpp::List<oatpp::Object<ImageDto>> createDtoVectorFromEntities(vector<unique_ptr<Image>> images){
+        auto result = List<Object<ImageDto>>::createShared();
+        for (auto & image : images){
+            if(image){
+                auto dto = ImageDto::createShared();
+                dto->id = image->getId();
+                dto->resolution = image->getResolution().data();
+                dto->mulitmedia = MultimediaDto::createDtoFromEntity(image->getMultimedia());
+                result->push_back(dto);
+            }
+        }
+        return result;
+    }
+
+
+
 
 };
 

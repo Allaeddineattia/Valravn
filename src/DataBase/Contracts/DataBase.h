@@ -27,17 +27,17 @@ private:
 
     vector<string> tables_creation_sql;
 
-    bool create_table_from_sql(string_view sql);
+    void create_table_from_sql(string_view sql);
 
-    bool activate_foreign_keys();
+    void activate_foreign_keys();
 
     [[nodiscard]] string get_insert_sql(string_view table_name, const string_map &map) const;
 
     static string get_update_sql(string_view table_name, const string_pair &feature, const string_map &map);
 
-    bool
-    execute_sql(string_view sql, string_view success_msg, const function<bool(string_view)> &do_if_error,
-                const function<bool(const string_map&)> &callback);
+    void
+    execute_sql(string_view sql, string_view success_msg, const function<void(string_view)> &do_if_error,
+                const function<void(const string_map &)> &callback);
 
 public:
 
@@ -47,17 +47,19 @@ public:
 
     virtual ~DataBase();
 
-    bool insert_into_table(string_view table_name, const string_map &map);
+    void insert_into_table(string_view table_name, const string_map &map);
 
-    bool update_into_table(string_view table_name, const string_pair &select_feature, const string_map &map);
+    void update_into_table(string_view table_name, const string_pair &select_feature, const string_map &map);
 
-    bool delete_by_feature(string_view table_name, const string_pair &feature);
+    void delete_by_feature(string_view table_name, const string_pair &feature);
 
-    bool init_db();
+    void init_db();
 
-    bool begin_transaction();
+    void begin_transaction();
 
-    bool end_transaction();
+    void end_transaction();
+
+    void abort_transaction();
 
     void add_table_creation_sql(string_view sql);
 

@@ -2,7 +2,7 @@
 // Created by alro on 14‏/12‏/2020.
 //
 
-#include "VideoPlayingState.h"
+#include "Entity/Contract/VideoState/VideoPlayingState.h"
 #include "iostream"
 
 void VideoPlayingState::play() {

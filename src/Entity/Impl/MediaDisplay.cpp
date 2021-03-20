@@ -3,7 +3,7 @@
 //
 
 #include <vector>
-#include "MediaDisplay.h"
+#include "Entity/Contract/MediaDisplay.h"
 
 
 IPlayable & MediaDisplay::getPlayable()  {

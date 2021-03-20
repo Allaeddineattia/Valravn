@@ -2,10 +2,10 @@
 // Created by ismail on 19‏/11‏/2020.
 //
 #include "gtest/gtest.h"
-#include <Entity/Image.h>
-#include <Entity/Audio.h>
-#include <Entity/Playlist.h>
-#include "Entity/Video.h"
+#include <Entity/Contract/Image.h>
+#include <Entity/Contract/Audio.h>
+#include <Entity/Contract/Playlist.h>
+#include "Entity/Contract/Video.h"
 #include <memory>
 using namespace std ;
 

@@ -2,7 +2,7 @@
 // Created by alro on 29‏/11‏/2020.
 //
 
-#include <Entity/DependencyInjector.h>
+#include <Entity/Contract/DependencyInjector.h>
 #include "gtest/gtest.h"
 #include "../tools/Database.h"
 #include "../stubs/Images.h"
@@ -17,7 +17,7 @@ TEST(image_updating, update_path){
     di->install_multimedia_repo(di);
     di->install_image_repo(di);
     ASSERT_EQ( Database::init_database(di), true);
-    ASSERT_EQ( Images::seed_db_with_images(di), true);
+    Images::seed_db_with_images(di);
     auto image_repo = di->get_image_repo(di);
     auto image = Images::get_image_1();
 
@@ -28,7 +28,7 @@ TEST(image_updating, update_path){
                                               image->getMultimedia().getMimeType());
     auto updated_image = make_unique<Image>(image->getId(), image->getResolution(), move(updated_multimedia));
 
-    ASSERT_EQ(updated_image->save(), true);
+    updated_image->save();
 
     auto res = Image::fetchById(image->getId());
 
@@ -44,7 +44,7 @@ TEST(image_updating, update_size_image){
     di->install_multimedia_repo(di);
     di->install_image_repo(di);
     ASSERT_EQ( Database::init_database(di), true);
-    ASSERT_EQ( Images::seed_db_with_images(di), true);
+    Images::seed_db_with_images(di);
     auto image_repo = di->get_image_repo(di);
     Image::installRepo(image_repo);
     auto image = Images::get_image_1();
@@ -57,7 +57,7 @@ TEST(image_updating, update_size_image){
                                                       image->getMultimedia().getMimeType());
     auto updated_image = make_unique<Image>(image->getId(), image->getResolution(), move(updated_multimedia));
 
-    ASSERT_EQ(updated_image->save(), true);
+    updated_image->save();
 
     auto res = Image::fetchById(image->getId());
 
@@ -73,7 +73,7 @@ TEST(image_updating, update_mime_type){
     di->install_multimedia_repo(di);
     di->install_image_repo(di);
     ASSERT_EQ( Database::init_database(di), true);
-    ASSERT_EQ( Images::seed_db_with_images(di), true);
+    Images::seed_db_with_images(di);
     auto image_repo = di->get_image_repo(di);
     Image::installRepo(image_repo);
     auto image = Images::get_image_1();
@@ -86,7 +86,7 @@ TEST(image_updating, update_mime_type){
                                                       new_mime_type);
     auto updated_image = make_unique<Image>(image->getId(), image->getResolution(), move(updated_multimedia));
 
-    ASSERT_EQ(updated_image->save(), true);
+    updated_image->save();
 
     auto res = Image::fetchById(image->getId());
 
@@ -94,7 +94,7 @@ TEST(image_updating, update_mime_type){
 
 };
 
-TEST(image_updating, update_may_fields_image){
+TEST(image_updating, update_many_fields_image){
     string fileName = "testdata.db";
     ASSERT_EQ(Database::drop_database(fileName), true);
     shared_ptr<DependencyInjector> di = make_shared<DependencyInjector> ();
@@ -102,7 +102,7 @@ TEST(image_updating, update_may_fields_image){
     di->install_multimedia_repo(di);
     di->install_image_repo(di);
     ASSERT_EQ( Database::init_database(di), true);
-    ASSERT_EQ( Images::seed_db_with_images(di), true);
+    Images::seed_db_with_images(di);
     auto image_repo = di->get_image_repo(di);
     auto image = Images::get_image_1();
 
@@ -118,7 +118,7 @@ TEST(image_updating, update_may_fields_image){
                                                       new_mime_type);
     auto updated_image = make_unique<Image>(image->getId(), new_resolution, move(updated_multimedia));
 
-    ASSERT_EQ(updated_image->save(), true);
+    updated_image->save();
 
     auto res = Image::fetchById(image->getId());
 

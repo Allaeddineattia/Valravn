@@ -6,7 +6,7 @@
 #define MYPROJECT_STATUSDTO_H
 #include "oatpp/core/macro/codegen.hpp"
 #include "oatpp/core/Types.hpp"
-
+#include <string_view>
 
 #include OATPP_CODEGEN_BEGIN(DTO)
 
@@ -28,6 +28,15 @@ class StatusDto : public oatpp::DTO {
             info->description = "Verbose message";
     }
     DTO_FIELD(String, message);
+
+public:
+    static Object<StatusDto> ok(std::string_view message){
+        auto status = StatusDto::createShared();
+        status->status = "OK";
+        status->code = 200;
+        status->message = message.data();
+        return status;
+    }
 
 };
 

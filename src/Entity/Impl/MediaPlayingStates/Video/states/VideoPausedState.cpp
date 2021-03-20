@@ -2,7 +2,7 @@
 // Created by alro on 14‏/12‏/2020.
 //
 
-#include "VideoPausedState.h"
+#include "Entity/Contract/VideoState/VideoPausedState.h"
 #include "iostream"
 void VideoPausedState::play() {
     cout<<"VideoPausedState::play, path: "<<stateHandler.video.getMultimedia()->getPath()<<endl;

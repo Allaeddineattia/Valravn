@@ -2,7 +2,7 @@
 // Created by alro on 29‏/11‏/2020.
 //
 
-#include <Entity/DependencyInjector.h>
+#include <Entity/Contract/DependencyInjector.h>
 #include "DataBase/Contracts/Repos/ImageRepo.h"
 #include "DataBase/Contracts/Repos/Tools.h"
 class ImageRepo::Impl{
@@ -15,7 +15,7 @@ private:
     string get_create_table_sql() {
         return "CREATE TABLE " + table_name + "("\
                 "ID INT PRIMARY KEY NOT NULL,"\
-                "MULTIMEDIA_ID INT NOT NULL,"\
+                "MULTIMEDIA_ID INT UNIQUE,"\
                 "RESOLUTION TEXT NOT NULL,"\
                 "FOREIGN KEY(MULTIMEDIA_ID) REFERENCES " + multimedia_repo->get_table_name() + "(ID)"\
                 ");";
@@ -47,28 +47,27 @@ private:
         return make_unique<Image>(id, resolution, move(multimedia));
     }
 
-    [[nodiscard]] bool create_element(const Image& element) const {
-        try{
-            if(multimedia_repo->save(element.getMultimedia())){
-                string_map map = get_string_map(element);
-                return data_base->insert_into_table(table_name, map);
-            }
-            return false;
-        }catch (const char * str){
-            throw str;
+    void create_element(const Image& element) const {
+        data_base->begin_transaction();
+        try {
+            multimedia_repo->save(element.getMultimedia());
+            string_map map = get_string_map(element);
+            data_base->insert_into_table(table_name, map);
+        }catch (const std::exception& ex){
+            data_base->abort_transaction();
+            throw ;
         }
+        data_base->end_transaction();
 
     }
 
-    [[nodiscard]] bool update_element(const Image& old_element, const Image& new_element) const {
+    void update_element(const Image& old_element, const Image& new_element) const {
         string_map map = get_update_string_map(old_element, new_element);
-        bool result;
         if(!map.empty()){
             string_pair id ("ID",to_string(old_element.getId()));
-            result = data_base->update_into_table(table_name, id, map);
+            data_base->update_into_table(table_name, id, map);
         }
-        result = multimedia_repo->save(new_element.getMultimedia()) || result;
-        return result;
+        multimedia_repo->save(new_element.getMultimedia());
     }
 
 public:
@@ -102,29 +101,35 @@ public:
         return  images;
     };
 
-    [[nodiscard]] bool save(const Image& element) {
-        try{
-            auto exist = get_by_id(element.getId());
-            if(exist.has_value())
-                return update_element(*exist.value(), element);
-            return create_element(element);
-        }catch (const char * str){
-            throw str;
-        }
+    [[nodiscard]] void save(const Image& element) {
 
+        auto exist = get_by_id(element.getId());
+        if(exist.has_value()){
+            auto img = move(exist.value());
+            if(img){
+                return update_element(*img, element);
+            }
+
+        }
+        create_element(element);
     };
 
-    bool delete_by_id(unsigned int id) {
+    void delete_by_id(unsigned int id) {
         string_pair feature_selection("ID", to_string(id));
         auto image = get_by_id(id);
         if(!image.has_value()){
             throw "No Element found with id ";
         }
-        bool result = data_base->begin_transaction();
-        result = result && data_base->delete_by_feature(table_name, feature_selection);
-        if(result)
-            result = multimedia_repo->delete_by_id(image.value()->getMultimedia().getId());
-        return result && data_base->end_transaction();
+        data_base->begin_transaction();
+        try{
+            data_base->delete_by_feature(table_name, feature_selection);
+            multimedia_repo->delete_by_id(image.value()->getMultimedia().getId());
+        }catch (const std::exception& ex){
+            data_base->abort_transaction();
+            throw ;
+        }
+
+        data_base->end_transaction();
     }
 
     unsigned int get_available_id() {
@@ -148,16 +153,11 @@ vector<unique_ptr<Image>> ImageRepo::get_all() {
     return mImpl->get_all();
 }
 
-bool ImageRepo::save(const Image &element) {
-    try{
-        return mImpl->save(element);
-    }catch (const char * str){
-        throw str;
-    }
-
+void ImageRepo::save(const Image &element) {
+    mImpl->save(element);
 }
 
-bool ImageRepo::delete_by_id(unsigned int id) {
+void ImageRepo::delete_by_id(unsigned int id) {
     return mImpl->delete_by_id(id);
 }
 

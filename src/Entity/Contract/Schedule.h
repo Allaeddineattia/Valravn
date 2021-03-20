@@ -7,8 +7,8 @@
 
 #include <ctime>
 #include <memory>
-#include <Entity/Playlist.h>
-#include <Entity/Parameter.h>
+#include <Entity/Contract/Playlist.h>
+#include <Entity/Contract/Parameter.h>
 
 class Schedule {
 private:
@@ -22,7 +22,7 @@ public:
 
     [[nodiscard]] time_t getTime() const;
 
-    const Playlist & getPlaylist() const;
+    [[nodiscard]] const Playlist & getPlaylist() const;
 };
 
 

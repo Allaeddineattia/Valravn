@@ -4,7 +4,7 @@
 
 #ifndef MYPROJECT_MULTIMEDIAINPUTDTO_H
 #define MYPROJECT_MULTIMEDIAINPUTDTO_H
-#include <Entity/Multimedia.h>
+#include <Entity/Contract/Multimedia.h>
 #include "oatpp/core/macro/codegen.hpp"
 #include "oatpp/core/Types.hpp"
 

@@ -2,9 +2,9 @@
 // Created by alro on 29‏/11‏/2020.
 //
 
-#include <Entity/DependencyInjector.h>
+#include <Entity/Contract/DependencyInjector.h>
 #include <Shared/Tools.h>
-#include <Entity/Image.h>
+#include <Entity/Contract/Image.h>
 #include "gtest/gtest.h"
 #include "../tools/Database.h"
 #include "../stubs/Images.h"
@@ -19,11 +19,11 @@ TEST(image_deleting, delete_saved_image){
     di->install_image_repo(di);
 
     ASSERT_EQ( Unit_testing::Database::init_database(di), true);
-    ASSERT_EQ( Unit_testing::Images::seed_db_with_images(di), true);
+    Unit_testing::Images::seed_db_with_images(di);
     auto image_repo = di->get_image_repo(di);
     Image::installRepo(image_repo);
     auto image = Unit_testing::Images::get_image_1();
-    ASSERT_EQ( image->remove(), true);
+    image->remove();
     auto res = Image::fetchById(image->getId());
     ASSERT_EQ(res.has_value(), false);
     vector<unique_ptr<Image>> images;

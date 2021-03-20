@@ -2,7 +2,7 @@
 // Created by ismail on 16‏/11‏/2020.
 //
 
-#include "Entity/Playlist.h"
+#include "Entity/Contract/Playlist.h"
 #include <vector>
 #include <algorithm>
 

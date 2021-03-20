@@ -7,7 +7,7 @@
 
 #include <vlc/vlc.h>
 #include <memory>
-#include <Entity/Multimedia.h>
+#include <Entity/Contract/Multimedia.h>
 
 using namespace std;
 

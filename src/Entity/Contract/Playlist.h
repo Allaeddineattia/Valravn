@@ -7,7 +7,7 @@
 #include "IPlayable.h"
 #include <memory>
 #include <vector>
-#include <Entity/MediaDisplay.h>
+#include <Entity/Contract/MediaDisplay.h>
 using namespace std;
 
 

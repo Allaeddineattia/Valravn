@@ -15,6 +15,7 @@
 #include "RestServer/dto/output/ImageDTO.h"
 #include "RestServer/dto/input/ImageCreationDto.h"
 #include "../dto/StatusDto.h"
+#include <Shared/CustomError.h>
 #include <iostream>
 
 #include OATPP_CODEGEN_BEGIN(ApiController) //<- Begin Codegen
@@ -42,7 +43,7 @@ public:
         info->addConsumes < Object < ImageCreationDto >> ("application/json");
 
         info->addResponse<Object<ImageDto>>(Status::CODE_200, "application/json");
-        info->addResponse<Object<StatusDto>>(Status::CODE_404, "application/json");
+        info->addResponse<Object<StatusDto>>(Status::CODE_400, "application/json");
         info->addResponse<Object<StatusDto>>(Status::CODE_500, "application/json");
     }
     ENDPOINT("POST", "images", createImage,
@@ -55,12 +56,12 @@ public:
         auto image = imageDto->createEntityFromDto();
         try{
             image->save();
-
-        }catch (const std::exception& ex){
-            return handleError(Status::CODE_404,  ex.what());
-        }catch (const char * str){
-            cerr << str <<endl;
-            return handleError(Status::CODE_404, str);
+        }
+        catch(const Repo::Exceptions::DataBaseInsertIntoTableError & ex){
+            return handleError(Status::CODE_400,  ex.what());
+        }
+        catch (const std::exception& ex){
+            return handleError(Status::CODE_500,  ex.what());
         }
 
         Object<ImageDto> dto(ImageDto::createDtoFromEntity(*image));
@@ -101,7 +102,6 @@ public:
     ENDPOINT("GET", "images/{imageId}", getImageById,
              PATH(Int32, imageId))
     {
-        //return createDtoResponse(Status::CODE_200, m_imageService.getImageById(imageId));
         auto opt_image= Image::fetchById(imageId);
         if(opt_image.has_value() ){
             auto image = move(opt_image.value());
@@ -118,14 +118,13 @@ public:
     ENDPOINT_INFO(getImages) {
         info->summary = "get all stored images";
 
-        //info->addResponse<oatpp::Object<ImagesPageDto>>(Status::CODE_200, "application/json");
+        info->addResponse<oatpp::Vector<oatpp::Object<ImageDto>>>(Status::CODE_200, "application/json");
         info->addResponse<Object<StatusDto>>(Status::CODE_500, "application/json");
     }
-    ENDPOINT("GET", "images/offset/{offset}/limit/{limit}", getImages,
-             PATH(UInt32, offset),
-             PATH(UInt32, limit))
+    ENDPOINT("GET", "images/", getImages)
     {
-        //return createDtoResponse(Status::CODE_200, m_imageService.getAllImages(offset, limit));
+        auto res = Image::getAll();
+        return createDtoResponse(Status::CODE_200, ImageDto::createDtoVectorFromEntities(move(res)));
     }
 
 
@@ -133,6 +132,7 @@ public:
         info->summary = "Delete Image by imageId";
 
         info->addResponse<Object<StatusDto>>(Status::CODE_200, "application/json");
+        info->addResponse<Object<StatusDto>>(Status::CODE_400, "application/json");
         info->addResponse<Object<StatusDto>>(Status::CODE_500, "application/json");
 
         info->pathParams["imageId"].description = "Image Identifier";
@@ -140,7 +140,21 @@ public:
     ENDPOINT("DELETE", "images/{imageId}", deleteImage,
              PATH(Int32, imageId))
     {
-        //return createDtoResponse(Status::CODE_200, m_imageService.deleteImageById(imageId));
+        auto opt_image= Image::fetchById(imageId);
+        if(opt_image.has_value() ){
+            auto image = move(opt_image.value());
+            if(image){
+                try{
+                    image->remove();
+                    return createDtoResponse(Status::CODE_200,
+                                             StatusDto::ok("Image was successfully deleted"));
+                }catch (const std::exception& ex){
+                    return handleError(Status::CODE_500,  ex.what());
+                }
+            }
+        }
+        string error_msg = "image with id " + to_string(imageId) + " not found";
+        return handleError(Status::CODE_400, error_msg.data());
     }
 
 };

@@ -6,9 +6,9 @@
 #define MYPROJECT_VIDEOSTOPPEDSTATE_H
 
 
-#include <Entity/IPlayable.h>
-#include <Entity/Video.h>
-#include "Entity/MediaPlayingStates/Video/VideoStateHandler.h"
+#include <Entity/Contract/IPlayable.h>
+#include <Entity/Contract/Video.h>
+#include "VideoStateHandler.h"
 class VideoStateHandler;
 
 class VideoStoppedState: public IPlayable {

@@ -3,7 +3,7 @@
 //
 
 #include <DataBase/Contracts/Repos/MultimediaRepo.h>
-#include <Entity/DependencyInjector.h>
+#include <Entity/Contract/DependencyInjector.h>
 
 class MultimediaRepo::Impl{
 private:
@@ -53,19 +53,17 @@ private:
         return result;
     }
 
-    [[nodiscard]] bool create_element(const Multimedia& element) const {
+    void create_element(const Multimedia& element) const {
         string_map map = get_string_map(element);
-        return data_base->insert_into_table(table_name, map);
-
+        data_base->insert_into_table(table_name, map);
     }
 
-    [[nodiscard]] bool update_element(const Multimedia& old_element, const Multimedia& new_element) const {
+    void update_element(const Multimedia& old_element, const Multimedia& new_element) const {
         string_map map = get_update_string_map(old_element, new_element);
         if(!map.empty()){
             string_pair id ("ID",to_string(old_element.getId()));
-            return data_base->update_into_table(table_name, id, map);
+            data_base->update_into_table(table_name, id, map);
         }
-        return false;
     }
 
 
@@ -94,16 +92,21 @@ public:
         return  multimedia;
     };
 
-    bool save(const Multimedia& element) {
+    void save(const Multimedia& element) {
         auto exist = get_by_id(element.getId());
-        if(exist == nullptr)
-            return create_element(element);
-        return update_element(*exist->get(), element);
+        if(exist.has_value()){
+            auto mul = move(exist.value());
+            if (mul){
+                return update_element(*mul, element);
+            }
+        }
+        create_element(element);
     };
 
     bool delete_by_id(unsigned int id)  {
         string_pair feature_selection("ID",to_string(id));
-        return data_base->delete_by_feature(table_name, feature_selection);
+        data_base->delete_by_feature(table_name, feature_selection);
+        return true;
     }
 
     unsigned int get_available_id() {
@@ -129,12 +132,12 @@ vector<unique_ptr<Multimedia>> MultimediaRepo::get_all() {
     return mImpl->get_all();
 }
 
-bool MultimediaRepo::save(const Multimedia &element) {
-    return mImpl->save(element);
+void MultimediaRepo::save(const Multimedia &element) {
+    mImpl->save(element);
 }
 
-bool MultimediaRepo::delete_by_id(unsigned int id) {
-    return mImpl->delete_by_id(id);
+void MultimediaRepo::delete_by_id(unsigned int id) {
+    mImpl->delete_by_id(id);
 }
 
 MultimediaRepo::~MultimediaRepo() = default;

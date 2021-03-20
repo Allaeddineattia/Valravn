@@ -4,7 +4,7 @@
 #include<stdexcept>
 #include <iostream>
 #include <cmath>
-#include "Video.h"
+#include "Entity/Contract/Video.h"
 #include "Shared/Tools.h"
 #include "Shared/CustomError.h"
 

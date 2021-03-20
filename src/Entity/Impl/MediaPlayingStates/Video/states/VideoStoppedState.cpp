@@ -2,7 +2,7 @@
 // Created by alro on 14‏/12‏/2020.
 //
 
-#include "VideoStoppedState.h"
+#include "Entity/Contract/VideoState/VideoStoppedState.h"
 #include "iostream"
 
 void VideoStoppedState::play() {

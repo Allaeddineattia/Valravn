@@ -6,8 +6,8 @@
 #define MYPROJECT_MEDIADISPLAY_H
 
 #include <memory>
-#include <Entity/IPlayable.h>
-#include <Entity/Parameter.h>
+#include <Entity/Contract/IPlayable.h>
+#include <Entity/Contract/Parameter.h>
 using namespace std;
 
 class MediaDisplay {

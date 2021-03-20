@@ -11,6 +11,7 @@
 #include <cassert>
 #include <DataBase/Contracts/IRepository.h>
 #include <random>
+
 using namespace std;
 #define MAX_ID 1000000;
 template<class Entity>
@@ -23,19 +24,15 @@ public:
         Savable::repo = iRepository;
     };
 
-    bool save() {
+    void save() {
         assert(repo);
-        try{
-            return repo->save(getSavable());
-        }catch (const char * str){
-            throw str;
-        }
+        repo->save(getSavable());
 
     };
 
-    bool remove() {
+    void remove() {
         assert(repo);
-        return repo->delete_by_id(getId());
+        repo->delete_by_id(getId());
     };
 
     virtual const Entity & getSavable() = 0;

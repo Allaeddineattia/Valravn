@@ -5,7 +5,7 @@
 #ifndef MYPROJECT_IMAGECREATIONDTO_H
 #define MYPROJECT_IMAGECREATIONDTO_H
 
-#include <Entity/Image.h>
+#include <Entity/Contract/Image.h>
 #include "oatpp/core/macro/codegen.hpp"
 #include "oatpp/core/Types.hpp"
 #include "MultimediaInputDto.h"

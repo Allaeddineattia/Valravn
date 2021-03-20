@@ -2,7 +2,7 @@
 // Created by alro on 21‏/11‏/2020.
 //
 
-#include "Parameter.h"
+#include "Entity/Contract/Parameter.h"
 
 Parameter::Parameter(bool fullscreen, int volume, int timeout, float speed) :
     fullscreen(fullscreen), volume(volume), timeout(timeout), speed(speed) {}

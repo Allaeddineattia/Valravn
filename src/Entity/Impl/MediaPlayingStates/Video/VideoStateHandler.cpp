@@ -2,7 +2,7 @@
 // Created by alro on 14‏/12‏/2020.
 //
 
-#include "VideoStateHandler.h"
+#include "Entity/Contract/VideoState/VideoStateHandler.h"
 
 VideoStateHandler::VideoStateHandler(Video &video) :
         video(video),

@@ -6,10 +6,10 @@
 #define MYPROJECT_VIDEOSTATEHANDLER_H
 
 
-#include <Entity/Video.h>
-#include "Entity/MediaPlayingStates/Video/states/VideoPlayingState.h"
-#include "Entity/MediaPlayingStates/Video/states/VideoPausedState.h"
-#include "Entity/MediaPlayingStates/Video/states/VideoStoppedState.h"
+#include <Entity/Contract/Video.h>
+#include "VideoPlayingState.h"
+#include "VideoPausedState.h"
+#include "VideoStoppedState.h"
 
 class VideoPlayingState;
 class VideoPausedState;

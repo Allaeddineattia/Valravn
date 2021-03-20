@@ -2,10 +2,10 @@
 // Created by ismail on 7‏/11‏/2020.
 //
 
-#include "Entity/Audio.h"
+#include "Entity/Contract/Audio.h"
 #include "gtest/gtest.h"
 #include "Shared/CustomError.h"
-#include "Entity/Multimedia.h"
+#include "Entity/Contract/Multimedia.h"
 
 TEST(Audio, Creation) {
     auto multimedia = make_unique<Multimedia>(1, "path", 50, "type");

@@ -2,7 +2,7 @@
 // Created by alro on 29‏/11‏/2020.
 //
 
-#include <Entity/DependencyInjector.h>
+#include <Entity/Contract/DependencyInjector.h>
 #include "gtest/gtest.h"
 #include "../tools/Database.h"
 #include "../stubs/Images.h"
@@ -19,8 +19,7 @@ TEST(image_creation, create_valid_image){
     auto image_repo = di->get_image_repo(di);
     Image::installRepo(image_repo);
     auto image = Unit_testing::Images::get_image_1();
-    bool res = image->save();
-    ASSERT_EQ(res, true);
+    image->save();
 
 }
 
@@ -36,8 +35,7 @@ TEST(image_creation, create_new_id){
     auto image_repo = di->get_image_repo(di);
     Image::installRepo(image_repo);
     auto image = Unit_testing::Images::get_image_1();
-    bool res = image->save();
-    ASSERT_EQ(res, true);
+    image->save();
     unsigned int id = Image::createNewId();
     ASSERT_NE(id, 1);
 
