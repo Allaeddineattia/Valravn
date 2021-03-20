@@ -7,7 +7,7 @@
 
 #include <string_view>
 #include <memory>
-#include <Entity/DependencyInjector.h>
+#include <Entity/Contract/DependencyInjector.h>
 
 using namespace std;
 namespace Unit_testing{
@@ -19,7 +19,7 @@ namespace Unit_testing{
 
         static bool drop_database(string_view db_file_name);
         static bool init_database(const shared_ptr<DependencyInjector> &di);
-        static bool seed_database(const shared_ptr<DependencyInjector>& di);
+        static void seed_database(const shared_ptr<DependencyInjector>& di);
     };
 }
 

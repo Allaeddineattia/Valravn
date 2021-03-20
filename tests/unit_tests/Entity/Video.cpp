@@ -2,8 +2,8 @@
 // Created by alro on 18‏/10‏/2020.
 //
 #include "gtest/gtest.h"
-#include "Entity/Multimedia.h"
-#include "Entity/Video.h"
+#include "Entity/Contract/Multimedia.h"
+#include "Entity/Contract/Video.h"
 #include "Shared/CustomError.h"
 TEST(Video, ThrowErrorOnInvalidResolution1){
     auto multimedia = make_unique<Multimedia>(1, "path", 50, "type");

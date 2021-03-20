@@ -10,8 +10,10 @@
 #include <memory>
 #include <cassert>
 #include <DataBase/Contracts/IRepository.h>
-using namespace std;
+#include <random>
 
+using namespace std;
+#define MAX_ID 1000000;
 template<class Entity>
 class Savable {
 
@@ -22,19 +24,34 @@ public:
         Savable::repo = iRepository;
     };
 
-    bool save() {
+    void save() {
         assert(repo);
-        return repo->save(getSavable());
+        repo->save(getSavable());
+
     };
 
-    bool remove() {
+    void remove() {
         assert(repo);
-        return repo->delete_by_id(getId());
+        repo->delete_by_id(getId());
     };
 
     virtual const Entity & getSavable() = 0;
 
     [[nodiscard]] virtual unsigned int getId() const = 0;
+
+    [[nodiscard]] static unsigned int createNewId(){
+        std::random_device rd;  //Will be used to obtain a seed for the random number engine
+        std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
+        int max = MAX_ID;
+        std::uniform_int_distribution<> distrib(1, max);
+        unsigned int id = distrib(gen);
+        auto res = repo->get_by_id(id);
+        while (res.has_value() && res.value()){
+            id = distrib(gen);
+            res = repo->get_by_id(id);
+        };
+        return id;
+    };
 
     static optional<unique_ptr<Entity>> fetchById(unsigned int id){
         assert(repo);
@@ -48,7 +65,6 @@ public:
     virtual ~Savable() {  };
 
 };
-
 
 
 #endif //MYPROJECT_SAVABLE_H

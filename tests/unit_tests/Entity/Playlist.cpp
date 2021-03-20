@@ -2,10 +2,10 @@
 // Created by ismail on 19‏/11‏/2020.
 //
 #include "gtest/gtest.h"
-#include <Entity/Image.h>
-#include <Entity/Audio.h>
-#include <Entity/Playlist.h>
-#include "Entity/Video.h"
+#include <Entity/Contract/Image.h>
+#include <Entity/Contract/Audio.h>
+#include <Entity/Contract/Playlist.h>
+#include "Entity/Contract/Video.h"
 #include <memory>
 using namespace std ;
 
@@ -17,5 +17,5 @@ TEST(Playlist,ThrowErrorOnInvalidromve) {
     auto parameter =make_unique<Parameter>(true, 20, 20, 50);
     auto mediaDisplay = make_unique<MediaDisplay>(move(video),move(parameter));
     playlist->addMediaDisplay(move(mediaDisplay));
-    ASSERT_THROW(playlist->removePlayabal(1),invalid_argument);
+    ASSERT_THROW(playlist->removePlayable(1), invalid_argument);
 }

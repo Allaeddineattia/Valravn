@@ -11,7 +11,7 @@
 #include <DataBase/Contracts/Repos/MultimediaRepo.h>
 
 #include <optional>
-#include "../../../Entity/Image.h"
+#include "Entity/Contract/Image.h"
 #include <DataBase/Contracts/IRepository.h>
 
 
@@ -33,9 +33,11 @@ public:
 
     vector<unique_ptr<Image>> get_all() override;
 
-    [[nodiscard]] bool save(const Image& element) override;
+    [[nodiscard]] void save(const Image& element) override;
 
-    bool delete_by_id(unsigned int id) override;
+    void delete_by_id(unsigned int id) override;
+
+    unsigned int get_available_id() override;
 
     virtual ~ImageRepo();
 };

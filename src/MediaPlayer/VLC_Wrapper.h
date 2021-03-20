@@ -7,7 +7,7 @@
 
 #include <vlc/vlc.h>
 #include <memory>
-#include <Entity/Multimedia.h>
+#include <Entity/Contract/Multimedia.h>
 
 using namespace std;
 
@@ -16,7 +16,7 @@ class VLC_Wrapper {
     libvlc_media_player_t  * mediaPlayer;
     libvlc_event_manager_t * mediaPlayerEventManager;
 
-
+    
 
 
 

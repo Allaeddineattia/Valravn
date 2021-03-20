@@ -1,0 +1,41 @@
+//
+// Created by ismail on 16‏/11‏/2020.
+//
+
+#ifndef MYPROJECT_PLAYLIST_H
+#define MYPROJECT_PLAYLIST_H
+#include "IPlayable.h"
+#include <memory>
+#include <vector>
+#include <Entity/Contract/MediaDisplay.h>
+using namespace std;
+
+
+class Playlist : public IPlayable{
+private:
+    int id;
+    vector<unique_ptr<MediaDisplay>> display;
+    int current;
+
+public:
+    Playlist(int id);
+    ~Playlist() override = default;
+
+    [[nodiscard]] int getId() const;
+    [[nodiscard]] const vector<unique_ptr<MediaDisplay>> & getPlaylist();
+    void addMediaDisplay(unique_ptr<MediaDisplay> _mediadisplay);
+    void removePlayable(int _position);
+    void next ();
+    void previous ();
+
+    void play () override;
+
+    void pause () override;
+
+    void stop () override;
+
+};
+
+
+#endif //MYPROJECT_PLAYLIST_H
+

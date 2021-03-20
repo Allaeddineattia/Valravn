@@ -11,6 +11,8 @@ find_package(Boost COMPONENTS )
 find_package(Boost COMPONENTS filesystem system REQUIRED)
 find_package(SQLite3 REQUIRED)
 find_package(LIBVLC REQUIRED)
+find_package(oatpp          1.2.5 REQUIRED)
+find_package(oatpp-swagger  1.2.5 REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS})
 
 set(Boost_USE_STATIC_LIBS OFF)
@@ -21,9 +23,6 @@ add_executable(${CMAKE_PROJECT_NAME}_run ${SOURCE_FILES})
 
 
 include_directories(src)
-
-
-
 
 add_subdirectory(src)
 add_subdirectory(tests)
@@ -54,6 +53,20 @@ else(DOXYGEN_FOUND)
     message("Doxygen needs to be installed to generate the documentation.")
 endif(DOXYGEN_FOUND)
 
+add_definitions(
+        ## define path to swagger-ui static resources folder
+        -DOATPP_SWAGGER_RES_PATH="${oatpp-swagger_INCLUDE_DIRS}/../bin/oatpp-swagger/res"
+
+        ## SQLite database file
+        -DDATABASE_FILE="${CMAKE_CURRENT_SOURCE_DIR}/db.sqlite"
+        ## SQLite database test file
+        -DTESTDATABASE_FILE="${CMAKE_CURRENT_SOURCE_DIR}/test-db.sqlite"
+
+        ## Path to database migration scripts
+        -DDATABASE_MIGRATIONS="${CMAKE_CURRENT_SOURCE_DIR}/sql"
+)
+
+target_link_libraries (${CMAKE_PROJECT_NAME}_run oatpp::oatpp oatpp::oatpp-swagger)
 target_link_libraries(${CMAKE_PROJECT_NAME}_run ${CMAKE_PROJECT_NAME}_lib)
 target_link_libraries (${CMAKE_PROJECT_NAME}_run ${Boost_SYSTEM_LIBRARY})
 target_link_libraries (${CMAKE_PROJECT_NAME}_run ${Boost_FILESYSTEM_LIBRARY})
