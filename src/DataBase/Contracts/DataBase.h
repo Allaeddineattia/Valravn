@@ -65,7 +65,7 @@ public:
 
     string_map get_by_id(string_view table_name, string_view id);
 
-    time_t string_to_time_t(string_view string);
+    static time_t string_to_time_t(string_view string);
 
     vector<string_map> get_all_by_feature(string_view table_name, const string_pair &feature);
 

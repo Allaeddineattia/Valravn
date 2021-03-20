@@ -17,7 +17,7 @@ private:
                 "ID INT PRIMARY KEY NOT NULL,"\
                 "MULTIMEDIA_ID INT UNIQUE,"\
                 "RESOLUTION TEXT NOT NULL,"\
-                "FOREIGN KEY(MULTIMEDIA_ID) REFERENCES " + multimedia_repo->getTableName() + "(ID)"\
+                "FOREIGN KEY(MULTIMEDIA_ID) REFERENCES " + multimedia_repo->get_table_name() + "(ID)"\
                 ");";
     }
 
@@ -42,7 +42,7 @@ private:
     [[nodiscard]] unique_ptr<Image> get_entity_from_map(const string_map &map) {
         int  id = stoi(map.find("ID")->second);
         string resolution = map.find("RESOLUTION")->second;
-        auto multimedia = multimedia_repo->getById(stoi(map.find("MULTIMEDIA_ID")->second)).value();
+        auto multimedia = multimedia_repo->get_by_id(stoi(map.find("MULTIMEDIA_ID")->second)).value();
         return make_unique<Image>(id, resolution, move(multimedia));
     }
 
@@ -94,7 +94,7 @@ public:
         vector<string_map> vector_res = data_base->get_all(table_name);
         vector<unique_ptr<Image>> images;
         for(auto &image_map: vector_res) {
-            auto multimedia = multimedia_repo->getById(stoi(image_map.find("MULTIMEDIA_ID")->second));
+            auto multimedia = multimedia_repo->get_by_id(stoi(image_map.find("MULTIMEDIA_ID")->second));
             if(multimedia) images.push_back(get_entity_from_map(image_map));
         }
         return  images;

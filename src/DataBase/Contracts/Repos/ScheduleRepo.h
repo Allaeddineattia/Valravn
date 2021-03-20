@@ -7,7 +7,7 @@
 
 #include <optional>
 #include <DataBase/Contracts/IRepository.h>
-#include <Entity/Schedule.h>
+#include <Entity/Contract/Schedule.h>
 
 
 class ScheduleRepo: public IRepository<Schedule> {
@@ -27,9 +27,9 @@ public:
 
     vector<unique_ptr<Schedule>> getAll() override;
 
-    [[nodiscard]] bool save(const Schedule& element) override;
+    [[nodiscard]] void save(const Schedule& element) override;
 
-    bool deleteById(unsigned int id) override;
+    void deleteById(unsigned int id) override;
 
     virtual ~ScheduleRepo();
 };

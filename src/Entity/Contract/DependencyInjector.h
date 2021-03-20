@@ -5,9 +5,11 @@
 #ifndef MYPROJECT_DEPENDENCYINJECTOR_H
 #define MYPROJECT_DEPENDENCYINJECTOR_H
 #include "Image.h"
+#include "Playlist.h"
 
 #include <DataBase/Contracts/DataBase.h>
 #include <DataBase/Contracts/Repos/MultimediaRepo.h>
+#include <DataBase/Contracts/Repos/PlaylistRepo.h>
 
 #include <cassert>
 
@@ -21,6 +23,7 @@ private:
     unique_ptr<DataBase> data_base = nullptr;
     unique_ptr<IRepository<Multimedia>> multimedia_repo = nullptr;
     unique_ptr<IRepository<Image>> image_repo = nullptr;
+    unique_ptr<IRepository<Playlist>> playlist_repo = nullptr;
 
 public:
     DependencyInjector()= default;
@@ -51,6 +54,16 @@ public:
         image_repo = make_unique<ImageRepo>(d);
         return true;
     }
+    bool install_playlist_repo(const shared_ptr<DependencyInjector>& d){
+        assert(!playlist_repo);
+        playlist_repo = make_unique<PlaylistRepo>(d);
+        return true;
+    }
+    shared_ptr<IRepository<Playlist>> get_playlist_repo(const shared_ptr<DependencyInjector>& d){
+        assert(playlist_repo);
+        return shared_ptr<IRepository<Playlist>>(d, multimedia_repo.get());
+    };
+
     shared_ptr<IRepository<Image>> get_image_repo(const shared_ptr<DependencyInjector>& d){
         assert(image_repo);
         return shared_ptr<IRepository<Image>>(d, image_repo.get());
