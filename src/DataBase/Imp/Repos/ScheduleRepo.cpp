@@ -31,7 +31,7 @@ private:
         string_map map;
 
         if(new_element.getTime() != old_element.getTime())
-            map.insert(string_pair("RESOLUTION", DataBase::to_sql_date_time(new_element.getTime())));
+            map.insert(string_pair("TIME", DataBase::to_sql_date_time(new_element.getTime())));
 
 
         return map;

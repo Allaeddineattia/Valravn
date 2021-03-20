@@ -39,8 +39,7 @@ private:
         return map;
     }
 
-    [[nodiscard]] unique_ptr<Image>
-    get_entity_from_map(const string_map &map) {
+    [[nodiscard]] unique_ptr<Image> get_entity_from_map(const string_map &map) {
         int  id = stoi(map.find("ID")->second);
         string resolution = map.find("RESOLUTION")->second;
         auto multimedia = multimedia_repo->getById(stoi(map.find("MULTIMEDIA_ID")->second)).value();
