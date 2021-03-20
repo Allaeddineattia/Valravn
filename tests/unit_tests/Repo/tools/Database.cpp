@@ -16,11 +16,12 @@ bool Unit_testing::Database::drop_database(string_view db_file_name) {
 
 bool Unit_testing::Database::init_database(const shared_ptr<DependencyInjector> &di) {
     auto db = di->get_data_base(di);
-    return db->init_db();
+    db->init_db();
+    return true;
 }
 
-bool Unit_testing::Database::seed_database(const shared_ptr<DependencyInjector>& di) {
+void Unit_testing::Database::seed_database(const shared_ptr<DependencyInjector>& di) {
 
-    return Unit_testing::Images::seed_db_with_images(di);
+    Unit_testing::Images::seed_db_with_images(di);
 
 }

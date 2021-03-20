@@ -7,7 +7,7 @@
 #include <string>
 #include <sstream>
 #include <DataBase/Contracts/DataBase.h>
-#include <Entity/Multimedia.h>
+#include <Entity/Contract/Multimedia.h>
 
 using namespace std;
 
@@ -27,9 +27,11 @@ public:
 
     [[nodiscard]] vector<unique_ptr<Multimedia>> getAll() override;
 
-    bool save(const Multimedia& element) override;
+    void save(const Multimedia& element) override;
 
-    bool deleteById(unsigned int id) override;
+    void delete_by_id(unsigned int id) override;
+
+    unsigned int get_available_id() override;
 
     virtual ~MultimediaRepo();
 };

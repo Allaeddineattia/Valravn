@@ -28,13 +28,12 @@ DataBase::DataBase(string_view dbPath) {
     }
 }
 
-bool DataBase::init_db() {
-    is_db_initialised = activate_foreign_keys();
+void DataBase::init_db() {
+    activate_foreign_keys();
     for (auto &i: tables_creation_sql) {
         if (!is_db_initialised) break;
-        is_db_initialised = is_db_initialised && create_table_from_sql(i);
+        create_table_from_sql(i);
     }
-    return is_db_initialised;
 }
 
 string_view DataBase::get_db_path () {
@@ -48,15 +47,15 @@ DataBase::~DataBase() {
 }
 
 
-bool DataBase::execute_sql(
+void DataBase::execute_sql(
         string_view sql,
         string_view success_msg = "[DataBase] OPERATION_SUCCEEDED",
-        const function<bool(string_view error_msg)> &do_if_error =
-        [](string_view error_msg) -> bool {
-            cout << "[DataBase] SQL error: " << error_msg << endl;
-            return false;
+        const function<void(string_view)> &do_if_error =
+        [](string_view error_msg) -> void {
+            cerr << "[DataBase] SQL error: " << error_msg << endl;
+            throw Exceptions::DB_ERROR(error_msg);
         },
-        const function<bool (const string_map&)>& callback = nullptr ) {
+        const function<void(const string_map &)> &callback = nullptr) {
     char *zErrMsg = nullptr;
     int (*sqlite_callback)(void *, int, char **, char **) = nullptr;
     void * user_state = nullptr;
@@ -76,12 +75,10 @@ bool DataBase::execute_sql(
     int rc = sqlite3_exec(*db, sql.data(), sqlite_callback, user_state, &zErrMsg);
 
     if (rc != SQLITE_OK) {
-        bool result = do_if_error(zErrMsg);
+        do_if_error(zErrMsg);
         sqlite3_free(zErrMsg);
-        return result;
     } else {
         cout << success_msg << endl;
-        return true;
     }
 }
 
@@ -105,15 +102,22 @@ string_map DataBase::get_by_id(string_view table_name, string_view id) {
 }
 
 
-bool DataBase::create_table_from_sql(string_view sql) {
+void DataBase::create_table_from_sql(string_view sql) {
 
-    return execute_sql(sql, "[DataBase] Table created successfully\n",
-                       [](string_view error_msg) -> bool {
-                        cerr << "[DataBase] QL error: " << error_msg << endl;
-                        return error_msg.find("table") != std::string::npos
-                               &&
-                               error_msg.find("already exists") != std::string::npos;
-                        });
+    execute_sql(sql,
+                "[DataBase] Table created successfully\n",
+                [](string_view error_msg) -> void
+                    {
+                       if  (error_msg.find("table") != std::string::npos
+                           &&
+                           error_msg.find("already exists") != std::string::npos){
+                           cout << "[DataBase] QL Warning: " << error_msg << endl;
+                           return ;
+                       };
+                       cerr << "[DataBase] QL error: " << error_msg << endl;
+                       throw Exceptions::C_ANT_CREATE_TABLE();
+                    }
+               );
 
 }
 
@@ -132,10 +136,16 @@ string DataBase::get_insert_sql(string_view table_name, const string_map &map) c
     return sql;
 }
 
-bool DataBase::insert_into_table(string_view table_name, const string_map &map) {
+void DataBase::insert_into_table(string_view table_name, const string_map &map) {
 
     string sql = get_insert_sql(table_name, map);
-    return execute_sql(sql, "[DataBase] Row inserted successfully");
+    execute_sql(sql, "[DataBase] Row inserted successfully",
+                       [&](string_view error_msg) -> bool {
+                                cerr << "[DataBase] SQL error: " << error_msg << endl;
+                                throw Exceptions::DataBaseInsertIntoTableError(table_name, error_msg);
+                        });
+
+
 
 }
 
@@ -152,29 +162,58 @@ string DataBase::get_update_sql(string_view table_name, const string_pair &featu
     return sql;
 }
 
-bool DataBase::update_into_table(string_view table_name, const string_pair &select_feature, const string_map &map) {
+void DataBase::update_into_table(string_view table_name, const string_pair &select_feature, const string_map &map) {
     string sql = get_update_sql(table_name, select_feature, map);
-    return execute_sql(sql, "[DataBase] Row updated successfully");
+    return execute_sql(
+            sql,
+            "[DataBase] Row updated successfully");
 }
 
-bool DataBase::activate_foreign_keys() {
+void DataBase::activate_foreign_keys() {
 
     string sql = "PRAGMA foreign_keys=on;";
-    return execute_sql(sql, "[DataBase] Foreign keys activated");
+    execute_sql(
+            sql,
+            "[DataBase] Foreign keys activated",
+            [](string_view error_msg) -> void{
+                throw Exceptions::C_ANT_ACTIVATE_FOREIGN_KEY();
+            });
 
 }
 
-bool DataBase::begin_transaction() {
+void DataBase::begin_transaction() {
     string sql = "BEGIN TRANSACTION;";
-    return execute_sql(sql, "[DataBase] Transaction started");
+    execute_sql(
+            sql,
+            "[DataBase] Transaction started",
+            [](string_view error_msg) -> bool{
+                cerr<<error_msg<<endl;
+                throw Exceptions::C_ANT_START_TRANSACTION();
+            });
 
 }
 
-bool DataBase::end_transaction() {
+void DataBase::end_transaction() {
     string sql = "END TRANSACTION;";
-    return execute_sql(sql, "[DataBase] Transaction ended");
+    execute_sql(
+            sql,
+            "[DataBase] Transaction ended",
+            [](string_view error_msg) -> void{
+                throw Exceptions::C_ANT_END_TRANSACTION();
+            });
 
 }
+
+void DataBase::abort_transaction() {
+    string sql = "ROLLBACK TRANSACTION;";
+    execute_sql(
+            sql,
+            "[DataBase] Transaction aborted",
+            [](string_view error_msg) -> void{
+                throw Exceptions::C_ANT_END_TRANSACTION();
+            });
+}
+
 
 void DataBase::add_table_creation_sql(string_view sql) {
     string str;
@@ -234,11 +273,17 @@ vector<string_map> DataBase::get_all(string_view table_name) {
     return result;
 }
 
-bool DataBase::delete_by_feature(string_view table_name, const string_pair &feature) {
+void DataBase::delete_by_feature(string_view table_name, const string_pair &feature) {
     string sql = "delete from ";
     sql += table_name;
     sql += " where " + feature.first + "=" + feature.second;
-    return execute_sql(sql, "[DataBase] Delete succeeded");
+    execute_sql(
+            sql,
+            "[DataBase] Delete succeeded",
+            [&](string_view error_msg) -> bool {
+                cerr<<"SQL error: %s\n"<< error_msg<<endl;
+                throw Exceptions::DataBaseRetrievingError(table_name);
+            });
 
 }
 
@@ -257,3 +302,4 @@ string DataBase::to_sql_date_time(time_t t) {
     //strftime('%s',time)
     return result;
 }
+

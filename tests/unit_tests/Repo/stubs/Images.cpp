@@ -22,13 +22,13 @@ unique_ptr<Image> Unit_testing::Images::get_image_3() {
     return image;
 }
 
-bool Unit_testing::Images::seed_db_with_images(const shared_ptr<DependencyInjector> &di) {
+void Unit_testing::Images::seed_db_with_images(const shared_ptr<DependencyInjector> &di) {
     auto repo = di->get_image_repo(di);
     Image::installRepo(repo);
-    bool result = get_image_1()->save();
-    result = result && get_image_2()->save();
-    result = result && get_image_3()->save();
-    return result;
+    get_image_1()->save();
+    get_image_2()->save();
+    get_image_3()->save();
+
 }
 
 
