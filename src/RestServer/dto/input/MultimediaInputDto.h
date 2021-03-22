@@ -21,7 +21,7 @@ class MultimediaInputDto : public oatpp::DTO {
 
 public:
     std::unique_ptr<Multimedia> createEntityFromDto(){
-        unsigned int newId = Multimedia::createNewId();
+        unsigned int newId = Multimedia::generateNewId();
         return make_unique<Multimedia>(newId , this->path->c_str(), this->size, this->mimeType->c_str());
     }
 

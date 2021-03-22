@@ -14,12 +14,11 @@ using namespace std;
 template<class Entity>
 class IRepository {
 public:
-    [[nodiscard]] virtual const string & get_table_name() const = 0;
+    [[nodiscard]] virtual const string & getTableName() const = 0;
     virtual void save(const Entity &) = 0;
-    virtual void delete_by_id(unsigned int id) = 0;
-    virtual optional<unique_ptr<Entity>> get_by_id(unsigned  int id) = 0;
-    virtual vector<unique_ptr<Entity>> get_all() = 0;
-    virtual unsigned int get_available_id() = 0;
+    virtual void deleteById(unsigned int id) = 0;
+    virtual optional<unique_ptr<Entity>> getById(unsigned  int id) = 0;
+    virtual vector<unique_ptr<Entity>> getAll() = 0;
 };
 
 

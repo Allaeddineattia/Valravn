@@ -22,7 +22,7 @@ class ImageCreationDto : public oatpp::DTO {
 
 public:
     unique_ptr<Image> createEntityFromDto (){
-        unsigned int newId = Image::createNewId();
+        unsigned int newId = Image::generateNewId();
         return make_unique<Image>(newId, this->resolution->c_str(), this->mulitmedia->createEntityFromDto());
     }
 

@@ -29,9 +29,7 @@ public:
 
     void save(const Multimedia& element) override;
 
-    void delete_by_id(unsigned int id) override;
-
-    unsigned int get_available_id() override;
+    void deleteById(unsigned int id) override;
 
     virtual ~MultimediaRepo();
 };

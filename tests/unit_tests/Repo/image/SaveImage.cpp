@@ -36,7 +36,7 @@ TEST(image_creation, create_new_id){
     Image::installRepo(image_repo);
     auto image = Unit_testing::Images::get_image_1();
     image->save();
-    unsigned int id = Image::createNewId();
+    unsigned int id = Image::generateNewId();
     ASSERT_NE(id, 1);
 
 

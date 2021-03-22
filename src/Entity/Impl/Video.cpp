@@ -29,8 +29,8 @@ int Video::getDuration() const {
     return duration;
 }
 
-const unique_ptr<Multimedia> &Video::getMultimedia() const {
-    return multimedia;
+const Multimedia  & Video::getMultimedia() const {
+    return *multimedia;
 }
 
 string_view Video::getResolution() const {

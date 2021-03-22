@@ -136,15 +136,11 @@ void MultimediaRepo::save(const Multimedia &element) {
     mImpl->save(element);
 }
 
-void MultimediaRepo::delete_by_id(unsigned int id) {
+void MultimediaRepo::deleteById(unsigned int id) {
     mImpl->delete_by_id(id);
 }
 
 MultimediaRepo::~MultimediaRepo() = default;
-
-unsigned int MultimediaRepo::get_available_id() {
-    return mImpl->get_available_id();
-}
 
 namespace DO_NOT_EXECUTE{
     void conf_template_multimedia_repo(){

@@ -45,7 +45,15 @@ set(SOURCE_FILES
         Entity/Impl/MediaPlayingStates/Video/states/VideoTerminatedState.cpp
         Entity/Contract/VideoState/VideoTerminatedState.h
 
-        DataBase/Contracts/Repos/Tools.h DataBase/Contracts/Repos/PlaylistRepo.h DataBase/Imp/Repos/PlaylistRepo.cpp)
+        DataBase/Contracts/Repos/Tools.h
+        DataBase/Contracts/Repos/PlaylistRepo.h
+        DataBase/Contracts/Repos/ScheduleRepo.h
+        DataBase/Contracts/Repos/VideoRepo.h
+        DataBase/Imp/Repos/PlaylistRepo.cpp
+        DataBase/Imp/Repos/ScheduleRepo.cpp
+        DataBase/Imp/Repos/VideoRepo.cpp
+
+        )
 
 # The library contains header and source files.
 add_library(${CMAKE_PROJECT_NAME}_lib STATIC

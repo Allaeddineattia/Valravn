@@ -35,9 +35,8 @@ public:
 
     [[nodiscard]] void save(const Image& element) override;
 
-    void delete_by_id(unsigned int id) override;
+    void deleteById(unsigned int id) override;
 
-    unsigned int get_available_id() override;
 
     virtual ~ImageRepo();
 };

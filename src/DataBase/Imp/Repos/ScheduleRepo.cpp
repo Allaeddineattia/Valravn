@@ -13,16 +13,16 @@
 class ScheduleRepo::Impl{
 
 private:
-    shared_ptr<DataBase >  data_base = nullptr;
-    shared_ptr<IRepository<Playlist>> Playlist_repo = nullptr;
-    string table_name =  "Schedule";
+    shared_ptr<DataBase >  dataBase = nullptr;
+    shared_ptr<IRepository<Playlist>> playlistRepo = nullptr;
+    string tableName =  "Schedule";
 
     string get_create_table_sql() {
-        return "CREATE TABLE " + table_name + "("\
+        return "CREATE TABLE " + tableName + "("\
                 "ID INT PRIMARY KEY NOT NULL,"\
                 "PLAYLIST_ID INT NOT NULL,"\
                 "TIME TIME NOT NULL,"\
-                "FOREIGN KEY(PLAYLIST_ID) REFERENCES " + Playlist_repo->get_table_name() + "(ID)"\
+                "FOREIGN KEY(PLAYLIST_ID) REFERENCES " + playlistRepo->getTableName() + "(ID)"\
                 ");";
     }
 
@@ -46,22 +46,22 @@ private:
 
     [[nodiscard]] unique_ptr<Schedule> get_entity_from_map(const string_map &map) {
         int  id = stoi(map.find("ID")->second);
-        time_t timeS =DataBase::string_to_time_t(map.find("TIME")->second) ;
-        auto Playlist = Playlist_repo->get_by_id(stoi(map.find("PLAYLIST_ID")->second)).value();
+        time_t timeS =dataBase->string_to_time_t(map.find("TIME")->second) ;
+        auto Playlist = playlistRepo->getById(stoi(map.find("PLAYLIST_ID")->second)).value();
         return make_unique<Schedule>(id, timeS, move(Playlist));
     }
 
     void create_element(const Schedule& element) const {
-        data_base->begin_transaction();
+        dataBase->begin_transaction();
         try {
-            Playlist_repo->save(element.getPlaylist());
+            playlistRepo->save(element.getPlaylist());
             string_map map = get_string_map(element);
-            data_base->insert_into_table(table_name, map);
+            dataBase->insert_into_table(tableName, map);
         }catch (const std::exception& ex){
-            data_base->abort_transaction();
+            dataBase->abort_transaction();
             throw ;
         }
-        data_base->end_transaction();
+        dataBase->end_transaction();
 
     }
 
@@ -69,9 +69,9 @@ private:
         string_map map = get_update_string_map(old_element, new_element);
         if(!map.empty()){
             string_pair id ("ID",to_string(old_element.getId()));
-            data_base->update_into_table(table_name, id, map);
+            dataBase->update_into_table(tableName, id, map);
         }
-        Playlist_repo->save(new_element.getPlaylist());
+        playlistRepo->save(new_element.getPlaylist());
     }
 
 
@@ -80,28 +80,28 @@ public:
 
     template<class Dependency>
     explicit Impl(shared_ptr<Dependency> dependency_injector){
-        data_base = dependency_injector->get_data_base(dependency_injector);
-        Playlist_repo = dependency_injector->get_playlist_repo(dependency_injector);
-        data_base->add_table_creation_sql(get_create_table_sql());
+        dataBase = dependency_injector->get_data_base(dependency_injector);
+        playlistRepo = dependency_injector->get_playlist_repo(dependency_injector);
+        dataBase->add_table_creation_sql(get_create_table_sql());
     }
 
 
     [[nodiscard]] const string & get_table_name() {
-        return table_name;
+        return tableName;
     };
 
     optional<unique_ptr<Schedule>> get_by_id(unsigned int id) {
-        auto schedule_map = data_base->get_by_id(table_name, to_string(id));
+        auto schedule_map = dataBase->get_by_id(tableName, to_string(id));
         if(!schedule_map.empty())
             return get_entity_from_map(schedule_map);
         return std::nullopt;
     };
 
     vector<unique_ptr<Schedule>> get_all() {
-        vector<string_map> vector_res = data_base->get_all(table_name);
+        vector<string_map> vector_res = dataBase->get_all(tableName);
         vector<unique_ptr<Schedule>> schedules;
         for(auto &schedule_map: vector_res) {
-            auto Playlist = Playlist_repo->get_by_id(stoi(schedule_map.find("MULTIMEDIA_ID")->second));
+            auto Playlist = playlistRepo->getById(stoi(schedule_map.find("MULTIMEDIA_ID")->second));
             if(Playlist) schedules.push_back(get_entity_from_map(schedule_map));
         }
         return  schedules;
@@ -126,16 +126,16 @@ public:
         if(!schedule.has_value()){
             throw "No Element found with id ";
         }
-        data_base->begin_transaction();
+        dataBase->begin_transaction();
         try{
-            data_base->delete_by_feature(table_name, feature_selection);
-            Playlist_repo->delete_by_id(schedule.value()->getPlaylist().getId());
+            dataBase->delete_by_feature(tableName, feature_selection);
+            playlistRepo->deleteById(schedule.value()->getPlaylist().getId());
         }catch (const std::exception& ex){
-            data_base->abort_transaction();
+            dataBase->abort_transaction();
             throw ;
         }
 
-        data_base->end_transaction();
+        dataBase->end_transaction();
     }
     unsigned int get_available_id() {
         unsigned int id = Tools::generate_random_value();

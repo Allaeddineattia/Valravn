@@ -21,7 +21,7 @@ private:
                 "MULTIMEDIA_ID INT NOT NULL,"\
                 "RESOLUTION TEXT NOT NULL,"\
                 "DURATION INT NOT NULL,"\
-                "FOREIGN KEY(MULTIMEDIA_ID) REFERENCES " + multimediaRepo->get_table_name() + "(ID)"\
+                "FOREIGN KEY(MULTIMEDIA_ID) REFERENCES " + multimediaRepo->getTableName() + "(ID)"\
                 ");";
     }
 
@@ -50,7 +50,7 @@ private:
         int  id = stoi(map.find("ID")->second);
         int  duration = stoi(map.find("DURATION")->second);
         string resolution = map.find("RESOLUTION")->second;
-        auto multimedia = multimediaRepo->get_by_id(stoi(map.find("MULTIMEDIA_ID")->second)).value();
+        auto multimedia = multimediaRepo->getById(stoi(map.find("MULTIMEDIA_ID")->second)).value();
         return make_unique<Video>(id, duration, move(multimedia),resolution);
     }
 
@@ -102,7 +102,7 @@ public:
         vector<string_map> vectorRes = dataBase->get_all(tableName);
         vector<unique_ptr<Video>> videos;
         for(auto &video_map: vectorRes) {
-            auto multimedia = multimediaRepo->get_by_id(stoi(video_map.find("MULTIMEDIA_ID")->second));
+            auto multimedia = multimediaRepo->getById(stoi(video_map.find("MULTIMEDIA_ID")->second));
             if(multimedia) videos.push_back(getEntityFromMap(video_map));
         }
         return  videos;
@@ -130,7 +130,7 @@ public:
         dataBase->begin_transaction();
         try{
             dataBase->delete_by_feature(tableName, feature_selection);
-            multimediaRepo->delete_by_id(video.value()->getMultimedia().getId());
+            multimediaRepo->deleteById(video.value()->getMultimedia().getId());
         }catch (const std::exception& ex){
             dataBase->abort_transaction();
             throw ;

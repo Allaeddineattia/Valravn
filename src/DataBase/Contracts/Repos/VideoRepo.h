@@ -8,7 +8,7 @@
 #include <DataBase/Contracts/DataBase.h>
 #include <DataBase/Contracts/Repos/MultimediaRepo.h>
 #include <optional>
-#include "../../../Entity/Video.h"
+#include <Entity/Contract/Video.h>
 #include <DataBase/Contracts/IRepository.h>
 
 class VideoRepo: public IRepository<Video> {
@@ -34,6 +34,6 @@ public:
 
     virtual ~VideoRepo();
 };
-};
+
 
 #endif //MYPROJECT_VIDEOREPO_H

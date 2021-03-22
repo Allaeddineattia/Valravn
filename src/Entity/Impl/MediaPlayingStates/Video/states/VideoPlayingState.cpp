@@ -6,17 +6,17 @@
 #include "iostream"
 
 void VideoPlayingState::play() {
-    cout<<"VideoPlayingState::play, path: "<<stateHandler.video.getMultimedia()->getPath()<<endl;
+    cout<<"VideoPlayingState::play, path: "<<stateHandler.video.getMultimedia().getPath()<<endl;
 }
 
 void VideoPlayingState::stop() {
-    cout<<"VideoPlayingState::stop, path: "<<stateHandler.video.getMultimedia()->getPath()<<endl;
+    cout<<"VideoPlayingState::stop, path: "<<stateHandler.video.getMultimedia().getPath()<<endl;
     stateHandler.setState(stateHandler.getStoppedState());
 
 }
 
 void VideoPlayingState::pause() {
-    cout<<"VideoPlayingState::pause, path: "<<stateHandler.video.getMultimedia()->getPath()<<endl;
+    cout<<"VideoPlayingState::pause, path: "<<stateHandler.video.getMultimedia().getPath()<<endl;
     stateHandler.setState(stateHandler.getPausedState());
 
 }

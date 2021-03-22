@@ -56,12 +56,12 @@ public:
     }
     bool install_playlist_repo(const shared_ptr<DependencyInjector>& d){
         assert(!playlist_repo);
-        playlist_repo = make_unique<PlaylistRepo>(d);
+        //playlist_repo = make_unique<PlaylistRepo>(d); //play list repo not implemented
         return true;
     }
     shared_ptr<IRepository<Playlist>> get_playlist_repo(const shared_ptr<DependencyInjector>& d){
         assert(playlist_repo);
-        return shared_ptr<IRepository<Playlist>>(d, multimedia_repo.get());
+        //return shared_ptr<IRepository<PlaylistRepo>>(d, multimedia_repo.get()); //play list repo not implemented
     };
 
     shared_ptr<IRepository<Image>> get_image_repo(const shared_ptr<DependencyInjector>& d){
