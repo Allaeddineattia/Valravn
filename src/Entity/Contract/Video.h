@@ -12,7 +12,11 @@
 #include <Entity/Contract/VideoState/VideoStateHandler.h>
 #include "IPlayable.h"
 class VideoStateHandler;
-class Video : public IPlayable{
+using namespace std;
+
+class Video;
+
+class Video : public IPlayable, public Savable<Video>{
 private:
 
     int id;

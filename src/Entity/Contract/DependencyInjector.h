@@ -6,6 +6,7 @@
 #define MYPROJECT_DEPENDENCYINJECTOR_H
 #include "Image.h"
 #include "Playlist.h"
+#include "Video.h"
 
 #include <DataBase/Contracts/DataBase.h>
 #include <DataBase/Contracts/Repos/MultimediaRepo.h>
@@ -16,6 +17,8 @@
 
 #include <DataBase/Contracts/IRepository.h>
 #include <DataBase/Contracts/Repos/ImageRepo.h>
+#include <DataBase/Contracts/Repos/VideoRepo.h>
+#include <DataBase/Contracts/Repos/PlaylistRepo.h>
 
 
 class DependencyInjector {
@@ -23,6 +26,7 @@ private:
     unique_ptr<DataBase> data_base = nullptr;
     unique_ptr<IRepository<Multimedia>> multimedia_repo = nullptr;
     unique_ptr<IRepository<Image>> image_repo = nullptr;
+    unique_ptr<IRepository<Video>> video_repo = nullptr;
     unique_ptr<IRepository<Playlist>> playlist_repo = nullptr;
 
 public:
@@ -54,6 +58,11 @@ public:
         image_repo = make_unique<ImageRepo>(d);
         return true;
     }
+    bool install_video_repo(const shared_ptr<DependencyInjector>& d){
+        assert(!video_repo);
+        video_repo = make_unique<VideoRepo>(d);
+        return true;
+    }
     bool install_playlist_repo(const shared_ptr<DependencyInjector>& d){
         assert(!playlist_repo);
         //playlist_repo = make_unique<PlaylistRepo>(d); //play list repo not implemented
@@ -67,6 +76,10 @@ public:
     shared_ptr<IRepository<Image>> get_image_repo(const shared_ptr<DependencyInjector>& d){
         assert(image_repo);
         return shared_ptr<IRepository<Image>>(d, image_repo.get());
+    }
+    shared_ptr<IRepository<Video>> get_video_repo(const shared_ptr<DependencyInjector>& d){
+        assert(video_repo);
+        return shared_ptr<IRepository<Video>>(d, video_repo.get());
     }
 
 
