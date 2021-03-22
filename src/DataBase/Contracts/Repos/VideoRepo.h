@@ -28,9 +28,9 @@ public:
 
     vector<unique_ptr<Video>> getAll() override;
 
-    [[nodiscard]] bool save(const Video& element) override;
+    [[nodiscard]] void save(const Video& element) override;
 
-    bool deleteById(unsigned int id) override;
+    void deleteById(unsigned int id) override;
 
     virtual ~VideoRepo();
 };

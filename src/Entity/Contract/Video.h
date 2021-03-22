@@ -27,7 +27,7 @@ public:
 
     [[nodiscard]]int getDuration() const;
 
-    [[nodiscard]]const unique_ptr<Multimedia> &getMultimedia() const;
+    [[nodiscard]]const Multimedia &getMultimedia() const;
 
     [[nodiscard]]string_view getResolution() const;
 

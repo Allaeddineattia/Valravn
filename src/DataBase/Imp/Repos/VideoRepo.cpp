@@ -2,8 +2,10 @@
 // Created by rawaa on 20‏/12‏/2020.
 //
 
-
-#include <Entity/DependencyInjector.h>
+#include <Entity/Contract/Video.h>
+#include <Entity/Contract/Image.h>
+#include <DataBase/Contracts/Repos/Tools.h>
+#include <Entity/Contract/DependencyInjector.h>
 #include "DataBase/Contracts/Repos/VideoRepo.h"
 
 class VideoRepo::Impl{
@@ -19,14 +21,14 @@ private:
                 "MULTIMEDIA_ID INT NOT NULL,"\
                 "RESOLUTION TEXT NOT NULL,"\
                 "DURATION INT NOT NULL,"\
-                "FOREIGN KEY(MULTIMEDIA_ID) REFERENCES " + multimediaRepo->getTableName() + "(ID)"\
+                "FOREIGN KEY(MULTIMEDIA_ID) REFERENCES " + multimediaRepo->get_table_name() + "(ID)"\
                 ");";
     }
 
     [[nodiscard]] static string_map getStringMap(const Video& video) {
         string_map map;
         map.insert(string_pair("ID", to_string(video.getId())));
-        map.insert(string_pair("MULTIMEDIA_ID", to_string(video.getMultimedia()->getId())));
+        map.insert(string_pair("MULTIMEDIA_ID", to_string(video.getMultimedia().getId())));
         map.insert(string_pair("RESOLUTION" , DataBase::to_sql_string(video.getResolution())));
         map.insert(string_pair("DURATION", to_string(video.getDuration())));
         return map;
@@ -41,8 +43,6 @@ private:
         if(newElement.getDuration() != oldElement.getDuration())
             map.insert(string_pair("DURATION", to_string(newElement.getDuration())));
 
-
-
         return map;
     }
 
@@ -50,27 +50,31 @@ private:
         int  id = stoi(map.find("ID")->second);
         int  duration = stoi(map.find("DURATION")->second);
         string resolution = map.find("RESOLUTION")->second;
-        auto multimedia = multimediaRepo->getById(stoi(map.find("MULTIMEDIA_ID")->second)).value();
+        auto multimedia = multimediaRepo->get_by_id(stoi(map.find("MULTIMEDIA_ID")->second)).value();
         return make_unique<Video>(id, duration, move(multimedia),resolution);
     }
 
-    [[nodiscard]] bool createElement(const Video& element) const {
-        if(multimediaRepo->save((const Multimedia &) element.getMultimedia())){
+    void create_element(const Video& element) const {
+        dataBase->begin_transaction();
+        try {
+            multimediaRepo->save(element.getMultimedia());
             string_map map = getStringMap(element);
-            return dataBase->insert_into_table(tableName, map);
+            dataBase->insert_into_table(tableName, map);
+        }catch (const std::exception& ex){
+            dataBase->abort_transaction();
+            throw ;
         }
-        return false;
+        dataBase->end_transaction();
+
     }
 
-    [[nodiscard]] bool updateElement(const Video& old_element, const Video& new_element) const {
+    void update_element(const Video& old_element, const Video& new_element) const {
         string_map map = getUpdateStringMap(old_element, new_element);
-        bool result;
         if(!map.empty()){
             string_pair id ("ID",to_string(old_element.getId()));
-            result = dataBase->update_into_table(tableName, id, map);
+            dataBase->update_into_table(tableName, id, map);
         }
-        result = multimediaRepo->save((const Multimedia &) new_element.getMultimedia()) || result;
-        return result;
+        multimediaRepo->save(new_element.getMultimedia());
     }
 
 public:
@@ -98,30 +102,47 @@ public:
         vector<string_map> vectorRes = dataBase->get_all(tableName);
         vector<unique_ptr<Video>> videos;
         for(auto &video_map: vectorRes) {
-            auto multimedia = multimediaRepo->getById(stoi(video_map.find("MULTIMEDIA_ID")->second)); //ess2l
+            auto multimedia = multimediaRepo->get_by_id(stoi(video_map.find("MULTIMEDIA_ID")->second));
             if(multimedia) videos.push_back(getEntityFromMap(video_map));
         }
         return  videos;
     };
 
-    [[nodiscard]] bool save(const Video& element) {
+    [[nodiscard]] void save(const Video& element) {
+
         auto exist = getById(element.getId());
-        if(exist.has_value())
-            return updateElement(*exist.value(), element);
-        return createElement(element);
+        if(exist.has_value()){
+            auto img = move(exist.value());
+            if(img){
+                return update_element(*img, element);
+            }
+
+        }
+        create_element(element);
     };
 
-    bool deleteById(unsigned int id) {
+    void delete_by_id(unsigned int id) {
         string_pair feature_selection("ID", to_string(id));
         auto video = getById(id);
         if(!video.has_value()){
             throw "No Element found with id ";
         }
-        bool result = dataBase->begin_transaction();
-        result = result && dataBase->delete_by_feature(tableName, feature_selection);
-        if(result)
-            result = multimediaRepo->deleteById(video.value()->getMultimedia()->getId());
-        return result && dataBase->end_transaction();
+        dataBase->begin_transaction();
+        try{
+            dataBase->delete_by_feature(tableName, feature_selection);
+            multimediaRepo->delete_by_id(video.value()->getMultimedia().getId());
+        }catch (const std::exception& ex){
+            dataBase->abort_transaction();
+            throw ;
+        }
+
+        dataBase->end_transaction();
+    }
+    unsigned int get_available_id() {
+        unsigned int id = Tools::generate_random_value();
+        while(getById(id).has_value())
+            id = Tools::generate_random_value();
+        return id;
     }
 
 
@@ -139,12 +160,12 @@ vector<unique_ptr<Video>> VideoRepo::getAll() {
     return mImpl->getAll();
 }
 
-bool VideoRepo::save(const Video &element) {
-    return mImpl->save(element);
+void VideoRepo::save(const Video &element) {
+     mImpl->save(element);
 }
 
-bool VideoRepo::deleteById(unsigned int id) {
-    return mImpl->deleteById(id);
+void VideoRepo::deleteById(unsigned int id) {
+    return mImpl->delete_by_id(id);
 }
 
 template<class Dependency>
@@ -157,8 +178,8 @@ VideoRepo::~VideoRepo() {
 }
 
 namespace DO_NOT_EXECUTE{
-    void conf_template_ad_repo(){
+    void conf_template_video_repo(){
         auto di = std::make_shared<DependencyInjector>();
-        ImageRepo a(di);
+        VideoRepo a(di);
     }
 }
