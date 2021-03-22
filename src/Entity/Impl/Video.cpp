@@ -21,7 +21,7 @@ stateHandler(make_unique<VideoStateHandler>(*this))
     this->resolution = resolution_input;
 }
 
-int Video::getId() const {
+unsigned int Video::getId() const {
     return id;
 }
 

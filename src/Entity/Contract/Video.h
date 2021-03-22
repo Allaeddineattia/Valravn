@@ -27,13 +27,17 @@ private:
 public:
     virtual ~Video() = default;
 
-    [[nodiscard]]int getId() const;
+    [[nodiscard]] unsigned int getId() const override;
 
     [[nodiscard]]int getDuration() const;
 
     [[nodiscard]]const Multimedia &getMultimedia() const;
 
     [[nodiscard]]string_view getResolution() const;
+
+    const Video & getSavable() override{
+        return *this;
+    }
 
     void play() override ;
 
