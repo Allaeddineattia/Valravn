@@ -5,7 +5,7 @@
 #include <Entity/Contract/Video.h>
 #include <Entity/Contract/Image.h>
 #include <DataBase/Contracts/Repos/Tools.h>
-#include <Entity/Contract/DependencyInjector.h>
+#include <Shared/DependencyInjector.h>
 #include "DataBase/Contracts/Repos/VideoRepo.h"
 
 class VideoRepo::Impl{

@@ -6,7 +6,7 @@
 #include <DataBase/Contracts/DataBase.h>
 #include <Entity/Contract/Playlist.h>
 #include <DataBase/Contracts/Repos/ImageRepo.h>
-#include <Entity/Contract/DependencyInjector.h>
+#include <Shared/DependencyInjector.h>
 #include <Entity/Contract/Schedule.h>
 #include <DataBase/Contracts/Repos/Tools.h>
 

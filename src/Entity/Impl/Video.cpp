@@ -12,8 +12,7 @@ using namespace std;
 Video::Video(int id, int duration, unique_ptr<Multimedia> multimedia, string_view resolution_input) :
 id(id),
 duration(duration),
-multimedia(move(multimedia)),
-stateHandler(make_unique<VideoStateHandler>(*this))
+multimedia(move(multimedia))
 {
     string vResolution = resolution_input.data();
     Tools::remove_blanks(vResolution);
@@ -47,5 +46,9 @@ void Video::stop() {
 
 void Video::pause() {
     stateHandler->pause();
+}
+
+void Video::setStateHandler(unique_ptr<VideoStateHandler> stateHandler) {
+    Video::stateHandler = move(stateHandler);
 }
 

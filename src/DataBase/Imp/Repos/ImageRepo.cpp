@@ -2,7 +2,7 @@
 // Created by alro on 29‏/11‏/2020.
 //
 
-#include <Entity/Contract/DependencyInjector.h>
+#include <Shared/DependencyInjector.h>
 #include "DataBase/Contracts/Repos/ImageRepo.h"
 #include "DataBase/Contracts/Repos/Tools.h"
 class ImageRepo::Impl{

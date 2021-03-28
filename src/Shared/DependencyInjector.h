@@ -4,9 +4,9 @@
 
 #ifndef MYPROJECT_DEPENDENCYINJECTOR_H
 #define MYPROJECT_DEPENDENCYINJECTOR_H
-#include "Image.h"
-#include "Playlist.h"
-#include "Video.h"
+#include "Entity/Contract/Image.h"
+#include "Entity/Contract/Playlist.h"
+#include "Entity/Contract/Video.h"
 
 #include <DataBase/Contracts/DataBase.h>
 #include <DataBase/Contracts/Repos/MultimediaRepo.h>
@@ -19,7 +19,7 @@
 #include <DataBase/Contracts/Repos/ImageRepo.h>
 #include <DataBase/Contracts/Repos/VideoRepo.h>
 #include <DataBase/Contracts/Repos/PlaylistRepo.h>
-
+#include <MediaPlayer/VLC_Wrapper.h>
 
 class DependencyInjector {
 private:
@@ -28,6 +28,7 @@ private:
     unique_ptr<IRepository<Image>> image_repo = nullptr;
     unique_ptr<IRepository<Video>> video_repo = nullptr;
     unique_ptr<IRepository<Playlist>> playlist_repo = nullptr;
+    unique_ptr<VLC_Wrapper> vlc_wrapper =  nullptr;
 
 public:
     DependencyInjector()= default;
@@ -80,6 +81,16 @@ public:
     shared_ptr<IRepository<Video>> get_video_repo(const shared_ptr<DependencyInjector>& d){
         assert(video_repo);
         return shared_ptr<IRepository<Video>>(d, video_repo.get());
+    }
+
+    bool install_vlc_wrapper(){
+        assert(!vlc_wrapper);
+        vlc_wrapper = make_unique<VLC_Wrapper>();
+        return true;
+    }
+    shared_ptr<VLC_Wrapper> get_vlc_wrapper(const shared_ptr<DependencyInjector>& d){
+        assert(vlc_wrapper);
+        return shared_ptr<VLC_Wrapper>(d, vlc_wrapper.get());
     }
 
 

@@ -11,14 +11,24 @@ void VideoPlayingState::play() {
 
 void VideoPlayingState::stop() {
     cout<<"VideoPlayingState::stop, path: "<<stateHandler.video.getMultimedia().getPath()<<endl;
-    stateHandler.setState(stateHandler.getStoppedState());
+    stateHandler.setUpdateFunction([this](){
+        this->stateHandler.setState(this->stateHandler.getPausedState());
+    });
+    stateHandler.getVlc().stop();
 
 }
 
 void VideoPlayingState::pause() {
+
     cout<<"VideoPlayingState::pause, path: "<<stateHandler.video.getMultimedia().getPath()<<endl;
-    stateHandler.setState(stateHandler.getPausedState());
+    stateHandler.setUpdateFunction([this](){
+        cout<<"never for ever";
+        this->stateHandler.setState(this->stateHandler.getPausedState());
+    });
+    stateHandler.getVlc().pause();
+
 
 }
 
 VideoPlayingState::VideoPlayingState(VideoStateHandler &stateHandler) : stateHandler(stateHandler) {}
+

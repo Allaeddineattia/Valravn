@@ -5,6 +5,7 @@
 #include "Entity/Contract/Playlist.h"
 #include <vector>
 #include <algorithm>
+#include <iostream>
 
 using namespace std;
 
@@ -33,9 +34,11 @@ int Playlist::getId() const {
 }
 
 void Playlist::play() {
-    for(current = 0; current < display.size(); current ++)
-        display[current]->getPlayable().play();
+    cout<<"playing: "<< current<<endl;
+    display[current]->getPlayable().play();
 }
+
+
 
 void Playlist::pause() {
     display[current]->getPlayable().pause();
@@ -46,10 +49,25 @@ void Playlist::stop() {
     current = 0;
 }
 
-void Playlist::next () {
-     current++;
+void Playlist::play_next () {
+    //this->display[current]->getPlayable().stop();
+    ++current;
+    cout<<current<< " , " <<display.size()<<endl;
+
+    if(current<=display.size()){
+        cout<<"ehi"<<endl;
+        this->play();
+    }
+
+
 }
 
-void Playlist::previous (){
+void Playlist::play_previous (){
     current--;
+}
+
+void Playlist::update() {
+    cout<<"Hello Hello "<<endl;
+    play_next();
+
 }

@@ -6,7 +6,7 @@
 #define MYPROJECT_VIDEOS_H
 
 #include <Entity/Contract/Video.h>
-#include <Entity/Contract/DependencyInjector.h>
+#include <Shared/DependencyInjector.h>
 
 
 using namespace std;

@@ -7,7 +7,7 @@
 
 #include <string_view>
 #include <memory>
-#include <Entity/Contract/DependencyInjector.h>
+#include <Shared/DependencyInjector.h>
 
 using namespace std;
 namespace Unit_testing{

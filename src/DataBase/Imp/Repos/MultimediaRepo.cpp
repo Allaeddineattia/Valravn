@@ -3,7 +3,7 @@
 //
 
 #include <DataBase/Contracts/Repos/MultimediaRepo.h>
-#include <Entity/Contract/DependencyInjector.h>
+#include <Shared/DependencyInjector.h>
 
 class MultimediaRepo::Impl{
 private:

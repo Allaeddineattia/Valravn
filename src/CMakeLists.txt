@@ -28,7 +28,7 @@ set(SOURCE_FILES
         DataBase/Contracts/DataBase.h
         DataBase/Imp/Repos/MultimediaRepo.cpp
         DataBase/Contracts/Repos/MultimediaRepo.h
-        Entity/Contract/DependencyInjector.h
+        Shared/DependencyInjector.h
         DataBase/Imp/Repos/ImageRepo.cpp
         DataBase/Contracts/Repos/ImageRepo.h
         Shared/Timer.h
@@ -53,7 +53,7 @@ set(SOURCE_FILES
         DataBase/Imp/Repos/ScheduleRepo.cpp
         DataBase/Imp/Repos/VideoRepo.cpp
 
-        )
+        MediaPlayer/IObeserver.h)
 
 # The library contains header and source files.
 add_library(${CMAKE_PROJECT_NAME}_lib STATIC

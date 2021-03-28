@@ -6,7 +6,7 @@
 
 
 #include <iostream>
-#include <Entity/Contract/DependencyInjector.h>
+#include <Shared/DependencyInjector.h>
 
 void init_imagerepo(){
     string fileName = "test.db";

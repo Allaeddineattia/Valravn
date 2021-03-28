@@ -39,11 +39,14 @@ public:
         return *this;
     }
 
+    void setStateHandler(unique_ptr<VideoStateHandler> stateHandler);
+
     void play() override ;
 
     void stop() override ;
 
     void pause() override;
+
 
     Video(int id, int duration, unique_ptr<Multimedia> multimedia, string_view resolution);
 

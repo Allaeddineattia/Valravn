@@ -2,7 +2,7 @@
 // Created by alro on 29‏/11‏/2020.
 //
 
-#include <Entity/Contract/DependencyInjector.h>
+#include <Shared/DependencyInjector.h>
 #include <Shared/Tools.h>
 #include <Entity/Contract/Image.h>
 #include "gtest/gtest.h"
