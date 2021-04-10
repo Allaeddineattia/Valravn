@@ -52,70 +52,73 @@ TEST(VideoPlaying, PlayVVideo) {
 
     usleep(1000000);
 
-    int x = 0;
-    while(x != 5){
-        cout<<"give you input 1-increase 2-decrease 3 - pause 4 - resume 5-quit"<<endl;
-        cin>>x;
-        if (x == 1){
-            cout << "volume : " << vlc->increaseVolume()<< endl;
-        }else if (x ==2){
-            cout << "volume : " << vlc->decreaseVolume()<< endl;
-        }else if (x == 3){
-            video->pause();
-        }else if (x == 4){
-            video->play();
-        }
-        else if (x == 5){
-            video->stop();
-            exit(0);
-        }
-    }
-
 
 }
 
 TEST(VideoPlaying, PlayVideoPlaylist) {
-    shared_ptr<DependencyInjector> di = make_shared<DependencyInjector>();
-    di->install_vlc_wrapper();
-    auto vlc = di->get_vlc_wrapper(di);
+    {
+        shared_ptr<DependencyInjector> di = make_shared<DependencyInjector>();
+        di->install_vlc_wrapper();
+        auto vlc = di->get_vlc_wrapper(di);
 
-    string path = "/home/alro/Downloads/All over in 10 seconds.mp4";
+        string path = "/home/alro/Downloads/All over in 10 seconds.mp4";
 
-    time_t duration = vlc->getInformationAboutMedia(path);
+        time_t duration = vlc->getInformationAboutMedia(path);
 
-    cout<<"duration: "<<duration<<endl;
+        cout<<"duration: "<<duration<<endl;
 
-    auto multimedia = make_unique<Multimedia>(2, path, 2000, "image/jpeg");
+        auto multimedia = make_unique<Multimedia>(2, path, 2000, "image/jpeg");
 
-    auto video = make_unique<Video>(2, duration, move(multimedia), "1920:1080");
+        auto video = make_unique<Video>(2, duration, move(multimedia), "1920:1080");
 
-    auto stateHandler = make_unique<VideoStateHandler>(di, *video);
-    video->setStateHandler(move(stateHandler));
+        auto stateHandler = make_unique<VideoStateHandler>(di, *video);
+        video->setStateHandler(move(stateHandler));
 
-    auto playlist = make_unique<Playlist>(4);
+        auto playlist = make_unique<Playlist>(4);
 
-    auto parameter = make_unique<Parameter>(true, 50, 100, 0.5);
+        auto parameter = make_unique<Parameter>(true, 50, 100, 0.5);
 
-    playlist->addMediaDisplay(make_unique<MediaDisplay>(move(video), move(parameter)));
+        playlist->addMediaDisplay(make_unique<MediaDisplay>(move(video), move(parameter)));
 
-    multimedia = make_unique<Multimedia>(2, path, 2000, "image/jpeg");
+        path = "/home/alro/Downloads/Pexels Videos 3436.mp4";
 
-    video = make_unique<Video>(2, duration, move(multimedia), "1920:1080");
-    stateHandler = make_unique<VideoStateHandler>(di, *video);
-    video->setStateHandler(move(stateHandler));
+        multimedia = make_unique<Multimedia>(2, path, 2000, "image/jpeg");
 
-    parameter = make_unique<Parameter>(true, 50, 100, 0.5);
+        video = make_unique<Video>(2, duration, move(multimedia), "1920:1080");
+        stateHandler = make_unique<VideoStateHandler>(di, *video);
+        video->setStateHandler(move(stateHandler));
 
-    playlist->addMediaDisplay(make_unique<MediaDisplay>(move(video), move(parameter)));
+        parameter = make_unique<Parameter>(true, 50, 100, 0.5);
 
-    vlc->onTerminate(playlist.get());
+        playlist->addMediaDisplay(make_unique<MediaDisplay>(move(video), move(parameter)));
 
-    playlist->play();
+        vlc->onMediaEnd(playlist.get());
 
+        playlist->play();
 
-    while(true);
-
-
-
-
+        int x = 0;
+        while(true){
+            cout<<"give you input 1-increase 2-decrease 3 - pause 4 - resume 5-quit"<<endl;
+            cin>>x;
+            if (x == 1){
+                cout << "volume : " << vlc->increaseVolume()<< endl;
+            }else if (x ==2){
+                cout << "volume : " << vlc->decreaseVolume()<< endl;
+            }else if (x == 3){
+                playlist->pause();
+            }else if (x == 4){
+                playlist->play();
+            }
+            else if (x == 5){
+                playlist->play_next();
+            }
+            else if (x == 6){
+                playlist->play_previous();
+            }
+            else if (x == 7){
+                playlist->stop();
+                exit(0);
+            }
+        }
+    }
 }

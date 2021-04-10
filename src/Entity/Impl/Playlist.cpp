@@ -4,7 +4,6 @@
 
 #include "Entity/Contract/Playlist.h"
 #include <vector>
-#include <algorithm>
 #include <iostream>
 
 using namespace std;
@@ -46,16 +45,19 @@ void Playlist::pause() {
 
 void Playlist::stop() {
     display[current]->getPlayable().stop();
-    current = 0;
 }
 
 void Playlist::play_next () {
-    //this->display[current]->getPlayable().stop();
-    ++current;
-    cout<<current<< " , " <<display.size()<<endl;
-
-    if(current<=display.size()){
-        cout<<"ehi"<<endl;
+    display[current]->getPlayable().stop();
+    if(current + 1 < display.size()){
+        ++current;
+        cout<<current<< " , " <<display.size()<<endl;
+        cout<<"Playlist::play_next"<<endl;
+        this->play();
+    }else{
+        cout<<"Playlist reached end"<<endl;
+        current = 0;
+        cout<<"Playlist::play_next"<<endl;
         this->play();
     }
 
@@ -63,11 +65,34 @@ void Playlist::play_next () {
 }
 
 void Playlist::play_previous (){
-    current--;
+    display[current]->getPlayable().stop();
+    cout<<current - 1<<endl;
+    if((((long)current) - 1) >= 0){
+        --current;
+        cout<<current<< " , " <<display.size()<<endl;
+        cout<<"Playlist::play_next"<<endl;
+        this->play();
+    }else{
+        cout<<"Playlist reached end"<<endl;
+        current = display.size() - 1;
+        cout<<"current: "<<current<<endl;
+        this->play();
+    }
 }
 
 void Playlist::update() {
     cout<<"Hello Hello "<<endl;
-    play_next();
+    display[current]->getPlayable().stop();
+    if(current + 1 < display.size()){
+        ++current;
+        cout<<current<< " , " <<display.size()<<endl;
+        cout<<"Playlist::play_next"<<endl;
+        this->play();
+    }else{
+        cout<<"Playlist reached end"<<endl;
+        current = 0;
+        cout<<"Playlist::play_next"<<endl;
+        this->play();
+    }
 
 }

@@ -18,20 +18,25 @@ class VLC_Wrapper {
     libvlc_media_player_t  * mediaPlayer;
     libvlc_event_manager_t * mediaPlayerEventManager;
     libvlc_media_t * media;
+    int x;
+    void onPlayVideo();
+    void onPauseVideo();
+    void onStopVideo();
+    IObserver * observer;
 
 public:
+    IObserver * next_observer;
     VLC_Wrapper();
+    bool media_player_locked = false;
     void playVideo(string_view path, int length);
-    void onPlayVideo(IObserver * observer);
-    void onPauseVideo(IObserver * observer);
-    void onStopVideo(IObserver * observer);
-    void onTerminate(IObserver * observer);
+
+    void onMediaEnd(IObserver * observer);
     void setFullScreen();
     void pause();
     void resume();
     void stop();
     void terminate();
-
+    void setNextMedia();
 
     time_t getInformationAboutMedia(string_view path);
 

@@ -6,7 +6,7 @@
 
 #include <utility>
 #include "Entity/Contract/VideoState/VideoStateHandler.h"
-
+#include <iostream>
 
 
 VideoPlayingState * VideoStateHandler::getPlayingState() const {
@@ -26,17 +26,15 @@ IPlayable &VideoStateHandler::getState() const {
 }
 
 void VideoStateHandler::play() {
-    vlc->onPlayVideo(this);
+    vlc->next_observer = static_cast<IObserver *>(this);
     state->play();
 }
 
 void VideoStateHandler::stop() {
-    vlc->onStopVideo(this);
     state->stop();
 }
 
 void VideoStateHandler::pause() {
-    vlc->onPauseVideo(this);
     state->pause();
 }
 
@@ -50,6 +48,7 @@ VLC_Wrapper & VideoStateHandler::getVlc() const {
 }
 
 void VideoStateHandler::update() {
+    cout<<"Video path "<< this->video.getMultimedia().getPath()<<endl;
     this->updateFunction();
 }
 

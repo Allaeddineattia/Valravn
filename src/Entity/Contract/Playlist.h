@@ -15,7 +15,7 @@ class Playlist : public IPlayable , public IObserver{
 private:
     int id;
     vector<unique_ptr<MediaDisplay>> display;
-    int current = 0;
+    unsigned long current = 0;
 
 public:
     Playlist(int id);

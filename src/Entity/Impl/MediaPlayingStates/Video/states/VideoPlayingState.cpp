@@ -12,7 +12,7 @@ void VideoPlayingState::play() {
 void VideoPlayingState::stop() {
     cout<<"VideoPlayingState::stop, path: "<<stateHandler.video.getMultimedia().getPath()<<endl;
     stateHandler.setUpdateFunction([this](){
-        this->stateHandler.setState(this->stateHandler.getPausedState());
+        this->stateHandler.setState(this->stateHandler.getStoppedState());
     });
     stateHandler.getVlc().stop();
 

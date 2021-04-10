@@ -35,9 +35,6 @@ public:
                                                                                         playingState(make_unique<VideoPlayingState>(*this)),
                                                                                         state(stoppedState.get()){
         vlc = dependencyInjector->get_vlc_wrapper(dependencyInjector);
-
-
-
         vlc->setFullScreen();
     };
 
