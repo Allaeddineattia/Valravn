@@ -16,8 +16,8 @@ mediaPlayerEventManager(libvlc_media_player_event_manager(mediaPlayer))
 {
     libvlc_event_attach(mediaPlayerEventManager, libvlc_event_e::libvlc_MediaPlayerMediaChanged,
                         [](const struct libvlc_event_t *p_event, void *p_data){
-                            cout<<"libvlc_event_attach libvlc_MediaPlayerMediaChanged"<<endl;
-                            auto data = static_cast<VLC_Wrapper * > (p_data);
+                            cout<<"[libvlc_event_attach] libvlc_MediaPlayerMediaChanged"<<endl;
+                            auto data = static_cast<VLC_Wrapper *> (p_data);
                             data->resume();
                         }, this);
     x = 0;
@@ -47,7 +47,6 @@ void VLC_Wrapper::playVideo(string_view path, int length) {
 
 void VLC_Wrapper::setNextMedia() {
     x = 1;
-
 }
 
 void VLC_Wrapper::pause() {
@@ -63,15 +62,15 @@ void VLC_Wrapper::resume() {
 }
 
 
-time_t VLC_Wrapper::getInformationAboutMedia(string_view path) {
-    libvlc_media_t * media = libvlc_media_new_path(vlcInstance,path.data());
-    libvlc_media_parse_with_options(media, libvlc_media_parse_local, -1);
+time_t VLC_Wrapper::getDurationOfMedia(string_view path) {
+    libvlc_media_t * vMedia = libvlc_media_new_path(vlcInstance, path.data());
+    libvlc_media_parse_with_options(vMedia, libvlc_media_parse_local, -1);
     time_t duration;
-    libvlc_event_attach(libvlc_media_event_manager(media),
+    libvlc_event_attach(libvlc_media_event_manager(vMedia),
                         libvlc_event_e::libvlc_MediaParsedChanged,
                         [](const struct libvlc_event_t *p_event, void *p_data){
-                            auto media = static_cast<libvlc_media_t *> (p_event->p_obj);
-                            * (time_t *) p_data = libvlc_media_get_duration(media);
+                            auto pMedia = static_cast<libvlc_media_t *> (p_event->p_obj);
+                            * (time_t *) p_data = libvlc_media_get_duration(pMedia);
                         }, &duration);
     usleep(100000);
     return duration;
@@ -89,7 +88,7 @@ void VLC_Wrapper::onPlayVideo() {
     cout<<"onPlayVideo"<<endl;
     libvlc_event_attach(mediaPlayerEventManager, libvlc_event_e::libvlc_MediaPlayerPlaying,
                         [](const struct libvlc_event_t *p_event, void *p_data){
-                            cout<<"libvlc_event_attach onPlayVideo"<<endl;
+                            cout<<"[libvlc_event_attach] onPlayVideo"<<endl;
                             auto vlc = static_cast<VLC_Wrapper *>(p_data) ;
                             vlc->observer = vlc->next_observer;
                             auto observer = static_cast<IObserver *>(vlc->observer);
@@ -101,7 +100,7 @@ void VLC_Wrapper::onPlayVideo() {
 void VLC_Wrapper::onPauseVideo() {
     libvlc_event_attach(mediaPlayerEventManager, libvlc_event_e::libvlc_MediaPlayerPaused,
                         [](const struct libvlc_event_t *p_event, void *p_data){
-                            cout<<"libvlc_event_attach onPauseVideo"<<endl;
+                            cout<<"[libvlc_event_attach] onPauseVideo"<<endl;
                             auto vlc = static_cast<VLC_Wrapper *>(p_data) ;
                             auto observer = static_cast<IObserver *>(vlc->observer);
                             observer->update();
@@ -120,10 +119,10 @@ void VLC_Wrapper::stop() {
 void VLC_Wrapper::onStopVideo() {
     libvlc_event_attach(mediaPlayerEventManager, libvlc_event_e::libvlc_MediaPlayerStopped,
                         [](const struct libvlc_event_t *p_event, void *p_data){
-                            cout<<"libvlc_event_attach onStopVideo"<<endl;
+                            cout<<"[libvlc_event_attach] onStopVideo"<<endl;
                             auto vlc = static_cast<VLC_Wrapper *>(p_data) ;
-                            auto observer = static_cast<IObserver *>(vlc->observer);
-                            observer->update();
+                            auto vObserver = static_cast<IObserver *>(vlc->observer);
+                            vObserver->update();
                         }, (void *) this);
 
 

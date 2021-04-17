@@ -38,7 +38,7 @@ public:
     void terminate();
     void setNextMedia();
 
-    time_t getInformationAboutMedia(string_view path);
+    time_t getDurationOfMedia(string_view path);
 
     virtual ~VLC_Wrapper();
 

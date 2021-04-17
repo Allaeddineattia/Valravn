@@ -37,7 +37,7 @@ TEST(VideoPlaying, PlayVVideo) {
 
     string path = "/home/alro/Downloads/All over in 10 seconds.mp4";
 
-    time_t duration = vlc->getInformationAboutMedia(path);
+    time_t duration = 00;
 
     cout<<"duration: "<<duration<<endl;
 
@@ -63,7 +63,7 @@ TEST(VideoPlaying, PlayVideoPlaylist) {
 
         string path = "/home/alro/Downloads/All over in 10 seconds.mp4";
 
-        time_t duration = vlc->getInformationAboutMedia(path);
+        time_t duration = 00;
 
         cout<<"duration: "<<duration<<endl;
 
