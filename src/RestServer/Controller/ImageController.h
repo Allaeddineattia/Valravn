@@ -14,7 +14,6 @@
 #include "oatpp/core/macro/component.hpp"
 #include "oatpp/core/data/stream/FileStream.hpp"
 #include "RestServer/dto/output/ImageDTO.h"
-#include "RestServer/dto/input/ImageCreationDto.h"
 #include "oatpp/web/mime/multipart/FileStreamProvider.hpp"
 #include "oatpp/web/mime/multipart/Reader.hpp"
 #include "oatpp/web/mime/multipart/PartList.hpp"
@@ -30,18 +29,7 @@ namespace multipart = oatpp::web::mime::multipart;
  * Image REST controller.
  */
 
-size_t get_file_size(string_view file_path){
-    try {
-        ifstream in_file(file_path.data(), ios::binary);
-        in_file.seekg(0, ios::end);
-        int file_size = in_file.tellg();
-        cout<<"Size of the file is"<<" "<< file_size<<" "<<"bytes"<<endl;
-        return file_size;
-    }catch( exception & e){
-        cout<<e.what()<<endl;
-        return -1 ;
-    }
-}
+
 
 class ImageController : public oatpp::web::server::api::ApiController {
 public:
@@ -56,99 +44,6 @@ public:
     ){
         return std::make_shared<ImageController>(objectMapper);
     }
-
-    ENDPOINT_INFO(uploadImage) {
-        info->summary = "Upload new Image";
-
-        info->addConsumes<oatpp::swagger::Binary>("application/octet-stream");
-
-        info->addResponse<Object<ImageDto>>(Status::CODE_200, "application/json");
-        info->addResponse<Object<StatusDto>>(Status::CODE_400, "application/json");
-        info->addResponse<Object<StatusDto>>(Status::CODE_500, "application/json");
-    }
-    ENDPOINT("POST", "/upload", uploadImage, REQUEST(std::shared_ptr<IncomingRequest>, request)) {
-        oatpp::data::stream::FileOutputStream fileOutputStream("/home/alro/file");
-        request->transferBodyToStream(&fileOutputStream); // transfer body chunk by chunk
-        for(auto l : request->getHeaders().getAll()) {
-            cout<<l.first.toString()->c_str()<<", "<<l.second.toString()->c_str()<<endl;
-        }
-
-        return createResponse(Status::CODE_200, "OK");
-    }
-
-    ENDPOINT_INFO(createImage) {
-        info->summary = "Create new Image";
-
-        info->addConsumes < Object < ImageCreationDto >> ("multipart/form-data");
-
-        info->addResponse<Object<ImageDto>>(Status::CODE_200, "application/json");
-
-        info->addResponse<Object<StatusDto>>(Status::CODE_400, "application/json");
-        info->addResponse<Object<StatusDto>>(Status::CODE_500, "application/json");
-    }
-    ENDPOINT("POST", "images", createImage,
-             REQUEST(std::shared_ptr<IncomingRequest>, request))
-    {
-
-        /* Prepare multipart container. */
-        auto multipart = std::make_shared<multipart::PartList>(request->getHeaders());
-
-        /* Create multipart reader. */
-        multipart::Reader multipartReader(multipart.get());
-
-        /* Configure to stream part with name "part1" to file */
-        multipartReader.setPartReader("file", multipart::createFilePartReader("/home/alro/temp"));
-        multipartReader.setPartReader("resolution", multipart::createInMemoryPartReader(256 /* max-data-size */));
-        /* Read multipart body */
-        request->transferBody(&multipartReader);
-
-        /* Print value of "part1" */
-        auto part1 = multipart->getNamedPart("file");
-
-        /* Assert part is not null */
-        OATPP_ASSERT_HTTP(part1, Status::CODE_400, "file is null");
-
-        /* Get part data input stream */
-        auto inputStream = part1->getInputStream();
-        string fileName = part1->getFilename()->std_str();
-        //cout<<"type"<< part1->g<<endl;
-        auto resolution = multipart->getNamedPart("resolution");
-        auto type = multipart->getNamedPart("type");
-        auto resolutionValue = resolution->getInMemoryData()->std_str();
-        auto headers = part1->getHeaders();
-
-        auto fef = headers.getAll();
-        auto contentType = fef.find("Content-Type")->second.std_str();
-        // TODO - process file stream.
-
-
-        //return createResponse(Status::CODE_200, "OK");
-        string path = "/home/alro/" + fileName;
-        if (rename("/home/alro/temp", path.c_str()) == 0){
-            size_t size = get_file_size(path);
-            if(size > 0){
-                if (contentType.find("image") != std::string::npos){
-                    auto image = ImageCreationDto::createEntityFromDto(path, contentType, resolutionValue, size);
-                    Object<ImageDto> dto(ImageDto::createDtoFromEntity(*image));
-                    return createDtoResponse(Status::CODE_200, dto);
-                }
-                if(contentType.find("video") != std::string::npos ){
-                    cout<<"this is a video "<<endl;
-                }
-            }
-        }else{
-            remove("/home/alro/temp");
-            cout<<"removed"<<endl;
-            string error_msg = "could not create the file with the name: " + fileName;
-            return handleError(Status::CODE_500, error_msg.c_str());
-        }
-
-
-        //Object<ImageDto> dto(ImageDto::createDtoFromEntity(*image));
-        Object<ImageDto> dto;
-        return createDtoResponse(Status::CODE_200, dto);
-    }
-
 
     ENDPOINT_INFO(putImage) {
         info->summary = "Update Image by imageId";

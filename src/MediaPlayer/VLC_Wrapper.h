@@ -25,7 +25,7 @@ class VLC_Wrapper {
     IObserver * observer;
 
 public:
-    IObserver * next_observer;
+    IObserver * next_observer = nullptr;
     VLC_Wrapper();
     bool media_player_locked = false;
     void playVideo(string_view path, int length);

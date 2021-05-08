@@ -1,8 +1,15 @@
 project(${CMAKE_PROJECT_NAME}_lib)
 
-set(HEADER_FILES RestServer/dto/StatusDto.h RestServer/AppComponent.h RestServer/ErrorHandler.h RestServer/SwaggerComponent.h RestServer/Controller/ImageController.h RestServer/dto/output/ImageDTO.h RestServer/dto/output/MultimediaDto.h
+set(HEADER_FILES RestServer/dto/StatusDto.h
+        RestServer/AppComponent.h
+        RestServer/ErrorHandler.h
+        RestServer/SwaggerComponent.h
+        RestServer/Controller/ImageController.h
+        RestServer/dto/output/ImageDTO.h
+        RestServer/dto/output/VideoDTO.h
+        RestServer/dto/output/MultimediaDto.h
 
-        RestServer/dto/input/ImageCreationDto.h RestServer/dto/input/MultimediaInputDto.h)
+        RestServer/dto/input/MultimediaInputDto.h)
 set(SOURCE_FILES
         Entity/Impl/Multimedia.cpp
         Entity/Contract/Multimedia.h
@@ -53,7 +60,10 @@ set(SOURCE_FILES
         DataBase/Imp/Repos/ScheduleRepo.cpp
         DataBase/Imp/Repos/VideoRepo.cpp
 
-        MediaPlayer/IObeserver.h)
+        MediaPlayer/IObeserver.h
+        RestServer/Controller/MediaController.h
+        RestServer/Controller/VideoController.h
+        RestServer/services/MediaServices.h RestServer/dto/input/AddToPlaylist.h)
 
 # The library contains header and source files.
 add_library(${CMAKE_PROJECT_NAME}_lib STATIC

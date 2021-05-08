@@ -34,6 +34,7 @@ public:
 
 };
 
+
 #include OATPP_CODEGEN_END(DTO)"oatpp/codegen/DTO_undef.hpp"
 
 #endif //MYPROJECT_MULTIMEDIADTO_H

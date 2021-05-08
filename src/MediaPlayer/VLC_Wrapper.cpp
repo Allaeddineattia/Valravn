@@ -90,10 +90,11 @@ void VLC_Wrapper::onPlayVideo() {
                         [](const struct libvlc_event_t *p_event, void *p_data){
                             cout<<"[libvlc_event_attach] onPlayVideo"<<endl;
                             auto vlc = static_cast<VLC_Wrapper *>(p_data) ;
-                            vlc->observer = vlc->next_observer;
-                            auto observer = static_cast<IObserver *>(vlc->observer);
-                            observer->update();
-
+                            auto observer = dynamic_cast<IObserver *>(vlc->next_observer);
+                            if(observer){
+                                vlc->observer = observer;
+                                observer->update();
+                            }
                         }, (void *) this);
 }
 
