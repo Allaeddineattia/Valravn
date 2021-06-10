@@ -11,28 +11,35 @@
 using namespace std;
 
 
-class Playlist : public IPlayable{
+class Playlist : public IPlayable , public IObserver{
 private:
     int id;
     vector<unique_ptr<MediaDisplay>> display;
-    int current;
+    unsigned long current = 0;
 
 public:
     Playlist(int id);
     ~Playlist() override = default;
 
     [[nodiscard]] int getId() const;
+
     [[nodiscard]] const vector<unique_ptr<MediaDisplay>> & getPlaylist();
-    void addMediaDisplay(unique_ptr<MediaDisplay> _mediadisplay);
+
+    void addMediaDisplay(unique_ptr<MediaDisplay> _mediaDisplay);
+
     void removePlayable(int _position);
-    void next ();
-    void previous ();
+
+    void play_next ();
+
+    void play_previous ();
 
     void play () override;
 
     void pause () override;
 
     void stop () override;
+
+    void update() override;
 
 };
 

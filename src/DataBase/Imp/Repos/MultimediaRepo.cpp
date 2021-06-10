@@ -3,7 +3,7 @@
 //
 
 #include <DataBase/Contracts/Repos/MultimediaRepo.h>
-#include <Entity/Contract/DependencyInjector.h>
+#include <Shared/DependencyInjector.h>
 
 class MultimediaRepo::Impl{
 private:
@@ -120,15 +120,15 @@ MultimediaRepo::MultimediaRepo(Dependency dependency_injector) {
     mImpl = make_unique<Impl>(dependency_injector);
 }
 
-const string &MultimediaRepo::get_table_name() const {
+const string &MultimediaRepo::getTableName() const {
     return mImpl->get_table_name();
 }
 
-optional<unique_ptr<Multimedia>> MultimediaRepo::get_by_id(unsigned int id) {
+optional<unique_ptr<Multimedia>> MultimediaRepo::getById(unsigned int id) {
     return mImpl->get_by_id(id);
 }
 
-vector<unique_ptr<Multimedia>> MultimediaRepo::get_all() {
+vector<unique_ptr<Multimedia>> MultimediaRepo::getAll() {
     return mImpl->get_all();
 }
 
@@ -136,15 +136,11 @@ void MultimediaRepo::save(const Multimedia &element) {
     mImpl->save(element);
 }
 
-void MultimediaRepo::delete_by_id(unsigned int id) {
+void MultimediaRepo::deleteById(unsigned int id) {
     mImpl->delete_by_id(id);
 }
 
 MultimediaRepo::~MultimediaRepo() = default;
-
-unsigned int MultimediaRepo::get_available_id() {
-    return mImpl->get_available_id();
-}
 
 namespace DO_NOT_EXECUTE{
     void conf_template_multimedia_repo(){

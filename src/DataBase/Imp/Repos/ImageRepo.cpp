@@ -2,7 +2,7 @@
 // Created by alro on 29‏/11‏/2020.
 //
 
-#include <Entity/Contract/DependencyInjector.h>
+#include <Shared/DependencyInjector.h>
 #include "DataBase/Contracts/Repos/ImageRepo.h"
 #include "DataBase/Contracts/Repos/Tools.h"
 class ImageRepo::Impl{
@@ -17,7 +17,7 @@ private:
                 "ID INT PRIMARY KEY NOT NULL,"\
                 "MULTIMEDIA_ID INT UNIQUE,"\
                 "RESOLUTION TEXT NOT NULL,"\
-                "FOREIGN KEY(MULTIMEDIA_ID) REFERENCES " + multimedia_repo->get_table_name() + "(ID)"\
+                "FOREIGN KEY(MULTIMEDIA_ID) REFERENCES " + multimedia_repo->getTableName() + "(ID)"\
                 ");";
     }
 
@@ -39,11 +39,10 @@ private:
         return map;
     }
 
-    [[nodiscard]] unique_ptr<Image>
-    get_entity_from_map(const string_map &map) {
+    [[nodiscard]] unique_ptr<Image> get_entity_from_map(const string_map &map) {
         int  id = stoi(map.find("ID")->second);
         string resolution = map.find("RESOLUTION")->second;
-        auto multimedia = multimedia_repo->get_by_id(stoi(map.find("MULTIMEDIA_ID")->second)).value();
+        auto multimedia = multimedia_repo->getById(stoi(map.find("MULTIMEDIA_ID")->second)).value();
         return make_unique<Image>(id, resolution, move(multimedia));
     }
 
@@ -95,7 +94,7 @@ public:
         vector<string_map> vector_res = data_base->get_all(table_name);
         vector<unique_ptr<Image>> images;
         for(auto &image_map: vector_res) {
-            auto multimedia = multimedia_repo->get_by_id(stoi(image_map.find("MULTIMEDIA_ID")->second));
+            auto multimedia = multimedia_repo->getById(stoi(image_map.find("MULTIMEDIA_ID")->second));
             if(multimedia) images.push_back(get_entity_from_map(image_map));
         }
         return  images;
@@ -123,7 +122,7 @@ public:
         data_base->begin_transaction();
         try{
             data_base->delete_by_feature(table_name, feature_selection);
-            multimedia_repo->delete_by_id(image.value()->getMultimedia().getId());
+            multimedia_repo->deleteById(image.value()->getMultimedia().getId());
         }catch (const std::exception& ex){
             data_base->abort_transaction();
             throw ;
@@ -132,24 +131,17 @@ public:
         data_base->end_transaction();
     }
 
-    unsigned int get_available_id() {
-        unsigned int id = Tools::generate_random_value();
-        while(get_by_id(id).has_value())
-            id = Tools::generate_random_value();
-        return id;
-    }
-
 };
 
-const string &ImageRepo::get_table_name() const {
+const string &ImageRepo::getTableName()  const {
     return mImpl->get_table_name();
 }
 
-optional<unique_ptr<Image>> ImageRepo::get_by_id(unsigned int id) {
+optional<unique_ptr<Image>> ImageRepo::getById(unsigned int id) {
     return mImpl->get_by_id(id);
 }
 
-vector<unique_ptr<Image>> ImageRepo::get_all() {
+vector<unique_ptr<Image>> ImageRepo::getAll() {
     return mImpl->get_all();
 }
 
@@ -157,7 +149,7 @@ void ImageRepo::save(const Image &element) {
     mImpl->save(element);
 }
 
-void ImageRepo::delete_by_id(unsigned int id) {
+void ImageRepo::deleteById(unsigned int id) {
     return mImpl->delete_by_id(id);
 }
 
@@ -168,9 +160,6 @@ ImageRepo::ImageRepo(shared_ptr<Dependency> dependency_injector) {
 
 ImageRepo::~ImageRepo() = default;
 
-unsigned int ImageRepo::get_available_id() {
-    return mImpl->get_available_id();
-}
 
 namespace DO_NOT_EXECUTE{
     void conf_template_image_repo(){

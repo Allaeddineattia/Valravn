@@ -2,14 +2,12 @@
 // Created by alro on 14‏/12‏/2020.
 //
 
-#include "Entity/Contract/VideoState/VideoStateHandler.h"
+#include <Shared/DependencyInjector.h>
 
-VideoStateHandler::VideoStateHandler(Video &video) :
-        video(video),
-        stoppedState(make_unique<VideoStoppedState>(*this)),
-        pausedState(make_unique<VideoPausedState>(*this)),
-        playingState(make_unique<VideoPlayingState>(*this)),
-        state(stoppedState.get()) {}
+#include <utility>
+#include "Entity/Contract/VideoState/VideoStateHandler.h"
+#include <iostream>
+
 
 VideoPlayingState * VideoStateHandler::getPlayingState() const {
     return playingState.get();
@@ -28,6 +26,7 @@ IPlayable &VideoStateHandler::getState() const {
 }
 
 void VideoStateHandler::play() {
+    vlc->next_observer = static_cast<IObserver *>(this);
     state->play();
 }
 
@@ -42,4 +41,21 @@ void VideoStateHandler::pause() {
 void VideoStateHandler::setState(IPlayable  * state) {
     VideoStateHandler::state = state;
 }
+
+
+VLC_Wrapper & VideoStateHandler::getVlc() const {
+    return *vlc;
+}
+
+void VideoStateHandler::update() {
+    cout<<"Video path "<< this->video.getMultimedia().getPath()<<endl;
+    this->updateFunction();
+}
+
+void VideoStateHandler::setUpdateFunction(function<void()> function) {
+    VideoStateHandler::updateFunction = std::move(function);
+}
+
+
+
 

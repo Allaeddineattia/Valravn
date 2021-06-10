@@ -6,17 +6,21 @@
 #include "iostream"
 
 void VideoStoppedState::play() {
-    cout<<"VideoStoppedState::play, path: "<<stateHandler.video.getMultimedia()->getPath()<<endl;
-    stateHandler.setState(stateHandler.getPlayingState());
+    cout<<"VideoStoppedState::play, path: "<<stateHandler.video.getMultimedia().getPath()<<endl;
+    stateHandler.setUpdateFunction
+    ([this](){
+        this->stateHandler.setState(stateHandler.getPlayingState());
+    });
+    stateHandler.getVlc().playVideo(stateHandler.video.getMultimedia().getPath(), stateHandler.video.getDuration());
 
 }
 
 void VideoStoppedState::stop() {
-    cout<<"VideoStoppedState::stop, path: "<<stateHandler.video.getMultimedia()->getPath()<<endl;
+    cout<<"VideoStoppedState::stop, path: "<<stateHandler.video.getMultimedia().getPath()<<endl;
 }
 
 void VideoStoppedState::pause() {
-    cout<<"VideoStoppedState::pause, path: "<<stateHandler.video.getMultimedia()->getPath()<<endl;
+    cout<<"VideoStoppedState::pause, path: "<<stateHandler.video.getMultimedia().getPath()<<endl;
 }
 
 VideoStoppedState::VideoStoppedState(VideoStateHandler &stateHandler) : stateHandler(stateHandler) {}

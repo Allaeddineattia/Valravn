@@ -12,17 +12,25 @@
 #include "oatpp/core/macro/codegen.hpp"
 #include "oatpp/web/protocol/http/Http.hpp"
 #include "oatpp/core/macro/component.hpp"
+#include "oatpp/core/data/stream/FileStream.hpp"
 #include "RestServer/dto/output/ImageDTO.h"
-#include "RestServer/dto/input/ImageCreationDto.h"
+#include "oatpp/web/mime/multipart/FileStreamProvider.hpp"
+#include "oatpp/web/mime/multipart/Reader.hpp"
+#include "oatpp/web/mime/multipart/PartList.hpp"
+#include "oatpp/web/mime/multipart/InMemoryPartReader.hpp"
 #include "../dto/StatusDto.h"
 #include <Shared/CustomError.h>
 #include <iostream>
-
+#include <cstdio>
+#include<fstream>
 #include OATPP_CODEGEN_BEGIN(ApiController) //<- Begin Codegen
-
+namespace multipart = oatpp::web::mime::multipart;
 /**
  * Image REST controller.
  */
+
+
+
 class ImageController : public oatpp::web::server::api::ApiController {
 public:
     ImageController(OATPP_COMPONENT(std::shared_ptr<ObjectMapper>, objectMapper))
@@ -36,39 +44,6 @@ public:
     ){
         return std::make_shared<ImageController>(objectMapper);
     }
-
-    ENDPOINT_INFO(createImage) {
-        info->summary = "Create new Image";
-
-        info->addConsumes < Object < ImageCreationDto >> ("application/json");
-
-        info->addResponse<Object<ImageDto>>(Status::CODE_200, "application/json");
-        info->addResponse<Object<StatusDto>>(Status::CODE_400, "application/json");
-        info->addResponse<Object<StatusDto>>(Status::CODE_500, "application/json");
-    }
-    ENDPOINT("POST", "images", createImage,
-             BODY_DTO(Object<ImageCreationDto>, imageDto))
-    {
-        std::cout<<imageDto->resolution->c_str()<<std::endl;
-        std::cout<<imageDto->mulitmedia->path->c_str()<<std::endl;
-        std::cout<<imageDto->mulitmedia->size<<std::endl;
-        std::cout<<imageDto->mulitmedia->mimeType->c_str()<<std::endl;
-        auto image = imageDto->createEntityFromDto();
-        try{
-            image->save();
-        }
-        catch(const Repo::Exceptions::DataBaseInsertIntoTableError & ex){
-            return handleError(Status::CODE_400,  ex.what());
-        }
-        catch (const std::exception& ex){
-            return handleError(Status::CODE_500,  ex.what());
-        }
-
-        Object<ImageDto> dto(ImageDto::createDtoFromEntity(*image));
-
-        return createDtoResponse(Status::CODE_200, dto);
-    }
-
 
     ENDPOINT_INFO(putImage) {
         info->summary = "Update Image by imageId";

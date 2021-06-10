@@ -1,3 +1,4 @@
 libvlc = sudo apt install -y libvlc-dev
 sqlite3 = sudo apt-get install -y libsqlite3-dev
 boost = sudo apt-get install libboost-all-dev
+oatpp = https://oatpp.io/docs/installation/unix-linux/

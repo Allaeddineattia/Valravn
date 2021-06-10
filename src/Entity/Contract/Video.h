@@ -12,7 +12,11 @@
 #include <Entity/Contract/VideoState/VideoStateHandler.h>
 #include "IPlayable.h"
 class VideoStateHandler;
-class Video : public IPlayable{
+using namespace std;
+
+class Video;
+
+class Video : public IPlayable, public Savable<Video>{
 private:
 
     int id;
@@ -23,19 +27,26 @@ private:
 public:
     virtual ~Video() = default;
 
-    [[nodiscard]]int getId() const;
+    [[nodiscard]] unsigned int getId() const override;
 
     [[nodiscard]]int getDuration() const;
 
-    [[nodiscard]]const unique_ptr<Multimedia> &getMultimedia() const;
+    [[nodiscard]]const Multimedia &getMultimedia() const;
 
     [[nodiscard]]string_view getResolution() const;
+
+    const Video & getSavable() override{
+        return *this;
+    }
+
+    void setStateHandler(unique_ptr<VideoStateHandler> stateHandler);
 
     void play() override ;
 
     void stop() override ;
 
     void pause() override;
+
 
     Video(int id, int duration, unique_ptr<Multimedia> multimedia, string_view resolution);
 

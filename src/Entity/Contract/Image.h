@@ -45,6 +45,8 @@ class Image;
 
         void stop () override;
 
+
+
         bool operator==(const Image &rhs) const;
 
 

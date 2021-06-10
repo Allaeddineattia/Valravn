@@ -27,17 +27,16 @@ public:
     template<class Dependency>
     explicit ImageRepo(shared_ptr<Dependency> dependency_injector);
 
-    [[nodiscard]] const string & get_table_name() const override;
+    [[nodiscard]] const string & getTableName() const override;
 
-    optional<unique_ptr<Image>> get_by_id(unsigned int id) override;
+    optional<unique_ptr<Image>> getById(unsigned int id) override;
 
-    vector<unique_ptr<Image>> get_all() override;
+    vector<unique_ptr<Image>> getAll() override;
 
     [[nodiscard]] void save(const Image& element) override;
 
-    void delete_by_id(unsigned int id) override;
+    void deleteById(unsigned int id) override;
 
-    unsigned int get_available_id() override;
 
     virtual ~ImageRepo();
 };

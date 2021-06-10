@@ -16,18 +16,27 @@ class VideoPausedState;
 class VideoStoppedState;
 class Video;
 
-class VideoStateHandler: public IPlayable {
+class VideoStateHandler: public IPlayable, public IObserver {
 
     unique_ptr<VideoPlayingState> playingState;
     unique_ptr<VideoPausedState> pausedState;
     unique_ptr<VideoStoppedState> stoppedState;
     IPlayable * state;
+    shared_ptr<VLC_Wrapper> vlc;
+    std::function<void()> updateFunction;
 
 public:
 
     Video & video;
-
-    VideoStateHandler(Video &video);
+    template<class DependencyInjector>
+    VideoStateHandler(shared_ptr<DependencyInjector> dependencyInjector,Video &video) : video(video),
+                                                                                        stoppedState(make_unique<VideoStoppedState>(*this)),
+                                                                                        pausedState(make_unique<VideoPausedState>(*this)),
+                                                                                        playingState(make_unique<VideoPlayingState>(*this)),
+                                                                                        state(stoppedState.get()){
+        vlc = dependencyInjector->get_vlc_wrapper(dependencyInjector);
+        vlc->setFullScreen();
+    };
 
     VideoPlayingState * getPlayingState() const;
 
@@ -41,7 +50,14 @@ public:
     void stop() override;
     void pause() override;
 
+
     void setState(IPlayable * state);
+
+    VLC_Wrapper & getVlc() const;
+
+    void setUpdateFunction(function<void()> updateFunction);
+
+    void update() override;
 
 };
 
