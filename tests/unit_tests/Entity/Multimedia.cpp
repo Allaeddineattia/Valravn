@@ -4,7 +4,7 @@
 
 #include "gtest/gtest.h"
 
-#include "Entity/Contract/Multimedia.h"
+#include <media_player/Multimedia.h>
 
 TEST(Multimedia, testGetPath){
     Multimedia m(1, "path", 50, "type");

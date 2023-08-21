@@ -4,7 +4,7 @@
 
 #include <Shared/DependencyInjector.h>
 #include <Shared/Tools.h>
-#include <Entity/Contract/Image.h>
+#include <image/Image.h>
 #include "gtest/gtest.h"
 #include "../tools/Database.h"
 #include "../stubs/Images.h"

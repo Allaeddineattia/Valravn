@@ -3,8 +3,8 @@
 //
 #include <Shared/DependencyInjector.h>
 #include "gtest/gtest.h"
-#include "Entity/Contract/Multimedia.h"
-#include "Entity/Contract/Video.h"
+#include <media_player/Multimedia.h>
+#include <video/Video.h>
 TEST(VideoPlaying, Play){
     auto multimedia = make_unique<Multimedia>(1, "video_path", 50, "type");
     auto video = make_unique<Video>(1 , 5 , move (multimedia) ,"140:150" );

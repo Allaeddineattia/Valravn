@@ -2,7 +2,7 @@
 // Created by alro on 21‏/11‏/2020.
 //
 
-#include <Entity/Contract/Parameter.h>
+#include <media_player/Parameter.h>
 #include <gtest/gtest.h>
 using namespace std;
 TEST(Parameter, Valid_Creation){

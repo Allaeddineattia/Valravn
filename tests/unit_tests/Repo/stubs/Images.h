@@ -5,7 +5,7 @@
 #ifndef SMART_AD_SGA_TESTS_IMAGES_H
 #define SMART_AD_SGA_TESTS_IMAGES_H
 
-#include <Entity/Contract/Image.h>
+#include <image/Image.h>
 #include <memory>
 #include <Shared/DependencyInjector.h>
 

@@ -5,7 +5,7 @@
 #include "Entity/Contract/Audio.h"
 #include "gtest/gtest.h"
 #include "Shared/CustomError.h"
-#include "Entity/Contract/Multimedia.h"
+#include <media_player/Multimedia.h>
 
 TEST(Audio, Creation) {
     auto multimedia = make_unique<Multimedia>(1, "path", 50, "type");

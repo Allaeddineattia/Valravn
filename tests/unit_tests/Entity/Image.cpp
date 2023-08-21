@@ -3,10 +3,10 @@
 //
 
 
-#include "Entity/Contract/Image.h"
+#include <image/Image.h>
 #include "gtest/gtest.h"
 #include "Shared/CustomError.h"
-#include "Entity/Contract/Multimedia.h"
+#include <media_player/Multimedia.h>
 
 TEST(Image, ThrowErrorOnInvalidResolution1) {
     auto multimedia = make_unique<Multimedia>(1, "path", 50, "type");

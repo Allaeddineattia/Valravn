@@ -1,14 +1,15 @@
 #include <iostream>
-#include <RestServer/AppComponent.h>
+
 #include "oatpp-swagger/Controller.hpp"
-#include "src/RestServer/Controller/ImageController.h"
-#include <RestServer/Controller/MediaController.h>
+#include <rest_api/AppComponent.h>
+#include <rest_api/ImageController.h>
+#include <rest_api/MediaController.h>
 #include "oatpp/network/Server.hpp"
 
 
 #include <iostream>
-#include <Shared/DependencyInjector.h>
-#include <RestServer/Controller/VideoController.h>
+#include <core/DependencyInjector.h>
+#include <rest_api/VideoController.h>
 
 void init_imagerepo(shared_ptr<DependencyInjector> di){
     string fileName = "test.db";
@@ -38,27 +39,26 @@ void run(shared_ptr<DependencyInjector> di) {
 
     /* create ApiControllers and add endpoints to router */
 
-    auto router = components.httpRouter.getObject();
-    auto docEndpoints = oatpp::swagger::Controller::Endpoints::createShared();
+    shared_ptr<oatpp::web::server::HttpRouter> router = components.httpRouter.getObject();
+
+    oatpp::web::server::api::Endpoints endpoints;
 
     auto imageController = VideoController::createShared();
-    imageController->addEndpointsToRouter(router);
-    docEndpoints->pushBackAll(imageController->getEndpoints());
+    router->addController(imageController);
+    endpoints.append(imageController->getEndpoints());
 
     auto videoController = ImageController::createShared();
-    videoController->addEndpointsToRouter(router);
-    docEndpoints->pushBackAll(videoController->getEndpoints());
+    router->addController(videoController);
+    endpoints.append(videoController->getEndpoints());
 
     auto mediaController = MediaController::createShared();
-    mediaController->addEndpointsToRouter(router);
+    router->addController(mediaController);
     mediaController->setVlc(di->get_vlc_wrapper(di));
     mediaController->setDi(di);
-    docEndpoints->pushBackAll(mediaController->getEndpoints());
+    endpoints.append(mediaController->getEndpoints());
 
-    auto swaggerController = oatpp::swagger::Controller::createShared(docEndpoints);
-    swaggerController->addEndpointsToRouter(router);
-
-
+    auto swaggerController = oatpp::swagger::Controller::createShared(endpoints);
+    router->addController(swaggerController);
 
     /* Get connection handler component */
     OATPP_COMPONENT(std::shared_ptr<oatpp::network::ConnectionHandler>, connectionHandler);

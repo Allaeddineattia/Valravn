@@ -2,10 +2,10 @@
 // Created by rawaa on 22‏/3‏/2021.
 //
 
-#ifndef MYPROJECT_VIDEOS_H
-#define MYPROJECT_VIDEOS_H
+#ifndef VALRAVEN_VIDEOS_H
+#define VALRAVEN_VIDEOS_H
 
-#include <Entity/Contract/Video.h>
+#include <video/Video.h>
 #include <Shared/DependencyInjector.h>
 
 
@@ -23,4 +23,4 @@ namespace Unit_testing {
 
 
 
-#endif //MYPROJECT_VIDEOS_H
+#endif //VALRAVEN_VIDEOS_H
