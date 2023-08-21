@@ -4,7 +4,7 @@ project(MyProject)
 set(CMAKE_CXX_STANDARD 17)
 
 set(SOURCE_FILES main.cpp
-        headers/core/StringCheckers.h)
+        headers/core/StringTools.h)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
 find_package(Boost COMPONENTS system REQUIRED)

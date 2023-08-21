@@ -32,7 +32,7 @@ set(SOURCE_FILES
 
 
         database/SQLHelpers.cpp
-        database/DataBase.cpp
+        database/SQLiteWrapper.cpp
 )
 
 # The library contains header and source files.

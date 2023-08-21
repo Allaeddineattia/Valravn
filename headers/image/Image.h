@@ -16,7 +16,7 @@ using namespace std;
 
 class Image;
 
-    class Image : public IPlayable, public PersistentEntity<Image>{
+    class Image : public IPlayable, public DataBase::PersistentEntity<Image>{
     private:
         unsigned int id;
         string resolution;

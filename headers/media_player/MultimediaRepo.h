@@ -6,33 +6,35 @@
 #define VALRAVEN_MULTIMEDIAREPO_H
 #include <string>
 #include <sstream>
-#include <database/DataBase.h>
+#include "database/SQLiteWrapper.h"
 #include <media_player/Multimedia.h>
 
 using namespace std;
 
+namespace DataBase
+{
 
-class MultimediaRepo: public IRepository<Multimedia> {
-private:
-    class Impl;
-    std::unique_ptr<Impl> mImpl;
+    class MultimediaRepo: public IRepository<Multimedia> {
+    private:
+        class Impl;
+        std::unique_ptr<Impl> mImpl;
 
-public:
-    template<class Dependency>
-    explicit MultimediaRepo(Dependency dependency_injector);
+    public:
+        template<class Dependency>
+        explicit MultimediaRepo(Dependency dependency_injector);
 
-    [[nodiscard]] const string & getTableName() const override;
+        [[nodiscard]] const string & getTableName() const override;
 
-    optional<unique_ptr<Multimedia>> getById(unsigned int id) override;
+        optional<unique_ptr<Multimedia>> getById(unsigned int id) override;
 
-    [[nodiscard]] vector<unique_ptr<Multimedia>> getAll() override;
+        [[nodiscard]] vector<unique_ptr<Multimedia>> getAll() override;
 
-    void save(const Multimedia& element) override;
+        void save(const Multimedia& element) override;
 
-    void deleteById(unsigned int id) override;
+        void deleteById(unsigned int id) override;
 
-    virtual ~MultimediaRepo();
-};
-
+        virtual ~MultimediaRepo();
+    };
+}
 
 #endif //VALRAVEN_MULTIMEDIAREPO_H

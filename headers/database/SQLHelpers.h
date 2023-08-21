@@ -13,19 +13,28 @@
 #include <iostream>
 using namespace std;
 
+
 typedef map<string, string> string_map;
 typedef pair<string, string> string_pair;
-typedef function<void(const string_map &)> SQLiteResultHandler;
-typedef function<void(string_view)> SQLiteErrorHandler;
-extern SQLiteErrorHandler default_error_handler;
-const string default_success_message = "[DataBase] OPERATION_SUCCEEDED";
+
 
 
 namespace SQLHelpers
 {
+
+    typedef function<void(const string_map &)> SQLiteResultHandler;
+    typedef function<void(string_view)> SQLiteErrorHandler;
+    extern SQLiteErrorHandler default_error_handler;
+    const string default_success_message = "[DataBase] OPERATION_SUCCEEDED";
+
     string get_insert_sql(string_view table_name, const string_map &map);
 
     string get_update_sql(string_view table_name, const string_pair &feature, const string_map &map);
+
+    string to_sql_string(string_view s);
+
+    string to_sql_date_time(time_t t);
+
 }
 
 

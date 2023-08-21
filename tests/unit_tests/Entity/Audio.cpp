@@ -10,8 +10,8 @@
 TEST(Audio, Creation) {
     auto multimedia = make_unique<Multimedia>(1, "path", 50, "type");
     auto audio = make_unique<Audio>(1, 13, move(multimedia));
-    ASSERT_EQ(audio->getMultimedia()->getPath(),"path");
-    ASSERT_EQ(audio->getMultimedia()->getMimeType(),"type");
+    ASSERT_EQ(audio->get_multimedia()->getPath(), "path");
+    ASSERT_EQ(audio->get_multimedia()->getMimeType(), "type");
 }
 TEST(Audio ,Throw_error_on_play_NotImplementedException){
     auto multimedia = make_unique<Multimedia>(1, "path", 50, "type");

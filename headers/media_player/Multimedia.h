@@ -12,7 +12,7 @@
 
 using namespace std;
 
-class Multimedia : public PersistentEntity<Multimedia>{
+class Multimedia : public DataBase::PersistentEntity<Multimedia>{
 private:
     unsigned int id;
     string path;

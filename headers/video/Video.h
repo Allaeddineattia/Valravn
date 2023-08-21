@@ -19,7 +19,7 @@ using namespace std;
 
 class Video;
 
-class Video : public IPlayable, public PersistentEntity<Video>{
+class Video : public IPlayable, public DataBase::PersistentEntity<Video>{
 private:
 
     int id;

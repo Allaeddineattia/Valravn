@@ -3,17 +3,19 @@
 //
 #include <playlist/ScheduleRepo.h>
 
-#include <database/DataBase.h>
+#include "database/SQLiteWrapper.h"
 #include <playlist/Playlist.h>
 #include <image/ImageRepo.h>
 #include <core/DependencyInjector.h>
 #include <playlist/Schedule.h>
 #include <core/Tools.h>
 
+using namespace DataBase;
+
 class ScheduleRepo::Impl{
 
 private:
-    shared_ptr<DataBase >  dataBase = nullptr;
+    shared_ptr<SQLiteWrapper >  dataBase = nullptr;
     shared_ptr<IRepository<Playlist>> playlistRepo = nullptr;
     string tableName =  "Schedule";
 
@@ -30,7 +32,7 @@ private:
         string_map map;
         map.insert(string_pair("ID", to_string(schedule.getId())));
         map.insert(string_pair("PLAYLIST_ID", to_string(schedule.getPlaylist().getId())));
-        map.insert(string_pair("TIME" , DataBase::to_sql_date_time(schedule.getTime())));
+        map.insert(string_pair("TIME" , SQLHelpers::to_sql_date_time(schedule.getTime())));
         return map;
     }
 
@@ -48,7 +50,7 @@ private:
         int  id = stoi(map.find("ID")->second);
         time_t timeS =dataBase->string_to_time_t(map.find("TIME")->second) ;
         auto Playlist = playlistRepo->getById(stoi(map.find("PLAYLIST_ID")->second)).value();
-        return make_unique<Schedule>(id, timeS, move(Playlist));
+        return make_unique<Schedule>(id, timeS, std::move(Playlist));
     }
 
     void create_element(const Schedule& element) const {

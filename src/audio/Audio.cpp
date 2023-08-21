@@ -10,15 +10,15 @@ id(id),
 duration(duration),
 multimedia(move(multimedia)){}
 
-int Audio::getId() const {
+int Audio::get_id() const {
     return id;
 }
 
-int Audio::getDuration() const {
+int Audio::get_duration() const {
     return duration;
 }
 
-const unique_ptr<Multimedia> &Audio::getMultimedia() const {
+const unique_ptr<Multimedia> &Audio::get_multimedia() const {
     return multimedia;
 }
 

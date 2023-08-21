@@ -5,10 +5,12 @@
 #include <core/DependencyInjector.h>
 #include <image/ImageRepo.h>
 
+using namespace DataBase;
+
 class ImageRepo::Impl{
 
 private:
-    shared_ptr<DataBase >  data_base = nullptr;
+    shared_ptr<SQLiteWrapper >  data_base = nullptr;
     shared_ptr<IRepository<Multimedia>> multimedia_repo = nullptr;
     string table_name =  "IMAGE";
 
@@ -25,7 +27,7 @@ private:
         string_map map;
         map.insert(string_pair("ID", to_string(image.getId())));
         map.insert(string_pair("MULTIMEDIA_ID", to_string(image.getMultimedia().getId())));
-        map.insert(string_pair("RESOLUTION" , DataBase::to_sql_string(image.getResolution())));
+        map.insert(string_pair("RESOLUTION" , SQLHelpers::to_sql_string(image.getResolution())));
         return map;
     }
 
@@ -33,7 +35,7 @@ private:
         string_map map;
 
         if(new_element.getResolution() != old_element.getResolution())
-            map.insert(string_pair("RESOLUTION", DataBase::to_sql_string(new_element.getResolution())));
+            map.insert(string_pair("RESOLUTION", SQLHelpers::to_sql_string(new_element.getResolution())));
 
 
         return map;

@@ -8,10 +8,12 @@
 #include <core/DependencyInjector.h>
 #include <video/VideoRepo.h>
 
+using namespace DataBase;
+
 class VideoRepo::Impl{
 
 private:
-    shared_ptr<DataBase > dataBase = nullptr;
+    shared_ptr<SQLiteWrapper > dataBase = nullptr;
     shared_ptr<IRepository<Multimedia>> multimediaRepo = nullptr;
     string tableName =  "VIDEO";
 
@@ -29,7 +31,7 @@ private:
         string_map map;
         map.insert(string_pair("ID", to_string(video.getId())));
         map.insert(string_pair("MULTIMEDIA_ID", to_string(video.getMultimedia().getId())));
-        map.insert(string_pair("RESOLUTION" , DataBase::to_sql_string(video.getResolution())));
+        map.insert(string_pair("RESOLUTION" , SQLHelpers::to_sql_string(video.getResolution())));
         map.insert(string_pair("DURATION", to_string(video.getDuration())));
         return map;
     }
@@ -38,7 +40,7 @@ private:
         string_map map;
 
         if(newElement.getResolution() != oldElement.getResolution())
-            map.insert(string_pair("RESOLUTION", DataBase::to_sql_string(newElement.getResolution())));
+            map.insert(string_pair("RESOLUTION", SQLHelpers::to_sql_string(newElement.getResolution())));
 
         if(newElement.getDuration() != oldElement.getDuration())
             map.insert(string_pair("DURATION", to_string(newElement.getDuration())));

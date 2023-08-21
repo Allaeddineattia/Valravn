@@ -5,10 +5,12 @@
 #include <sstream>
 #include <database/SQLHelpers.h>
 
-SQLiteErrorHandler default_error_handler =
+using namespace DataBase;
+
+SQLHelpers::SQLiteErrorHandler SQLHelpers::default_error_handler =
         [](string_view error_msg) -> void {
             std::cerr << "[DataBase] SQL error: " << error_msg << endl;
-            throw Repo::Exceptions::DB_ERROR(error_msg);
+            throw DataBase::Exceptions::DB_ERROR(error_msg);
         };
 
 string SQLHelpers::get_insert_sql(string_view table_name, const string_map &map) {
@@ -56,4 +58,19 @@ string SQLHelpers::get_update_sql(string_view table_name, const string_pair &fea
     sqlStream << " WHERE " << feature.first << " = '" << feature.second << "';";
 
     return sqlStream.str();
+}
+
+string SQLHelpers::to_sql_string(string_view s) {
+    string result = "\"";
+    result += s;
+    result += "\"";
+    return result;
+}
+
+string SQLHelpers::to_sql_date_time(time_t t) {
+    string result = "datetime(";
+    result += to_string(t);
+    result += ", 'unixepoch')";
+    //strftime('%s',time)
+    return result;
 }

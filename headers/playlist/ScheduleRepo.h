@@ -9,29 +9,32 @@
 #include <database/IRepository.h>
 #include <playlist/Schedule.h>
 
+namespace DataBase
+{
+    class ScheduleRepo: public IRepository<Schedule> {
+    private:
+        class Impl;
+        std::unique_ptr<Impl> mImpl;
 
-class ScheduleRepo: public IRepository<Schedule> {
-private:
-    class Impl;
-    std::unique_ptr<Impl> mImpl;
 
+    public:
 
-public:
+        template<class Dependency>
+        explicit ScheduleRepo(shared_ptr<Dependency> dependency_injector);
 
-    template<class Dependency>
-    explicit ScheduleRepo(shared_ptr<Dependency> dependency_injector);
+        [[nodiscard]] const string & getTableName() const override;
 
-    [[nodiscard]] const string & getTableName() const override;
+        optional<unique_ptr<Schedule>> getById(unsigned int id) override;
 
-    optional<unique_ptr<Schedule>> getById(unsigned int id) override;
+        vector<unique_ptr<Schedule>> getAll() override;
 
-    vector<unique_ptr<Schedule>> getAll() override;
+        void save(const Schedule& element) override;
 
-    void save(const Schedule& element) override;
+        void deleteById(unsigned int id) override;
 
-    void deleteById(unsigned int id) override;
+        virtual ~ScheduleRepo();
+    };
+}
 
-    virtual ~ScheduleRepo();
-};
 
 #endif //VALRAVEN_SCHEDULEREPO_H

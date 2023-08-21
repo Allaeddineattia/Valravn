@@ -17,11 +17,14 @@ private:
 public:
     virtual ~Audio() = default;
 
-    [[nodiscard]]const unique_ptr<Multimedia> &getMultimedia() const;
+    [[nodiscard]]const unique_ptr<Multimedia> &get_multimedia() const;
 
-    [[nodiscard]]int getId() const;
+    [[nodiscard]]int get_id() const;
 
-    [[nodiscard]]int getDuration() const;
+    /**
+     * @return the duration of the audio in seconds
+     */
+    [[nodiscard]]int get_duration() const;
 
     void play() override;
     void stop() override;

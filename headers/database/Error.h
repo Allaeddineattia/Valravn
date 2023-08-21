@@ -9,7 +9,7 @@
 #include <exception>
 
 
-namespace Repo::Exceptions{
+namespace DataBase::Exceptions{
     struct DB_NAME_NOT_SET : public std::exception {
         [[nodiscard]] const char *what() const noexcept override {
             return "db_path is not settled yet";

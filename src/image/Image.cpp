@@ -3,7 +3,7 @@
 //
 #include<string_view>
 #include <core/Tools.h>
-#include <core/StringCheckers.h>
+#include <core/StringTools.h>
 #include <image/Image.h>
 #include <core/Error.h>
 
@@ -12,8 +12,8 @@ Image::Image(int id, string_view resolution_input, unique_ptr<Multimedia>multime
              id(id), multimedia(move(multimedia))
 {
     string vResolution = resolution_input.data();
-    StringCheckers::remove_blanks(vResolution);
-    StringCheckers::check_resolution_string_pattern(vResolution);
+    StringTools::remove_blanks(vResolution);
+    StringTools::check_resolution_string_pattern(vResolution);
     this->resolution = resolution_input;
 }
 

@@ -8,11 +8,16 @@
 
 class StorageManager {
 public:
+    /**
+     *
+     * @param file_path : absolute path to a file.
+     * @return the size in bytes of the file.
+     */
     size_t static get_file_size(string_view file_path){
         try {
             ifstream in_file(file_path.data(), ios::binary);
             in_file.seekg(0, ios::end);
-            int file_size = in_file.tellg();
+            size_t file_size = in_file.tellg();
             cout<<"Size of the file is "<< file_size<<" bytes"<<endl;
             return file_size;
         }catch( exception & e){

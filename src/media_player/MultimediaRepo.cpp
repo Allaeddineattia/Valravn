@@ -5,9 +5,11 @@
 #include <media_player/MultimediaRepo.h>
 #include <core/DependencyInjector.h>
 
+using namespace DataBase;
+
 class MultimediaRepo::Impl{
 private:
-    shared_ptr<DataBase > data_base = nullptr;
+    shared_ptr<SQLiteWrapper > data_base = nullptr;
 
     string table_name =  "MULTIMEDIA";
 
@@ -25,9 +27,9 @@ private:
     [[nodiscard]] static string_map get_string_map(const Multimedia & multimedia) {
         string_map map;
         map.insert(string_pair("ID",to_string(multimedia.getId())));
-        map.insert(string_pair("PATH", DataBase::to_sql_string(multimedia.getPath())));
+        map.insert(string_pair("PATH", SQLHelpers::to_sql_string(multimedia.getPath())));
         map.insert(string_pair("SIZE",to_string(multimedia.getSize())));
-        map.insert(string_pair("MIME_TYPE" , DataBase::to_sql_string(multimedia.getMimeType())));
+        map.insert(string_pair("MIME_TYPE" , SQLHelpers::to_sql_string(multimedia.getMimeType())));
         return map;
     }
 
@@ -35,13 +37,13 @@ private:
         string_map map;
 
         if(new_element.getPath() != old_element.getPath())
-            map.insert(string_pair("PATH", DataBase::to_sql_string(new_element.getPath())));
+            map.insert(string_pair("PATH", SQLHelpers::to_sql_string(new_element.getPath())));
 
         if(new_element.getSize() != old_element.getSize())
             map.insert(string_pair("SIZE",to_string(new_element.getSize())));
 
         if(new_element.getMimeType() != old_element.getMimeType())
-            map.insert(string_pair("MIME_TYPE" , DataBase::to_sql_string(new_element.getMimeType())));
+            map.insert(string_pair("MIME_TYPE" , SQLHelpers::to_sql_string(new_element.getMimeType())));
 
         return map;
     }
@@ -95,7 +97,7 @@ public:
     void save(const Multimedia& element) {
         auto exist = get_by_id(element.getId());
         if(exist.has_value()){
-            auto mul = move(exist.value());
+            auto mul = std::move(exist.value());
             if (mul){
                 return update_element(*mul, element);
             }

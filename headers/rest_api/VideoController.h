@@ -79,7 +79,7 @@ public:
     {
         auto opt_video= Video::fetchById(videoId);
         if(opt_video.has_value() ){
-            auto video = move(opt_video.value());
+            auto video = std::move(opt_video.value());
             if(video){
                 auto dto = VideoDTO::createDtoFromEntity(*video);
                 return createDtoResponse(Status::CODE_200, dto);
@@ -99,7 +99,7 @@ public:
     ENDPOINT("GET", "videos/", getVideos)
     {
         auto res = Video::getAll();
-        return createDtoResponse(Status::CODE_200, VideoDTO::createDtoVectorFromEntities(move(res)));
+        return createDtoResponse(Status::CODE_200, VideoDTO::createDtoVectorFromEntities(std::move(res)));
     }
 
 
@@ -117,7 +117,7 @@ public:
     {
         auto opt_video= Video::fetchById(videoId);
         if(opt_video.has_value() ){
-            auto video = move(opt_video.value());
+            auto video = std::move(opt_video.value());
             if(video){
                 try{
                     video->remove();
