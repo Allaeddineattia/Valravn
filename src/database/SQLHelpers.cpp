@@ -67,6 +67,17 @@ string SQLHelpers::to_sql_string(string_view s) {
     return result;
 }
 
+string SQLHelpers::from_sql_string(std::string_view s) {
+    if (s.size() >= 2 && s.front() == '"' && s.back() == '"') {
+        // Remove the double quotes around the string
+        std::string f = s.data();
+        return f.substr(1, f.size() - 2);
+    } else {
+        // If the input is not enclosed in double quotes, return it as is
+        return s.data();
+    }
+}
+
 string SQLHelpers::to_sql_date_time(time_t t) {
     string result = "datetime(";
     result += to_string(t);

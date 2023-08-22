@@ -51,9 +51,9 @@ private:
     [[nodiscard]] unique_ptr<Video> getEntityFromMap(const string_map &map) {
         int  id = stoi(map.find("ID")->second);
         int  duration = stoi(map.find("DURATION")->second);
-        string resolution = map.find("RESOLUTION")->second;
+        string resolution = SQLHelpers::from_sql_string(map.find("RESOLUTION")->second);
         auto multimedia = multimediaRepo->getById(stoi(map.find("MULTIMEDIA_ID")->second)).value();
-        return make_unique<Video>(id, duration, move(multimedia),resolution);
+        return make_unique<Video>(id, duration, std::move(multimedia),resolution);
     }
 
     void create_element(const Video& element) const {
@@ -114,7 +114,7 @@ public:
 
         auto exist = getById(element.getId());
         if(exist.has_value()){
-            auto img = move(exist.value());
+            auto img = std::move(exist.value());
             if(img){
                 return update_element(*img, element);
             }

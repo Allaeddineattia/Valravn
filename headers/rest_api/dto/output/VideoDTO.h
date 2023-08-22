@@ -25,7 +25,7 @@ class VideoDTO : public oatpp::DTO {
 
 public:
     static Object<VideoDTO> createDtoFromEntity(const Video & video){
-        Object<VideoDTO> dto ;
+        Object<VideoDTO> dto = Object<VideoDTO>::createShared();
         dto->id = video.getId();
         dto->resolution = video.getResolution().data();
         dto->duration = video.getDuration();
@@ -34,14 +34,10 @@ public:
     }
 
     static oatpp::List<oatpp::Object<VideoDTO>> createDtoVectorFromEntities(vector<unique_ptr<Video>> videos){
-        oatpp::List<oatpp::Object<VideoDTO>> listOfDto;
-        for (auto & video : videos){
+        oatpp::List<oatpp::Object<VideoDTO>> listOfDto = oatpp::List<oatpp::Object<VideoDTO>>::createShared();
+        for (const auto & video : videos){
             if(video){
-                auto dto = VideoDTO::createShared();
-                dto->id = video->getId();
-                dto->resolution = video->getResolution().data();
-                dto->duration = video->getDuration();
-                dto->mulitmedia = MultimediaDto::createDtoFromEntity(video->getMultimedia());
+                Object<VideoDTO> dto = createDtoFromEntity(*video);
                 listOfDto->push_back(dto);
             }
         }

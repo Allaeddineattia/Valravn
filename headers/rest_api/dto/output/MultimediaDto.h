@@ -23,7 +23,7 @@ class MultimediaDto : public oatpp::DTO {
 public:
 
     static Object<MultimediaDto> createDtoFromEntity(const Multimedia & multimedia){
-        Object<MultimediaDto> dto ;
+        Object<MultimediaDto> dto = Object<MultimediaDto>::createShared();
         dto->id = multimedia.getId();
         dto->path = multimedia.getPath().data();
         dto->size = multimedia.getSize();

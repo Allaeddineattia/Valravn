@@ -51,7 +51,7 @@ private:
     [[nodiscard]] static unique_ptr<Multimedia> get_entity_from_map( const string_map & map) {
         unsigned int  id = stoi(map.find("ID")->second);
         time_t size = stoi(map.find("SIZE")->second);
-        auto result = make_unique<Multimedia>( id, map.find("PATH")->second,  size,  map.find("MIME_TYPE")->second) ;
+        auto result = make_unique<Multimedia>( id, SQLHelpers::from_sql_string(map.find("PATH")->second),  size,  map.find("MIME_TYPE")->second) ;
         return result;
     }
 

@@ -28,7 +28,7 @@ public:
      * @param resolution
      */
     static void check_resolution_string_pattern(string_view resolution){
-        regex resolution_pattern("^([1-9]\\d{2,3}:[1-9]\\d{2,3})$");
+        regex resolution_pattern("^([1-9]\\d{2,4}:[1-9]\\d{2,4})$");
         if(! regex_match(resolution.data(), resolution_pattern)){
             throw invalid_argument("Error:Resolution shape int:int");
         }

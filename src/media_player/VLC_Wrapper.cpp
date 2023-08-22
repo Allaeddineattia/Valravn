@@ -121,9 +121,13 @@ void VLC_Wrapper::onStopVideo() {
     libvlc_event_attach(mediaPlayerEventManager, libvlc_event_e::libvlc_MediaPlayerStopped,
                         [](const struct libvlc_event_t *p_event, void *p_data){
                             cout<<"[libvlc_event_attach] onStopVideo"<<endl;
-                            auto vlc = static_cast<VLC_Wrapper *>(p_data) ;
+                            VLC_Wrapper * vlc = static_cast<VLC_Wrapper *>(p_data) ;
                             auto vObserver = static_cast<IObserver *>(vlc->observer);
-                            vObserver->update();
+                            if(vObserver)
+                            {
+                                vObserver->update();
+                            }
+
                         }, (void *) this);
 
 

@@ -33,6 +33,8 @@ namespace SQLHelpers
 
     string to_sql_string(string_view s);
 
+    string from_sql_string(std::string_view s);
+
     string to_sql_date_time(time_t t);
 
 }

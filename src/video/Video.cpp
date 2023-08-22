@@ -12,7 +12,7 @@ using namespace std;
 Video::Video(int id, int duration, unique_ptr<Multimedia> multimedia, string_view resolution_input) :
 id(id),
 duration(duration),
-multimedia(move(multimedia))
+multimedia(std::move(multimedia))
 {
     string vResolution = resolution_input.data();
     StringTools::remove_blanks(vResolution);
