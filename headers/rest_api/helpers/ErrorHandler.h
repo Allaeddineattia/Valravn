@@ -7,7 +7,7 @@
 
 
 
-#include "dto/StatusDto.h"
+#include "rest_api/dto/StatusDto.h"
 
 #include "oatpp/web/server/handler/ErrorHandler.hpp"
 #include "oatpp/web/protocol/http/outgoing/ResponseFactory.hpp"

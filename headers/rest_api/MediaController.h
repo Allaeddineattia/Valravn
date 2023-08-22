@@ -33,14 +33,14 @@
 #include <rest_api/dto/input/MediaUploadDto.h>
 #include <core/Error.h>
 
-#include <core/StorageManager.h>
+#include "rest_api/helpers/FileUploadHandler.h"
 
 #include <core/DependencyInjector.h>
 #include <thread>
-#include "MediaServices.h"
+#include "rest_api/helpers/MediaServices.h"
 #include <unistd.h>
 #include <rest_api/dto/input/AddToPlaylist.h>
-#define DOWNLOAD_PATH "/home/alla/Videos/"
+
 
 #include OATPP_CODEGEN_BEGIN(ApiController) //<- Begin Codegen
 namespace multipart = oatpp::web::mime::multipart;
@@ -62,12 +62,13 @@ public:
     shared_ptr<DependencyInjector> di;
     unique_ptr<MediaServices> service;
     void setVlc(shared_ptr<VLC_Wrapper> _vlcWrapper){
-        vlcWrapper = move(_vlcWrapper);
+        vlcWrapper = std::move(_vlcWrapper);
     };
 
     void setDi(shared_ptr<DependencyInjector> _di) {
-        di = move(_di);
+        di = std::move(_di);
     }
+
 
 
 
@@ -93,71 +94,28 @@ public:
              REQUEST(std::shared_ptr<IncomingRequest>, request))
     {
 
-        /* Prepare multipart container. */
-        auto multipart = std::make_shared<multipart::PartList>(request->getHeaders());
-
-        /* Create multipart reader. */
-        multipart::Reader multipartReader(multipart.get());
-        std::time_t t = std::time(nullptr);
-        string temp_path = DOWNLOAD_PATH + to_string(t) + "temp";
-
-        /* Configure to stream part with name "part1" to file */
-        multipartReader.setPartReader("file", multipart::createFilePartReader(temp_path.c_str()));
-        multipartReader.setPartReader("resolution", multipart::createInMemoryPartReader(256 /* max-data-size */));
-        /* Read multipart body */
-        request->transferBody(&multipartReader);
-
-        /* Print value of "part1" */
-        std::shared_ptr<multipart::Part> part1 = multipart->getNamedPart("file");
-
-        /* Assert part is not null */
-        OATPP_ASSERT_HTTP(part1, Status::CODE_400, "file is null");
-
-        /* Get part data input stream */
-        auto inputStream = part1->getPayload()->openInputStream();
-
-        string fileName = to_string(t) + "-" + part1->getFilename() ;
-        std::shared_ptr<multipart::Part> resolution = multipart->getNamedPart("resolution");
-        std::shared_ptr<multipart::Part> type = multipart->getNamedPart("type");
-        string resolutionValue = resolution->getPayload()->getInMemoryData();
-        auto headers = part1->getHeaders();
-
-        auto fef = headers.getAll();
-        auto contentType = fef.find("Content-Type")->second.std_str();
-        // TODO - process file stream.
-
-
-
-        //return createResponse(Status::CODE_200, "OK");
-        string path = DOWNLOAD_PATH + fileName;
-        if (rename(temp_path.c_str(), path.c_str()) == 0){
-            size_t size = StorageManager::get_file_size(path);
-            if(size > 0){
-                if (contentType.find("image") != std::string::npos){
-                    auto image = MediaUploadDto::createImageFromDto(path, contentType, resolutionValue, size);
-                    image->save();
-                    Object<ImageDto> dto(ImageDto::createDtoFromEntity(*image));
-                    return createDtoResponse(Status::CODE_200, dto);
-                }
-                if(contentType.find("video") != std::string::npos ){
-                    auto duration = vlcWrapper->getDurationOfMedia(path);
-                    auto video = MediaUploadDto::createVideoFromDto(path, contentType, resolutionValue, size, duration);
-                    video->save();
-                    Object<VideoDTO> dto(VideoDTO::createDtoFromEntity(*video));
-                    return createDtoResponse(Status::CODE_200, dto);
-                }
+        FileUploadHandler file_downloader(request);
+        try
+        {
+            file_downloader.store();
+            if (file_downloader.get_content_type().find("image") != std::string::npos) {
+                return createDtoResponse(Status::CODE_200, file_downloader.save_as_image());
             }
-        }else{
-            remove(temp_path.c_str());
-            cout<<"removed"<<endl;
-            string error_msg = "could not create the file with the name: " + fileName;
-            return createResponse(Status::CODE_500, error_msg.c_str());
+            if (file_downloader.get_content_type().find("video") != std::string::npos) {
+                time_t duration = vlcWrapper->getDurationOfMedia(file_downloader.get_storage_path());
+                return createDtoResponse(Status::CODE_200, file_downloader.save_as_video(duration));
+            }
+            string error_msg = "content type not supported of the file : ";
+            error_msg += file_downloader.get_content_type();
+            throw error_msg;
+        }
+        catch(const std::string& error_message)
+        {
+            file_downloader.remove();
+            return createResponse(Status::CODE_500, error_message.c_str());
         }
 
 
-        //Object<ImageDto> dto(ImageDto::createDtoFromEntity(*image));
-        Object<ImageDto> dto;
-        return createDtoResponse(Status::CODE_200, dto);
     }
 
     ENDPOINT_INFO(playMedia) {

@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "oatpp-swagger/Controller.hpp"
-#include <rest_api/AppComponent.h>
+#include "rest_api/AppComponent.h"
 #include <rest_api/ImageController.h>
 #include <rest_api/MediaController.h>
 #include "oatpp/network/Server.hpp"

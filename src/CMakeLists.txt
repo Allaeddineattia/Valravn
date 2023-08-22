@@ -33,6 +33,7 @@ set(SOURCE_FILES
 
         database/SQLHelpers.cpp
         database/SQLiteWrapper.cpp
+        rest_api/helpers/FileUploadHandler.cpp
 )
 
 # The library contains header and source files.
