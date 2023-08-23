@@ -23,7 +23,7 @@ unique_ptr<Video> Unit_testing::Videos::get_video_3() {
 
 void Unit_testing::Videos::seed_db_with_videos(const shared_ptr<DependencyInjector> &di) {
     auto repo = di->get_video_repo(di);
-    Video::installRepo(repo);
+    Video::install_repo(repo);
     get_video_1()->save();
     get_video_2()->save();
     get_video_3()->save();

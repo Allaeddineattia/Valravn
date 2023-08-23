@@ -29,13 +29,13 @@ class Image;
 
         Image(int id, std::string_view resolution, unique_ptr<Multimedia> multimedia);
 
-        [[nodiscard]] unsigned int getId() const override;
+        [[nodiscard]] unsigned int get_id() const override;
 
-        [[nodiscard]]string_view getResolution() const;
+        [[nodiscard]]string_view get_resolution() const;
 
-        [[nodiscard]]const Multimedia &getMultimedia() const;
+        [[nodiscard]]const Multimedia &get_multimedia() const;
 
-        const Image & getSavable() override{
+        const Image & get_savable() override{
             return *this;
         }
 

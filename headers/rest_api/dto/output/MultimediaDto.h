@@ -4,9 +4,11 @@
 
 #ifndef VALRAVEN_MULTIMEDIADTO_H
 #define VALRAVEN_MULTIMEDIADTO_H
+
+#include <oatpp/core/macro/codegen.hpp>
+#include <oatpp/core/Types.hpp>
+
 #include <media_player/Multimedia.h>
-#include "oatpp/core/macro/codegen.hpp"
-#include "oatpp/core/Types.hpp"
 
 #include OATPP_CODEGEN_BEGIN(DTO)"oatpp/codegen/DTO_define.hpp"
 
@@ -24,7 +26,7 @@ public:
 
     static Object<MultimediaDto> createDtoFromEntity(const Multimedia & multimedia){
         Object<MultimediaDto> dto = Object<MultimediaDto>::createShared();
-        dto->id = multimedia.getId();
+        dto->id = multimedia.get_id();
         dto->path = multimedia.getPath().data();
         dto->size = multimedia.getSize();
         dto->mimeType = multimedia.getMimeType().data();

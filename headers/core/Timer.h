@@ -26,7 +26,7 @@ public:
     Timer() {
         index = ++count;
     }
-    void setTimeout(Functor function, long delay_ms){
+    void set_timeout(Functor function, long delay_ms){
         this->clear = false;
         task = std::make_unique<std::thread> ([=]() {
             cout<<"[Time Out Timer] "<< this->index<<" before: "<<delay_ms<<endl;
@@ -41,7 +41,7 @@ public:
 
     };
 
-    void setAlarm(Functor function, time_t t){
+    void set_alarm(Functor function, time_t t){
         this->clear = false;
         auto time_point = chrono::system_clock::from_time_t(t);
         auto time_point1 = chrono::system_clock::now();
@@ -54,7 +54,7 @@ public:
 
     }
 
-    void setInterval(Functor function, long interval){
+    void set_interval(Functor function, long interval){
         this->clear = false;
         std::thread t([=]() {
             while(true) {

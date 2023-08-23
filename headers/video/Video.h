@@ -26,11 +26,11 @@ private:
     int duration ;
     unique_ptr<Multimedia> multimedia ;
     string resolution ;
-    unique_ptr<VideoStateHandler> stateHandler;
+    unique_ptr<VideoStateHandler> state_handler;
 public:
     virtual ~Video() = default;
 
-    [[nodiscard]] unsigned int getId() const override;
+    [[nodiscard]] unsigned int get_id() const override;
 
     [[nodiscard]]int getDuration() const;
 
@@ -38,7 +38,7 @@ public:
 
     [[nodiscard]]string_view getResolution() const;
 
-    const Video & getSavable() override{
+    const Video & get_savable() override{
         return *this;
     }
 

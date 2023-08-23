@@ -5,13 +5,17 @@
 #ifndef VALRAVN_STORAGE_MANAGER_H
 #define VALRAVN_STORAGE_MANAGER_H
 
+
+#include <oatpp/core/Types.hpp>
+#include <oatpp/web/mime/multipart/FileProvider.hpp>
+#include <oatpp/web/mime/multipart/InMemoryDataProvider.hpp>
+#include <oatpp/web/mime/multipart/PartList.hpp>
+
 #define DOWNLOAD_PATH "/home/alla/Videos/"
 
 using oatpp::web::protocol::http::incoming::Request;
 template <class T>
 using DtoObject = oatpp::data::mapping::type::DTO::Object<T>;
-#include "oatpp/core/Types.hpp"
-
 
 class FileUploadHandler {
 
@@ -23,7 +27,7 @@ private:
     string file_name;
     string resolution;
     string content_type;
-    size_t size;
+    size_t size{};
     shared_ptr<oatpp::data::stream::InputStream> inputStream;
 
     multipart::Reader init_oatpp_reader()
@@ -59,7 +63,7 @@ private:
 
 public:
 
-    explicit FileUploadHandler(shared_ptr<Request> request)
+    explicit FileUploadHandler(const shared_ptr<Request>& request)
     {
         this->multipart = std::make_shared<multipart::PartList>(request->getHeaders());
         init_temp_file_path();

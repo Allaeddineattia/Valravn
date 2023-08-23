@@ -10,19 +10,9 @@
 #include <cstdio>
 #include <fstream>
 
-#include "oatpp/web/server/api/ApiController.hpp"
-#include "oatpp/web/server/handler/ErrorHandler.hpp"
-#include "oatpp/parser/json/mapping/ObjectMapper.hpp"
-#include "oatpp/core/macro/codegen.hpp"
-#include "oatpp/web/protocol/http/Http.hpp"
-#include "oatpp/core/macro/component.hpp"
-#include "oatpp/core/data/stream/FileStream.hpp"
-
-#include "oatpp/web/mime/multipart/Reader.hpp"
-#include "oatpp/web/mime/multipart/PartList.hpp"
-
 #include <rest_api/dto/output/ImageDTO.h>
 #include <rest_api/dto/StatusDto.h>
+#include <oatpp/web/mime/multipart/Multipart.hpp>
 
 #include OATPP_CODEGEN_BEGIN(ApiController) //<- Begin Codegen
 namespace multipart = oatpp::web::mime::multipart;
@@ -34,7 +24,7 @@ namespace multipart = oatpp::web::mime::multipart;
 
 class ImageController : public oatpp::web::server::api::ApiController {
 public:
-    ImageController(OATPP_COMPONENT(std::shared_ptr<ObjectMapper>, objectMapper))
+    explicit ImageController(OATPP_COMPONENT(std::shared_ptr<ObjectMapper>, objectMapper))
     : oatpp::web::server::api::ApiController(objectMapper)
             {}
 
@@ -75,7 +65,7 @@ public:
     ENDPOINT("GET", "images/{imageId}", getImageById,
              PATH(Int32, imageId))
     {
-        optional<unique_ptr<Image>> opt_image= Image::fetchById(imageId);
+        optional<unique_ptr<Image>> opt_image= Image::fetch_by_id(imageId);
         if(opt_image.has_value() ){
             unique_ptr<Image> image = std::move(opt_image.value());
             if(image){
@@ -96,7 +86,7 @@ public:
     }
     ENDPOINT("GET", "images/", getImages)
     {
-        vector<unique_ptr<Image>> images = Image::getAll();
+        vector<unique_ptr<Image>> images = Image::get_all();
         return createDtoResponse(Status::CODE_200, ImageDto::createDtoVectorFromEntities(std::move(images)));
     }
 
@@ -111,7 +101,7 @@ public:
     ENDPOINT("DELETE", "images/{imageId}", deleteImage,
              PATH(Int32, imageId))
     {
-        auto opt_image= Image::fetchById(imageId);
+        auto opt_image= Image::fetch_by_id(imageId);
         if(opt_image.has_value() ){
             auto image = std::move(opt_image.value());
             if(image){

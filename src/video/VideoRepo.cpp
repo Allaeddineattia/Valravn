@@ -23,14 +23,14 @@ private:
                 "MULTIMEDIA_ID INT NOT NULL,"\
                 "RESOLUTION TEXT NOT NULL,"\
                 "DURATION INT NOT NULL,"\
-                "FOREIGN KEY(MULTIMEDIA_ID) REFERENCES " + multimediaRepo->getTableName() + "(ID)"\
+                "FOREIGN KEY(MULTIMEDIA_ID) REFERENCES " + multimediaRepo->get_table_name() + "(ID)"\
                 ");";
     }
 
     [[nodiscard]] static string_map getStringMap(const Video& video) {
         string_map map;
-        map.insert(string_pair("ID", to_string(video.getId())));
-        map.insert(string_pair("MULTIMEDIA_ID", to_string(video.getMultimedia().getId())));
+        map.insert(string_pair("ID", to_string(video.get_id())));
+        map.insert(string_pair("MULTIMEDIA_ID", to_string(video.getMultimedia().get_id())));
         map.insert(string_pair("RESOLUTION" , SQLHelpers::to_sql_string(video.getResolution())));
         map.insert(string_pair("DURATION", to_string(video.getDuration())));
         return map;
@@ -52,7 +52,7 @@ private:
         int  id = stoi(map.find("ID")->second);
         int  duration = stoi(map.find("DURATION")->second);
         string resolution = SQLHelpers::from_sql_string(map.find("RESOLUTION")->second);
-        auto multimedia = multimediaRepo->getById(stoi(map.find("MULTIMEDIA_ID")->second)).value();
+        auto multimedia = multimediaRepo->get_by_id(stoi(map.find("MULTIMEDIA_ID")->second)).value();
         return make_unique<Video>(id, duration, std::move(multimedia),resolution);
     }
 
@@ -73,7 +73,7 @@ private:
     void update_element(const Video& old_element, const Video& new_element) const {
         string_map map = getUpdateStringMap(old_element, new_element);
         if(!map.empty()){
-            string_pair id ("ID",to_string(old_element.getId()));
+            string_pair id ("ID",to_string(old_element.get_id()));
             dataBase->update_into_table(tableName, id, map);
         }
         multimediaRepo->save(new_element.getMultimedia());
@@ -104,7 +104,7 @@ public:
         vector<string_map> vectorRes = dataBase->get_all(tableName);
         vector<unique_ptr<Video>> videos;
         for(auto &video_map: vectorRes) {
-            auto multimedia = multimediaRepo->getById(stoi(video_map.find("MULTIMEDIA_ID")->second));
+            auto multimedia = multimediaRepo->get_by_id(stoi(video_map.find("MULTIMEDIA_ID")->second));
             if(multimedia) videos.push_back(getEntityFromMap(video_map));
         }
         return  videos;
@@ -112,7 +112,7 @@ public:
 
     [[nodiscard]] void save(const Video& element) {
 
-        auto exist = getById(element.getId());
+        auto exist = getById(element.get_id());
         if(exist.has_value()){
             auto img = std::move(exist.value());
             if(img){
@@ -132,7 +132,7 @@ public:
         dataBase->begin_transaction();
         try{
             dataBase->delete_by_feature(tableName, feature_selection);
-            multimediaRepo->deleteById(video.value()->getMultimedia().getId());
+            multimediaRepo->delete_by_id(video.value()->getMultimedia().get_id());
         }catch (const std::exception& ex){
             dataBase->abort_transaction();
             throw ;
@@ -150,15 +150,15 @@ public:
 
 };
 
-const string &VideoRepo::getTableName() const {
+const string &VideoRepo::get_table_name() const {
     return mImpl->getTableName();
 }
 
-optional<unique_ptr<Video>> VideoRepo::getById(unsigned int id) {
+optional<unique_ptr<Video>> VideoRepo::get_by_id(unsigned int id) {
     return mImpl->getById(id);
 }
 
-vector<unique_ptr<Video>> VideoRepo::getAll() {
+vector<unique_ptr<Video>> VideoRepo::get_all() {
     return mImpl->getAll();
 }
 
@@ -166,7 +166,7 @@ void VideoRepo::save(const Video &element) {
      mImpl->save(element);
 }
 
-void VideoRepo::deleteById(unsigned int id) {
+void VideoRepo::delete_by_id(unsigned int id) {
     return mImpl->delete_by_id(id);
 }
 

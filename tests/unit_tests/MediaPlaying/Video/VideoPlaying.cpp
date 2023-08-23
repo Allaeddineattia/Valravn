@@ -25,7 +25,7 @@ TEST(VideoPlaying, PlayVideo){
     shared_ptr<DependencyInjector> di = make_shared<DependencyInjector> ();
     di -> install_vlc_wrapper();
     auto vlc = di->get_vlc_wrapper(di);
-    vlc->playVideo(
+    vlc->play_video(
             "/home/alro/Downloads/South Park/South Park Season 1/S01E01.Cartman Gets an Anal Probe/South Park.S01E01.Cartman Gets an Anal Probe.avi",
             10);
 }
@@ -78,7 +78,7 @@ TEST(VideoPlaying, PlayVideoPlaylist) {
 
         auto parameter = make_unique<Parameter>(true, 50, 100, 0.5);
 
-        playlist->addMediaDisplay(make_unique<MediaDisplay>(move(video), move(parameter)));
+        playlist->add_media_display(make_unique<MediaDisplay>(move(video), move(parameter)));
 
         path = "/home/alro/Downloads/Pexels Videos 3436.mp4";
 
@@ -90,9 +90,9 @@ TEST(VideoPlaying, PlayVideoPlaylist) {
 
         parameter = make_unique<Parameter>(true, 50, 100, 0.5);
 
-        playlist->addMediaDisplay(make_unique<MediaDisplay>(move(video), move(parameter)));
+        playlist->add_media_display(make_unique<MediaDisplay>(move(video), move(parameter)));
 
-        vlc->onMediaEnd(playlist.get());
+        vlc->on_media_end(playlist.get());
 
         playlist->play();
 
@@ -101,9 +101,9 @@ TEST(VideoPlaying, PlayVideoPlaylist) {
             cout<<"give you input 1-increase 2-decrease 3 - pause 4 - resume 5-quit"<<endl;
             cin>>x;
             if (x == 1){
-                cout << "volume : " << vlc->increaseVolume()<< endl;
+                cout << "volume : " << vlc->increase_volume() << endl;
             }else if (x ==2){
-                cout << "volume : " << vlc->decreaseVolume()<< endl;
+                cout << "volume : " << vlc->decrease_volume() << endl;
             }else if (x == 3){
                 playlist->pause();
             }else if (x == 4){

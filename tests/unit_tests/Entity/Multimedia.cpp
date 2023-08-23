@@ -10,7 +10,7 @@ TEST(Multimedia, testGetPath){
     Multimedia m(1, "path", 50, "type");
     string new_path = "ejdid";
     new_path += m.getPath();
-    Multimedia m_updated(m.getId(), new_path, m.getSize(), m.getMimeType());
+    Multimedia m_updated(m.get_id(), new_path, m.getSize(), m.getMimeType());
     cout<<m_updated.getPath();
 }
 

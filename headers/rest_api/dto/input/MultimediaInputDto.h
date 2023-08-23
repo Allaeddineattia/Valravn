@@ -4,9 +4,11 @@
 
 #ifndef VALRAVEN_MULTIMEDIAINPUTDTO_H
 #define VALRAVEN_MULTIMEDIAINPUTDTO_H
+
+#include <oatpp/core/macro/codegen.hpp>
+#include <oatpp/core/Types.hpp>
+
 #include <media_player/Multimedia.h>
-#include "oatpp/core/macro/codegen.hpp"
-#include "oatpp/core/Types.hpp"
 
 #include OATPP_CODEGEN_BEGIN(DTO)
 
@@ -21,14 +23,13 @@ class MultimediaInputDto : public oatpp::DTO {
 
 public:
     std::unique_ptr<Multimedia> createEntityFromDto(){
-        unsigned int newId = Multimedia::generateNewId();
+        unsigned int newId = Multimedia::generate_new_id();
         return make_unique<Multimedia>(newId , this->path->c_str(), this->size, this->mimeType->c_str());
     }
 
     std::unique_ptr<Multimedia> updateEntityFromDto(int entity_id){
-        auto multimedia = Multimedia::fetch_by_id(entity_id);
-        auto newPath = this->path ? this->path->c_str() : multimedia->getPath().data();
-
+        std::unique_ptr<Multimedia> multimedia = Multimedia::fetch_by_id(entity_id);
+        string newPath = this->path ? this->path->c_str() : multimedia->getPath().data();
         return make_unique<Multimedia>(entity_id , newPath, this->size, this->mimeType->c_str());
     }
 

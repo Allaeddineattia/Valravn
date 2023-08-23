@@ -5,32 +5,18 @@
 #ifndef VALRAVEN_VIDEOCONTROLLER_H
 #define VALRAVEN_VIDEOCONTROLLER_H
 
-#include "oatpp/web/server/api/ApiController.hpp"
-#include "oatpp/web/server/handler/ErrorHandler.hpp"
-#include "oatpp/parser/json/mapping/ObjectMapper.hpp"
-#include "oatpp/core/macro/codegen.hpp"
-#include "oatpp/web/protocol/http/Http.hpp"
-#include "oatpp/core/macro/component.hpp"
-#include "oatpp/core/data/stream/FileStream.hpp"
-
-#include "oatpp/web/mime/multipart/FileProvider.hpp"
-#include "oatpp/web/mime/multipart/Reader.hpp"
-#include "oatpp/web/mime/multipart/PartList.hpp"
+#include <iostream>
+#include <cstdio>
+#include <fstream>
 
 #include <rest_api/dto/output/VideoDTO.h>
 #include <rest_api/dto/StatusDto.h>
 #include <core/Error.h>
-#include <iostream>
-#include <cstdio>
-#include <fstream>
 #include OATPP_CODEGEN_BEGIN(ApiController) //<- Begin Codegen
 namespace multipart = oatpp::web::mime::multipart;
 /**
  * Video REST controller.
  */
-
-
-
 class VideoController : public oatpp::web::server::api::ApiController {
 public:
     VideoController(OATPP_COMPONENT(std::shared_ptr<ObjectMapper>, objectMapper))
@@ -77,7 +63,7 @@ public:
     ENDPOINT("GET", "videos/{videoId}", getVideoById,
              PATH(Int32, videoId))
     {
-        auto opt_video= Video::fetchById(videoId);
+        auto opt_video= Video::fetch_by_id(videoId);
         if(opt_video.has_value() ){
             auto video = std::move(opt_video.value());
             if(video){
@@ -98,7 +84,7 @@ public:
     }
     ENDPOINT("GET", "videos/", getVideos)
     {
-        auto res = Video::getAll();
+        auto res = Video::get_all();
         return createDtoResponse(Status::CODE_200, VideoDTO::createDtoVectorFromEntities(std::move(res)));
     }
 
@@ -115,7 +101,7 @@ public:
     ENDPOINT("DELETE", "videos/{videoId}", deleteVideo,
              PATH(Int32, videoId))
     {
-        auto opt_video= Video::fetchById(videoId);
+        auto opt_video= Video::fetch_by_id(videoId);
         if(opt_video.has_value() ){
             auto video = std::move(opt_video.value());
             if(video){

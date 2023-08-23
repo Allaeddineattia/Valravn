@@ -18,44 +18,44 @@ class Video;
 
 class VideoStateHandler: public IPlayable, public IObserver {
 
-    unique_ptr<VideoPlayingState> playingState;
-    unique_ptr<VideoPausedState> pausedState;
-    unique_ptr<VideoStoppedState> stoppedState;
+    unique_ptr<VideoPlayingState> playing_state;
+    unique_ptr<VideoPausedState> paused_state;
+    unique_ptr<VideoStoppedState> stopped_state;
     IPlayable * state;
     shared_ptr<VLC_Wrapper> vlc;
-    std::function<void()> updateFunction;
+    std::function<void()> update_function;
 
 public:
 
     Video & video;
     template<class DependencyInjector>
     VideoStateHandler(shared_ptr<DependencyInjector> dependencyInjector,Video &video) : video(video),
-                                                                                        stoppedState(make_unique<VideoStoppedState>(*this)),
-                                                                                        pausedState(make_unique<VideoPausedState>(*this)),
-                                                                                        playingState(make_unique<VideoPlayingState>(*this)),
-                                                                                        state(stoppedState.get()){
+                                                                                        stopped_state(make_unique<VideoStoppedState>(*this)),
+                                                                                        paused_state(make_unique<VideoPausedState>(*this)),
+                                                                                        playing_state(make_unique<VideoPlayingState>(*this)),
+                                                                                        state(stopped_state.get()){
         vlc = dependencyInjector->get_vlc_wrapper(dependencyInjector);
-        vlc->setFullScreen();
+        vlc->set_fullscreen();
     };
 
-    VideoPlayingState * getPlayingState() const;
+    VideoPlayingState * get_playing_state() const;
 
-    VideoPausedState * getPausedState() const;
+    VideoPausedState * get_paused_state() const;
 
-    VideoStoppedState * getStoppedState() const;
+    VideoStoppedState * get_stopped_state() const;
 
-    IPlayable &getState() const;
+    IPlayable &get_state() const;
 
     void play() override;
     void stop() override;
     void pause() override;
 
 
-    void setState(IPlayable * state);
+    void set_state(IPlayable * state);
 
-    VLC_Wrapper & getVlc() const;
+    VLC_Wrapper & get_vlc() const;
 
-    void setUpdateFunction(function<void()> updateFunction);
+    void set_update_function(function<void()> updateFunction);
 
     void update() override;
 

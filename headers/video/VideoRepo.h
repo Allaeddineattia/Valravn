@@ -24,15 +24,15 @@ namespace DataBase
         template<class Dependency>
         explicit VideoRepo(shared_ptr<Dependency> dependency_injector);
 
-        [[nodiscard]] const string & getTableName() const override;
+        [[nodiscard]] const string & get_table_name() const override;
 
-        optional<unique_ptr<Video>> getById(unsigned int id) override;
+        optional<unique_ptr<Video>> get_by_id(unsigned int id) override;
 
-        vector<unique_ptr<Video>> getAll() override;
+        vector<unique_ptr<Video>> get_all() override;
 
         void save(const Video& element) override;
 
-        void deleteById(unsigned int id) override;
+        void delete_by_id(unsigned int id) override;
 
         virtual ~VideoRepo();
     };

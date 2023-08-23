@@ -6,11 +6,11 @@
 #include <media_player/MediaDisplay.h>
 
 
-IPlayable & MediaDisplay::getPlayable()  {
+IPlayable & MediaDisplay::get_playable()  {
     return *playable;
 }
 
-Parameter & MediaDisplay::getParameter() {
+Parameter & MediaDisplay::get_parameter() {
     return *parameter;
 }
 

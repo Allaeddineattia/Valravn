@@ -4,9 +4,10 @@
 
 #ifndef VALRAVEN_SWAGGERCOMPONENT_H
 #define VALRAVEN_SWAGGERCOMPONENT_H
-#include "oatpp-swagger/Model.hpp"
-#include "oatpp-swagger/Resources.hpp"
-#include "oatpp/core/macro/component.hpp"
+
+#include <oatpp-swagger/Model.hpp>
+#include <oatpp-swagger/Resources.hpp>
+#include <oatpp/core/macro/component.hpp>
 
 /**
  *  Swagger ui is served at

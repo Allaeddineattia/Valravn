@@ -20,7 +20,7 @@ multimedia(std::move(multimedia))
     this->resolution = resolution_input;
 }
 
-unsigned int Video::getId() const {
+unsigned int Video::get_id() const {
     return id;
 }
 
@@ -37,18 +37,18 @@ string_view Video::getResolution() const {
 }
 
 void Video::play() {
-    stateHandler->play();
+    state_handler->play();
 }
 
 void Video::stop() {
-    stateHandler->stop();
+    state_handler->stop();
 }
 
 void Video::pause() {
-    stateHandler->pause();
+    state_handler->pause();
 }
 
 void Video::setStateHandler(unique_ptr<VideoStateHandler> stateHandler) {
-    Video::stateHandler = move(stateHandler);
+    Video::state_handler = move(stateHandler);
 }
 

@@ -15,22 +15,21 @@ namespace DataBase
     private:
         class Impl;
         std::unique_ptr<Impl> mImpl;
-
-
+        
     public:
 
         template<class Dependency>
         explicit ScheduleRepo(shared_ptr<Dependency> dependency_injector);
 
-        [[nodiscard]] const string & getTableName() const override;
+        [[nodiscard]] const string & get_table_name() const override;
 
-        optional<unique_ptr<Schedule>> getById(unsigned int id) override;
+        optional<unique_ptr<Schedule>> get_by_id(unsigned int id) override;
 
-        vector<unique_ptr<Schedule>> getAll() override;
+        vector<unique_ptr<Schedule>> get_all() override;
 
         void save(const Schedule& element) override;
 
-        void deleteById(unsigned int id) override;
+        void delete_by_id(unsigned int id) override;
 
         virtual ~ScheduleRepo();
     };

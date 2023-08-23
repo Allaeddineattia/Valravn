@@ -16,6 +16,6 @@ TEST(Playlist,ThrowErrorOnInvalidromve) {
     auto video = make_unique<Video>(1, 5, move(multimedia), "140:100");
     auto parameter =make_unique<Parameter>(true, 20, 20, 50);
     auto mediaDisplay = make_unique<MediaDisplay>(move(video),move(parameter));
-    playlist->addMediaDisplay(move(mediaDisplay));
-    ASSERT_THROW(playlist->removePlayable(1), invalid_argument);
+    playlist->add_media_display(move(mediaDisplay));
+    ASSERT_THROW(playlist->remove_playable(1), invalid_argument);
 }

@@ -4,9 +4,11 @@
 
 #ifndef VALRAVEN_STATUSDTO_H
 #define VALRAVEN_STATUSDTO_H
-#include "oatpp/core/macro/codegen.hpp"
-#include "oatpp/core/Types.hpp"
+
 #include <string_view>
+#include <oatpp/core/macro/codegen.hpp>
+#include <oatpp/core/Types.hpp>
+
 
 #include OATPP_CODEGEN_BEGIN(DTO)
 
@@ -31,7 +33,7 @@ class StatusDto : public oatpp::DTO {
 
 public:
     static Object<StatusDto> ok(std::string_view message){
-        auto status = StatusDto::createShared();
+        Object<StatusDto> status = StatusDto::createShared();
         status->status = "OK";
         status->code = 200;
         status->message = message.data();

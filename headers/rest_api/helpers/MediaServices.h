@@ -24,10 +24,6 @@ public:
         }
     }
 
-
-
-
-
 };
 
 #endif //VALRAVEN_MEDIASERVICES_H

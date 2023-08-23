@@ -4,16 +4,13 @@
 
 #ifndef VALRAVEN_APPCOMPONENT_H
 #define VALRAVEN_APPCOMPONENT_H
-#include "rest_api/SwaggerComponent.h"
 
-#include "rest_api/helpers/ErrorHandler.h"
+#include <oatpp-1.3.0/oatpp/oatpp/web/server/HttpConnectionHandler.hpp>
+#include <oatpp-1.3.0/oatpp/oatpp/web/server/HttpRouter.hpp>
+#include <oatpp-1.3.0/oatpp/oatpp/network/tcp/server/ConnectionProvider.hpp>
 
-#include "oatpp-1.3.0/oatpp/oatpp/web/server/HttpConnectionHandler.hpp"
-#include "oatpp-1.3.0/oatpp/oatpp/web/server/HttpRouter.hpp"
-#include "oatpp-1.3.0/oatpp/oatpp/network/tcp/server/ConnectionProvider.hpp"
-
-
-
+#include <rest_api/SwaggerComponent.h>
+#include <rest_api/helpers/ErrorHandler.h>
 
 /**
  *  Class which creates and holds Application components and registers components in oatpp::base::Environment

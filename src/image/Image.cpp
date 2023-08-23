@@ -17,15 +17,15 @@ Image::Image(int id, string_view resolution_input, unique_ptr<Multimedia>multime
     this->resolution = resolution_input;
 }
 
-unsigned int Image::getId() const {
+unsigned int Image::get_id() const {
     return id;
 }
 
-string_view Image::getResolution() const {
+string_view Image::get_resolution() const {
     return resolution;
 }
 
-const Multimedia &Image::getMultimedia() const {
+const Multimedia &Image::get_multimedia() const {
     return *multimedia;
 }
 

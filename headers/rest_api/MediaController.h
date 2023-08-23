@@ -14,45 +14,34 @@
 #include <cstdio>
 #include <fstream>
 #include <ctime>
+#include <thread>
+#include <unistd.h>
 
-#include "oatpp/web/server/api/ApiController.hpp"
-#include "oatpp/web/server/handler/ErrorHandler.hpp"
-#include "oatpp/parser/json/mapping/ObjectMapper.hpp"
-#include "oatpp/core/macro/codegen.hpp"
-#include "oatpp/web/protocol/http/Http.hpp"
-#include "oatpp/core/macro/component.hpp"
-#include "oatpp/core/data/stream/FileStream.hpp"
-#include "oatpp/web/mime/multipart/FileProvider.hpp"
-#include "oatpp/web/mime/multipart/Reader.hpp"
-#include "oatpp/web/mime/multipart/PartList.hpp"
-#include "oatpp/web/mime/multipart/InMemoryDataProvider.hpp"
 
+#include <core/Error.h>
+#include <core/DependencyInjector.h>
 #include <rest_api/dto/output/ImageDTO.h>
 #include <rest_api/dto/output/VideoDTO.h>
 #include <rest_api/dto/StatusDto.h>
 #include <rest_api/dto/input/MediaUploadDto.h>
-#include <core/Error.h>
-
-#include "rest_api/helpers/FileUploadHandler.h"
-
-#include <core/DependencyInjector.h>
-#include <thread>
-#include "rest_api/helpers/MediaServices.h"
-#include <unistd.h>
 #include <rest_api/dto/input/AddToPlaylist.h>
+
+#include <rest_api/helpers/FileUploadHandler.h>
+#include <rest_api/helpers/MediaServices.h>
+
+
 
 
 #include OATPP_CODEGEN_BEGIN(ApiController) //<- Begin Codegen
+
 namespace multipart = oatpp::web::mime::multipart;
+
 /**
  * Media REST controller.
  */
-
-
-
 class MediaController : public oatpp::web::server::api::ApiController {
 public:
-    MediaController(OATPP_COMPONENT(std::shared_ptr<ObjectMapper>, objectMapper))
+    explicit MediaController(OATPP_COMPONENT(std::shared_ptr<ObjectMapper>, objectMapper))
             : oatpp::web::server::api::ApiController(objectMapper)
     {
         service = make_unique<MediaServices>();
@@ -102,7 +91,7 @@ public:
                 return createDtoResponse(Status::CODE_200, file_downloader.save_as_image());
             }
             if (file_downloader.get_content_type().find("video") != std::string::npos) {
-                time_t duration = vlcWrapper->getDurationOfMedia(file_downloader.get_storage_path());
+                time_t duration = vlcWrapper->get_media_duration(file_downloader.get_storage_path());
                 return createDtoResponse(Status::CODE_200, file_downloader.save_as_video(duration));
             }
             string error_msg = "content type not supported of the file : ";
@@ -132,34 +121,34 @@ public:
     {
         string type = mediaDto->mimeType;
         unsigned int id = mediaDto->id;
+
         if (type.find("image") != std::string::npos ){
-            auto optional = Image::fetchById(id);
+            optional<unique_ptr<Image>> optional = Image::fetch_by_id(id);
             if(! optional.has_value()){
                 string error_msg = "no element found with mimetype <" + type + "> and id " + to_string(id) + " not supported";
                 return createResponse(Status::CODE_404, error_msg.data());
             }
-            auto image = std::move(optional.value());
+            unique_ptr<Image> image = std::move(optional.value());
             image->play();
             Object<ImageDto> dto(ImageDto::createDtoFromEntity(*image));
             return createDtoResponse(Status::CODE_200, dto);
         }
-        else if (type.find("video") != std::string::npos ){
-            auto optional = Video::fetchById(id);
+        if (type.find("video") != std::string::npos ){
+            auto optional = Video::fetch_by_id(id);
             if(! optional.has_value()){
                 string error_msg = "no element found with mimetype <" + type + "> and id <" + to_string(id) + " >";
                 return createResponse(Status::CODE_404, error_msg.data());
             }
-            auto video = std::move(optional.value());
+            unique_ptr<Video> video = std::move(optional.value());
             Object<VideoDTO> dto(VideoDTO::createDtoFromEntity(*video));
             service->play_video(std::move(video), di);
-
             return createDtoResponse(Status::CODE_200, dto);
-
         }
         string error_msg = "mime type <" + type + "> not supported";
         return createResponse(Status::CODE_404, error_msg.data());
     }
 
+    /*
     ENDPOINT_INFO(playlistAdd) {
         info->summary = "add medias to PlayList";
 
@@ -172,13 +161,14 @@ public:
     }
     ENDPOINT("POST", "playlist/", playlistAdd, BODY_DTO(Object<AddMediaToPlaylist>, mediaDto))
     {
-        Object<VideoDTO> * dto;
+
         int size = mediaDto->size;
         if(size != mediaDto->medias->size()){
             string error_msg = "size field <"+ to_string(size) +"> doesn't match with the size of the array <" + to_string( mediaDto->medias->size()) +">";
             return createResponse(Status::CODE_500, error_msg.data());
         }
-        for(auto & item: *mediaDto->medias){
+        Object <VideoDTO> *dto = nullptr;
+        for(Object<PlayListItem> & item: *mediaDto->medias){
             cout<<"-----item----"<<endl;
             cout<<item->mediaId<<endl;
             cout<<item->position<<endl;
@@ -192,10 +182,10 @@ public:
                     string error_msg = "no element found with mimetype <" + type + "> and id " + to_string(id) + " not supported";
                     return createResponse(Status::CODE_404, error_msg.data());
                 }
-                auto image = move(optional.value());
+                auto image = std::move(optional.value());
                 image->play();
                 Object<ImageDto> dto(ImageDto::createDtoFromEntity(*image));
-                return createDtoResponse(Status::CODE_200, dto);
+
             }
             else if (type.find("video") != std::string::npos ){
                 auto optional = Video::fetchById(id);
@@ -203,21 +193,22 @@ public:
                     string error_msg = "no element found with mimetype <" + type + "> and id <" + to_string(id) + " >";
                     return createResponse(Status::CODE_404, error_msg.data());
                 }
-                auto video = move(optional.value());
+                auto video = std::move(optional.value());
                 auto stateHandler = make_unique<VideoStateHandler>(di, *video);
                 video->setStateHandler(move(stateHandler));
                 dto = new Object<VideoDTO>(VideoDTO::createDtoFromEntity(*video));
                 auto parameter = make_unique<Parameter>(true, 50, 100, 0.5);
                 service->playlist->addMediaDisplay(make_unique<MediaDisplay>(move(video), move(parameter)));
 
-
+                cout<<"playing"<<endl;
+                vlcWrapper->onMediaEnd(service->playlist.get());
+                service->playlist->play();
             }
         }
-        cout<<"playing"<<endl;
-        vlcWrapper->onMediaEnd(service->playlist.get());
-        service->playlist->play();
-        return createDtoResponse(Status::CODE_200, *dto);
-    }
+
+        return createDtoResponse(Status::CODE_200, "created");
+
+    }*/
 
 };
 

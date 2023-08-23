@@ -11,16 +11,16 @@ using namespace std;
 
 Playlist::Playlist(int id) : id(id){}
 
-const vector<unique_ptr<MediaDisplay>> & Playlist::getPlaylist()  {
+const vector<unique_ptr<MediaDisplay>> & Playlist::get_playlist()  {
     return display;
 }
 
-void Playlist::addMediaDisplay(unique_ptr<MediaDisplay> _mediadisplay) {
-    display.push_back(move(_mediadisplay));
+void Playlist::add_media_display(unique_ptr<MediaDisplay> _mediaDisplay) {
+    display.push_back(move(_mediaDisplay));
 }
 
 
-void Playlist::removePlayable(int _position) {
+void Playlist::remove_playable(int _position) {
     if ((_position < display.size())&&(_position >= 0))
         display.erase(display.begin()+_position);
     else
@@ -28,27 +28,27 @@ void Playlist::removePlayable(int _position) {
 
 }
 
-int Playlist::getId() const {
+int Playlist::get_id() const {
     return id;
 }
 
 void Playlist::play() {
     cout<<"playing: "<< current<<endl;
-    display[current]->getPlayable().play();
+    display[current]->get_playable().play();
 }
 
 
 
 void Playlist::pause() {
-    display[current]->getPlayable().pause();
+    display[current]->get_playable().pause();
 }
 
 void Playlist::stop() {
-    display[current]->getPlayable().stop();
+    display[current]->get_playable().stop();
 }
 
 void Playlist::play_next () {
-    display[current]->getPlayable().stop();
+    display[current]->get_playable().stop();
     if(current + 1 < display.size()){
         ++current;
         cout<<current<< " , " <<display.size()<<endl;
@@ -65,7 +65,7 @@ void Playlist::play_next () {
 }
 
 void Playlist::play_previous (){
-    display[current]->getPlayable().stop();
+    display[current]->get_playable().stop();
     cout<<current - 1<<endl;
     if((((long)current) - 1) >= 0){
         --current;
@@ -82,7 +82,7 @@ void Playlist::play_previous (){
 
 void Playlist::update() {
     cout<<"Hello Hello "<<endl;
-    display[current]->getPlayable().stop();
+    display[current]->get_playable().stop();
     if(current + 1 < display.size()){
         ++current;
         cout<<current<< " , " <<display.size()<<endl;

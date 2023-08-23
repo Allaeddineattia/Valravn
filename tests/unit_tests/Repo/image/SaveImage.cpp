@@ -17,7 +17,7 @@ TEST(image_creation, create_valid_image){
     di->install_image_repo(di);
     ASSERT_EQ( Unit_testing::Database::init_database(di), true);
     auto image_repo = di->get_image_repo(di);
-    Image::installRepo(image_repo);
+    Image::install_repo(image_repo);
     auto image = Unit_testing::Images::get_image_1();
     image->save();
 
@@ -33,10 +33,10 @@ TEST(image_creation, create_new_id){
     di->install_image_repo(di);
     ASSERT_EQ( Unit_testing::Database::init_database(di), true);
     auto image_repo = di->get_image_repo(di);
-    Image::installRepo(image_repo);
+    Image::install_repo(image_repo);
     auto image = Unit_testing::Images::get_image_1();
     image->save();
-    unsigned int id = Image::generateNewId();
+    unsigned int id = Image::generate_new_id();
     ASSERT_NE(id, 1);
 
 

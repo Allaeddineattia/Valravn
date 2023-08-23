@@ -18,9 +18,9 @@ private:
 public:
     MediaDisplay(unique_ptr<IPlayable> playable, unique_ptr<Parameter> parameter);
 
-    IPlayable & getPlayable();
+    IPlayable & get_playable();
 
-    Parameter & getParameter();
+    Parameter & get_parameter();
 };
 
 

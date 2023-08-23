@@ -23,15 +23,15 @@ namespace DataBase
         template<class Dependency>
         explicit MultimediaRepo(Dependency dependency_injector);
 
-        [[nodiscard]] const string & getTableName() const override;
+        [[nodiscard]] const string & get_table_name() const override;
 
-        optional<unique_ptr<Multimedia>> getById(unsigned int id) override;
+        optional<unique_ptr<Multimedia>> get_by_id(unsigned int id) override;
 
-        [[nodiscard]] vector<unique_ptr<Multimedia>> getAll() override;
+        [[nodiscard]] vector<unique_ptr<Multimedia>> get_all() override;
 
         void save(const Multimedia& element) override;
 
-        void deleteById(unsigned int id) override;
+        void delete_by_id(unsigned int id) override;
 
         virtual ~MultimediaRepo();
     };

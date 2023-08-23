@@ -10,19 +10,19 @@
 
 
 
-VideoPlayingState * VideoStateHandler::getPlayingState() const {
-    return playingState.get();
+VideoPlayingState * VideoStateHandler::get_playing_state() const {
+    return playing_state.get();
 }
 
-VideoPausedState * VideoStateHandler::getPausedState() const {
-    return pausedState.get();
+VideoPausedState * VideoStateHandler::get_paused_state() const {
+    return paused_state.get();
 }
 
-VideoStoppedState * VideoStateHandler::getStoppedState() const {
-    return stoppedState.get();
+VideoStoppedState * VideoStateHandler::get_stopped_state() const {
+    return stopped_state.get();
 }
 
-IPlayable &VideoStateHandler::getState() const {
+IPlayable &VideoStateHandler::get_state() const {
     return *state;
 }
 
@@ -39,22 +39,22 @@ void VideoStateHandler::pause() {
     state->pause();
 }
 
-void VideoStateHandler::setState(IPlayable  * state) {
+void VideoStateHandler::set_state(IPlayable  * state) {
     VideoStateHandler::state = state;
 }
 
 
-VLC_Wrapper & VideoStateHandler::getVlc() const {
+VLC_Wrapper & VideoStateHandler::get_vlc() const {
     return *vlc;
 }
 
 void VideoStateHandler::update() {
     cout<<"Video path "<< this->video.getMultimedia().getPath()<<endl;
-    this->updateFunction();
+    this->update_function();
 }
 
-void VideoStateHandler::setUpdateFunction(function<void()> function) {
-    VideoStateHandler::updateFunction = std::move(function);
+void VideoStateHandler::set_update_function(function<void()> updateFunction) {
+    VideoStateHandler::update_function = std::move(updateFunction);
 }
 
 

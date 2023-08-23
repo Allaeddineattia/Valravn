@@ -24,13 +24,13 @@ public:
     explicit Playlist(int id);
     ~Playlist() override = default;
 
-    [[nodiscard]] int getId() const;
+    [[nodiscard]] int get_id() const;
 
-    [[nodiscard]] const vector<unique_ptr<MediaDisplay>> & getPlaylist();
+    [[nodiscard]] const vector<unique_ptr<MediaDisplay>> & get_playlist();
 
-    void addMediaDisplay(unique_ptr<MediaDisplay> _mediaDisplay);
+    void add_media_display(unique_ptr<MediaDisplay> _mediaDisplay);
 
-    void removePlayable(int _position);
+    void remove_playable(int _position);
 
     void play_next ();
 

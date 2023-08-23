@@ -22,7 +22,7 @@ private:
 public:
     Multimedia(unsigned int id, string_view path, size_t size, string_view mimeType);
 
-    [[nodiscard]] unsigned int getId() const override;
+    [[nodiscard]] unsigned int get_id() const override;
 
     [[nodiscard]] string_view getPath() const;
 
@@ -30,7 +30,7 @@ public:
 
     [[nodiscard]] string_view getMimeType() const;
 
-    const Multimedia & getSavable() override {
+    const Multimedia & get_savable() override {
         return *this;
     }
 

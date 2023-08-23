@@ -21,9 +21,9 @@ TEST(Image, ThrowErrorOnInvalidResolution2) {
 TEST(Image, CreationImage) {
     auto multimedia = make_unique<Multimedia>(1, "path", 50, "type");
     auto image = make_unique<Image>(1, " 140:800", move(multimedia));
-    ASSERT_EQ(image->getMultimedia().getPath(),"path");
-    ASSERT_EQ(image->getMultimedia().getMimeType(),"type");
-    ASSERT_EQ(image->getResolution()," 140:800");
+    ASSERT_EQ(image->get_multimedia().getPath(), "path");
+    ASSERT_EQ(image->get_multimedia().getMimeType(), "type");
+    ASSERT_EQ(image->get_resolution(), " 140:800");
 }
 
 TEST(Image, ThrowErrorOnInvalidResolution3) {

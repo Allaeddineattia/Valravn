@@ -23,13 +23,13 @@ void init_imagerepo(shared_ptr<DependencyInjector> di){
     db->init_db();
 
     auto multimedia_repo = di->get_multimedia_repo(di);
-    Multimedia::installRepo(multimedia_repo);
+    Multimedia::install_repo(multimedia_repo);
 
     auto image_repo = di->get_image_repo(di);
-    Image::installRepo(image_repo);
+    Image::install_repo(image_repo);
 
     auto video_repo = di->get_video_repo(di);
-    Video::installRepo(video_repo);
+    Video::install_repo(video_repo);
 
 }
 

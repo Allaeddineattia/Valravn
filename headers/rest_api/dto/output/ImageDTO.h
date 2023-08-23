@@ -5,9 +5,10 @@
 #ifndef VALRAVEN_IMAGEDTO_H
 #define VALRAVEN_IMAGEDTO_H
 
+#include <oatpp/core/macro/codegen.hpp>
+#include <oatpp/core/Types.hpp>
+
 #include <image/Image.h>
-#include "oatpp/core/macro/codegen.hpp"
-#include "oatpp/core/Types.hpp"
 #include "MultimediaDto.h"
 
 #include OATPP_CODEGEN_BEGIN(DTO)"oatpp/codegen/DTO_define.hpp"
@@ -25,20 +26,20 @@ class ImageDto : public oatpp::DTO {
 public:
     static Object<ImageDto> createDtoFromEntity(const Image & image){
         Object<ImageDto> dto ;
-        dto->id = image.getId();
-        dto->resolution = image.getResolution().data();
-        dto->mulitmedia = MultimediaDto::createDtoFromEntity(image.getMultimedia());
-        return Object<ImageDto>(dto);
+        dto->id = image.get_id();
+        dto->resolution = image.get_resolution().data();
+        dto->mulitmedia = MultimediaDto::createDtoFromEntity(image.get_multimedia());
+        return {dto};
     }
 
     static oatpp::List<oatpp::Object<ImageDto>> createDtoVectorFromEntities(vector<unique_ptr<Image>> images){
         oatpp::List<oatpp::Object<ImageDto>> listOfDto;
-        for (auto & image : images){
+        for (unique_ptr<Image> & image : images){
             if(image){
-                auto dto = ImageDto::createShared();
-                dto->id = image->getId();
-                dto->resolution = image->getResolution().data();
-                dto->mulitmedia = MultimediaDto::createDtoFromEntity(image->getMultimedia());
+                Object<ImageDto> dto = ImageDto::createShared();
+                dto->id = image->get_id();
+                dto->resolution = image->get_resolution().data();
+                dto->mulitmedia = MultimediaDto::createDtoFromEntity(image->get_multimedia());
                 listOfDto->push_back(dto);
             }
         }

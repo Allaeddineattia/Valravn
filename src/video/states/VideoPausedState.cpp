@@ -7,20 +7,20 @@
 
 void VideoPausedState::play() {
     cout<<"VideoPausedState::play, path: "<<stateHandler.video.getMultimedia().getPath()<<endl;
-    stateHandler.setUpdateFunction([this](){
-        this->stateHandler.setState(this->stateHandler.getPlayingState());
+    stateHandler.set_update_function([this]() {
+        this->stateHandler.set_state(this->stateHandler.get_playing_state());
     });
-    stateHandler.getVlc().resume();
+    stateHandler.get_vlc().resume();
 
 
 }
 
 void VideoPausedState::stop() {
     cout<<"VideoPausedState::stop, path: "<<stateHandler.video.getMultimedia().getPath()<<endl;
-    stateHandler.setUpdateFunction([this](){
-        this->stateHandler.setState(this->stateHandler.getStoppedState());
+    stateHandler.set_update_function([this]() {
+        this->stateHandler.set_state(this->stateHandler.get_stopped_state());
     });
-    stateHandler.getVlc().stop();
+    stateHandler.get_vlc().stop();
 }
 
 void VideoPausedState::pause() {

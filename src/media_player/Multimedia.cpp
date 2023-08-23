@@ -4,7 +4,7 @@
 
 #include <media_player/Multimedia.h>
 
-unsigned int Multimedia::getId() const {
+unsigned int Multimedia::get_id() const {
     return id;
 }
 
@@ -25,11 +25,11 @@ Multimedia::Multimedia(unsigned int id, string_view path, size_t size, string_vi
                                                                                       mimeType(mimeType) {}
 
 unique_ptr<Multimedia> Multimedia::fetch_by_id(int T) {
-    return unique_ptr<Multimedia>();
+    return {};
 }
 
 vector<unique_ptr<Multimedia>> Multimedia::get_all() {
-    return vector<unique_ptr<Multimedia>>();
+    return {};
 }
 
 bool Multimedia::operator==(const Multimedia &rhs) const {
@@ -39,7 +39,5 @@ bool Multimedia::operator==(const Multimedia &rhs) const {
            size == rhs.size;
 }
 
-Multimedia::~Multimedia() {
-
-}
+Multimedia::~Multimedia() = default;
 

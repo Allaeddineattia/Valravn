@@ -21,11 +21,11 @@ private:
 public:
     Schedule(int id,time_t time, unique_ptr<Playlist> playlist);
 
-    [[nodiscard]]int getId() const;
+    [[nodiscard]]int get_id() const;
 
-    [[nodiscard]] time_t getTime() const;
+    [[nodiscard]] time_t get_time() const;
 
-    [[nodiscard]] const Playlist & getPlaylist() const;
+    [[nodiscard]] const Playlist & get_playlist() const;
 };
 
 

@@ -24,7 +24,7 @@ unique_ptr<Image> Unit_testing::Images::get_image_3() {
 
 void Unit_testing::Images::seed_db_with_images(const shared_ptr<DependencyInjector> &di) {
     auto repo = di->get_image_repo(di);
-    Image::installRepo(repo);
+    Image::install_repo(repo);
     get_image_1()->save();
     get_image_2()->save();
     get_image_3()->save();

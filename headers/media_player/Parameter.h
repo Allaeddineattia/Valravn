@@ -16,13 +16,13 @@ private:
 public:
     Parameter(bool fullscreen, int volume, int timeout, float speed);
 
-    [[nodiscard]] bool isFullscreen() const;
+    [[nodiscard]] bool is_fullscreen() const;
 
-    [[nodiscard]] int getVolume() const;
+    [[nodiscard]] int get_volume() const;
 
-    [[nodiscard]] int getTimeout() const;
+    [[nodiscard]] int get_timeout() const;
 
-    [[nodiscard]] float getSpeed() const;
+    [[nodiscard]] float get_speed() const;
 };
 
 

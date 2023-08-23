@@ -5,9 +5,11 @@
 #ifndef VALRAVEN_VIDEODTO_H
 #define VALRAVEN_VIDEODTO_H
 
+
+#include <oatpp/core/macro/codegen.hpp>
+#include <oatpp/core/Types.hpp>
+
 #include <video/Video.h>
-#include "oatpp/core/macro/codegen.hpp"
-#include "oatpp/core/Types.hpp"
 #include "MultimediaDto.h"
 
 #include OATPP_CODEGEN_BEGIN(DTO)"oatpp/codegen/DTO_define.hpp"
@@ -26,7 +28,7 @@ class VideoDTO : public oatpp::DTO {
 public:
     static Object<VideoDTO> createDtoFromEntity(const Video & video){
         Object<VideoDTO> dto = Object<VideoDTO>::createShared();
-        dto->id = video.getId();
+        dto->id = video.get_id();
         dto->resolution = video.getResolution().data();
         dto->duration = video.getDuration();
         dto->mulitmedia = MultimediaDto::createDtoFromEntity(video.getMultimedia());

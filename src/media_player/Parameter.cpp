@@ -7,18 +7,18 @@
 Parameter::Parameter(bool fullscreen, int volume, int timeout, float speed) :
     fullscreen(fullscreen), volume(volume), timeout(timeout), speed(speed) {}
 
-bool Parameter::isFullscreen() const {
+bool Parameter::is_fullscreen() const {
     return fullscreen;
 }
 
-int Parameter::getVolume() const {
+int Parameter::get_volume() const {
     return volume;
 }
 
-int Parameter::getTimeout() const {
+int Parameter::get_timeout() const {
     return timeout;
 }
 
-float Parameter::getSpeed() const {
+float Parameter::get_speed() const {
     return speed;
 }

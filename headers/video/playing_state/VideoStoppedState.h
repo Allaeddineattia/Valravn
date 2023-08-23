@@ -12,7 +12,7 @@
 class VideoStateHandler;
 
 class VideoStoppedState: public IPlayable {
-    VideoStateHandler & stateHandler;
+    VideoStateHandler & state_handler;
 public:
     VideoStoppedState(VideoStateHandler &stateHandler);
 

@@ -26,7 +26,7 @@ private:
 
     [[nodiscard]] static string_map get_string_map(const Multimedia & multimedia) {
         string_map map;
-        map.insert(string_pair("ID",to_string(multimedia.getId())));
+        map.insert(string_pair("ID",to_string(multimedia.get_id())));
         map.insert(string_pair("PATH", SQLHelpers::to_sql_string(multimedia.getPath())));
         map.insert(string_pair("SIZE",to_string(multimedia.getSize())));
         map.insert(string_pair("MIME_TYPE" , SQLHelpers::to_sql_string(multimedia.getMimeType())));
@@ -63,7 +63,7 @@ private:
     void update_element(const Multimedia& old_element, const Multimedia& new_element) const {
         string_map map = get_update_string_map(old_element, new_element);
         if(!map.empty()){
-            string_pair id ("ID",to_string(old_element.getId()));
+            string_pair id ("ID",to_string(old_element.get_id()));
             data_base->update_into_table(table_name, id, map);
         }
     }
@@ -95,7 +95,7 @@ public:
     };
 
     void save(const Multimedia& element) {
-        auto exist = get_by_id(element.getId());
+        auto exist = get_by_id(element.get_id());
         if(exist.has_value()){
             auto mul = std::move(exist.value());
             if (mul){
@@ -111,10 +111,6 @@ public:
         return true;
     }
 
-    unsigned int get_available_id() {
-        return 0;
-    }
-
 };
 
 template<class Dependency>
@@ -122,15 +118,15 @@ MultimediaRepo::MultimediaRepo(Dependency dependency_injector) {
     mImpl = make_unique<Impl>(dependency_injector);
 }
 
-const string &MultimediaRepo::getTableName() const {
+const string &MultimediaRepo::get_table_name() const {
     return mImpl->get_table_name();
 }
 
-optional<unique_ptr<Multimedia>> MultimediaRepo::getById(unsigned int id) {
+optional<unique_ptr<Multimedia>> MultimediaRepo::get_by_id(unsigned int id) {
     return mImpl->get_by_id(id);
 }
 
-vector<unique_ptr<Multimedia>> MultimediaRepo::getAll() {
+vector<unique_ptr<Multimedia>> MultimediaRepo::get_all() {
     return mImpl->get_all();
 }
 
@@ -138,7 +134,7 @@ void MultimediaRepo::save(const Multimedia &element) {
     mImpl->save(element);
 }
 
-void MultimediaRepo::deleteById(unsigned int id) {
+void MultimediaRepo::delete_by_id(unsigned int id) {
     mImpl->delete_by_id(id);
 }
 

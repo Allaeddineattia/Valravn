@@ -20,15 +20,15 @@ mediaPlayerEventManager(libvlc_media_player_event_manager(mediaPlayer))
                             auto data = static_cast<VLC_Wrapper *> (p_data);
                             data->resume();
                         }, this);
-    x = 0;
+    initialise_counter = 0;
     thread([&](){
         while(true){
-            if(x==1){
+            if(initialise_counter == 1){
                 cout<<"setting media"<<endl;
                 libvlc_media_player_set_media(mediaPlayer, media);
-                x=0;
+                initialise_counter=0;
             }
-            if(x==2){
+            if(initialise_counter == 2){
                 break;
             }
         }
@@ -40,13 +40,13 @@ mediaPlayerEventManager(libvlc_media_player_event_manager(mediaPlayer))
 
 }
 
-void VLC_Wrapper::playVideo(string_view path, int length) {
+void VLC_Wrapper::play_video(string_view path, int length) {
     media = libvlc_media_new_path(vlcInstance, path.data());
-    setNextMedia();
+    set_next_media();
 }
 
-void VLC_Wrapper::setNextMedia() {
-    x = 1;
+void VLC_Wrapper::set_next_media() {
+    initialise_counter = 1;
 }
 
 void VLC_Wrapper::pause() {
@@ -62,7 +62,7 @@ void VLC_Wrapper::resume() {
 }
 
 
-time_t VLC_Wrapper::getDurationOfMedia(string_view path) {
+time_t VLC_Wrapper::get_media_duration(string_view path) {
     libvlc_media_t * vMedia = libvlc_media_new_path(vlcInstance, path.data());
     libvlc_media_parse_with_options(vMedia, libvlc_media_parse_local, -1);
     time_t duration;
@@ -133,22 +133,22 @@ void VLC_Wrapper::onStopVideo() {
 
 }
 
-void VLC_Wrapper::onMediaEnd(IObserver *vObserver) {
+void VLC_Wrapper::on_media_end(IObserver *observer) {
     libvlc_event_attach(mediaPlayerEventManager, libvlc_event_e::libvlc_MediaPlayerEndReached,
                         [](const struct libvlc_event_t *p_event, void *p_data){
                             auto * vObserver = static_cast<IObserver *>(p_data);
                             cout<<"[libvlc_MediaPlayerEndReached]"<<endl;
                             vObserver->update();
                             cout<<"[libvlc_MediaPlayerEndReached]"<<endl;
-                        }, (void *) vObserver);
+                        }, (void *) observer);
 }
 
-void VLC_Wrapper::setFullScreen() {
+void VLC_Wrapper::set_fullscreen() {
     libvlc_set_fullscreen(mediaPlayer, 1);
 
 }
 
-int VLC_Wrapper::increaseVolume(){
+int VLC_Wrapper::increase_volume(){
     int vol = libvlc_audio_get_volume(mediaPlayer);
     int result = vol + 5;
     result = result <100 ? result : 100;
@@ -157,7 +157,7 @@ int VLC_Wrapper::increaseVolume(){
 
 }
 
-int VLC_Wrapper::decreaseVolume(){
+int VLC_Wrapper::decrease_volume(){
     int vol = libvlc_audio_get_volume(mediaPlayer);
     int result = vol - 5;
     result = result > 0 ? result : 0;
@@ -166,7 +166,7 @@ int VLC_Wrapper::decreaseVolume(){
 }
 
 void VLC_Wrapper::terminate() {
-    x=2;
+    initialise_counter=2;
     libvlc_media_release(media);
     libvlc_media_player_release(mediaPlayer);
 

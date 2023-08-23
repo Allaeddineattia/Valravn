@@ -21,10 +21,10 @@ TEST(image_deleting, delete_saved_image){
     ASSERT_EQ( Unit_testing::Database::init_database(di), true);
     Unit_testing::Images::seed_db_with_images(di);
     auto image_repo = di->get_image_repo(di);
-    Image::installRepo(image_repo);
+    Image::install_repo(image_repo);
     auto image = Unit_testing::Images::get_image_1();
     image->remove();
-    auto res = Image::fetchById(image->getId());
+    auto res = Image::fetch_by_id(image->get_id());
     ASSERT_EQ(res.has_value(), false);
     vector<unique_ptr<Image>> images;
     images.push_back(Unit_testing::Images::get_image_2());

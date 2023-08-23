@@ -5,9 +5,9 @@
 #ifndef VALRAVEN_ADDTOPLAYLIST_H
 #define VALRAVEN_ADDTOPLAYLIST_H
 
-#include "oatpp/core/macro/codegen.hpp"
-#include "oatpp/core/Types.hpp"
-#include "oatpp-swagger/Types.hpp"
+#include <oatpp/core/macro/codegen.hpp>
+#include <oatpp/core/Types.hpp>
+#include <oatpp-swagger/Types.hpp>
 #include OATPP_CODEGEN_BEGIN(DTO)"oatpp/codegen/DTO_define.hpp"
 
 class PlayMediaDto : public oatpp::DTO {

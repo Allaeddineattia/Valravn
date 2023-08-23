@@ -5,12 +5,10 @@
 #ifndef VALRAVEN_ERRORHANDLER_H
 #define VALRAVEN_ERRORHANDLER_H
 
+#include <oatpp/web/server/handler/ErrorHandler.hpp>
+#include <oatpp/web/protocol/http/outgoing/ResponseFactory.hpp>
 
-
-#include "rest_api/dto/StatusDto.h"
-
-#include "oatpp/web/server/handler/ErrorHandler.hpp"
-#include "oatpp/web/protocol/http/outgoing/ResponseFactory.hpp"
+#include <rest_api/dto/StatusDto.h>
 
 class ErrorHandler : public oatpp::web::server::handler::ErrorHandler {
 private:
@@ -21,7 +19,7 @@ private:
     std::shared_ptr<oatpp::data::mapping::ObjectMapper> m_objectMapper;
 public:
 
-    ErrorHandler(const std::shared_ptr<oatpp::data::mapping::ObjectMapper>& objectMapper)        : m_objectMapper(objectMapper){};
+    explicit ErrorHandler(const std::shared_ptr<oatpp::data::mapping::ObjectMapper>& objectMapper)        : m_objectMapper(objectMapper){};
 
     std::shared_ptr<OutgoingResponse>
     handleError(const Status& status, const oatpp::String& message, const Headers& headers) override{
@@ -41,8 +39,7 @@ public:
 
     }
 
-
-    virtual ~ErrorHandler()= default;
+    ~ErrorHandler() override = default;
 };
 
 
