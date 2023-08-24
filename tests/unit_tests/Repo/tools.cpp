@@ -4,7 +4,7 @@
 
 #include "gtest/gtest.h"
 #include <string>
-#include "DataBase/Contracts/Repos/Tools.h"
+#include <core/Tools.h>
 using namespace std ;
 TEST(Tools, Generate_Random) {
     string str = "120 : 120";

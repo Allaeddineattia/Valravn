@@ -49,7 +49,7 @@ VLC_Wrapper & VideoStateHandler::get_vlc() const {
 }
 
 void VideoStateHandler::update() {
-    cout<<"Video path "<< this->video.getMultimedia().getPath()<<endl;
+    cout << "Video path " << this->video.get_multimedia().getPath() << endl;
     this->update_function();
 }
 

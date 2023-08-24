@@ -10,16 +10,22 @@
 
 using namespace std;
 
+typedef void (*VLC_Callback)(const libvlc_event_t *, void *);
+
+
 VLC_Wrapper::VLC_Wrapper() : vlcInstance(libvlc_new(0, nullptr)),
 mediaPlayer(libvlc_media_player_new(vlcInstance)) ,
 mediaPlayerEventManager(libvlc_media_player_event_manager(mediaPlayer))
 {
+    VLC_Callback on_media_change = [](const struct libvlc_event_t *p_event, void *p_data) {
+        cout << "[libvlc_event_attach] libvlc_MediaPlayerMediaChanged" << endl;
+        VLC_Wrapper * data = static_cast<VLC_Wrapper *> (p_data);
+        data->resume();
+    };
+
     libvlc_event_attach(mediaPlayerEventManager, libvlc_event_e::libvlc_MediaPlayerMediaChanged,
-                        [](const struct libvlc_event_t *p_event, void *p_data){
-                            cout<<"[libvlc_event_attach] libvlc_MediaPlayerMediaChanged"<<endl;
-                            auto data = static_cast<VLC_Wrapper *> (p_data);
-                            data->resume();
-                        }, this);
+                        on_media_change, this);
+
     initialise_counter = 0;
     thread([&](){
         while(true){
@@ -34,9 +40,9 @@ mediaPlayerEventManager(libvlc_media_player_event_manager(mediaPlayer))
         }
     }).detach();
 
-    onPlayVideo();
-    onPauseVideo();
-    onStopVideo();
+    on_play_video();
+    on_pause_video();
+    on_stop_video();
 
 }
 
@@ -66,81 +72,92 @@ time_t VLC_Wrapper::get_media_duration(string_view path) {
     libvlc_media_t * vMedia = libvlc_media_new_path(vlcInstance, path.data());
     libvlc_media_parse_with_options(vMedia, libvlc_media_parse_local, -1);
     time_t duration;
-    libvlc_event_attach(libvlc_media_event_manager(vMedia),
-                        libvlc_event_e::libvlc_MediaParsedChanged,
-                        [](const struct libvlc_event_t *p_event, void *p_data){
-                            auto pMedia = static_cast<libvlc_media_t *> (p_event->p_obj);
-                            * (time_t *) p_data = libvlc_media_get_duration(pMedia);
-                        }, &duration);
+    VLC_Callback on_media_parsed = [](const struct libvlc_event_t *p_event, void *p_data){
+        libvlc_media_t * pMedia = static_cast<libvlc_media_t *> (p_event->p_obj);
+        * (time_t *) p_data = libvlc_media_get_duration(pMedia);
+    };
+
+    libvlc_event_attach(libvlc_media_event_manager(vMedia), libvlc_event_e::libvlc_MediaParsedChanged,
+                        on_media_parsed, &duration);
     usleep(100000);
     return duration;
 
 }
 
-VLC_Wrapper::~VLC_Wrapper() {
-    cout<<"mediaPlayer"<<endl;
-    libvlc_media_player_release(mediaPlayer);
-    cout<<"vlcInstance"<<endl;
-    libvlc_release(vlcInstance);
-}
 
-void VLC_Wrapper::onPlayVideo() {
-    cout<<"onPlayVideo"<<endl;
+
+void VLC_Wrapper::on_play_video() {
+    cout<<"on_play_video"<<endl;
+    VLC_Callback on_media_playing = [](const struct libvlc_event_t *p_event, void *p_data){
+        cout<<"[libvlc_event_attach] on_play_video"<<endl;
+        VLC_Wrapper * vlc = static_cast<VLC_Wrapper *>(p_data) ;
+        IObserver * observer = dynamic_cast<IObserver *>(vlc->next_observer);
+        if(observer){
+            vlc->observer = observer;
+            observer->update();
+        }
+    };
+
     libvlc_event_attach(mediaPlayerEventManager, libvlc_event_e::libvlc_MediaPlayerPlaying,
-                        [](const struct libvlc_event_t *p_event, void *p_data){
-                            cout<<"[libvlc_event_attach] onPlayVideo"<<endl;
-                            auto vlc = static_cast<VLC_Wrapper *>(p_data) ;
-                            auto observer = dynamic_cast<IObserver *>(vlc->next_observer);
-                            if(observer){
-                                vlc->observer = observer;
-                                observer->update();
-                            }
-                        }, (void *) this);
+                        on_media_playing, (void *) this);
 }
 
-void VLC_Wrapper::onPauseVideo() {
+void VLC_Wrapper::on_pause_video() {
+    VLC_Callback on_media_pausing = [](const struct libvlc_event_t *p_event, void *p_data){
+        cout<<"[libvlc_event_attach] on_pause_video"<<endl;
+        VLC_Wrapper * vlc = static_cast<VLC_Wrapper *>(p_data) ;
+        IObserver * observer = static_cast<IObserver *>(vlc->observer);
+        if(observer)
+        {
+            observer->update();
+        }
+    };
+
     libvlc_event_attach(mediaPlayerEventManager, libvlc_event_e::libvlc_MediaPlayerPaused,
-                        [](const struct libvlc_event_t *p_event, void *p_data){
-                            cout<<"[libvlc_event_attach] onPauseVideo"<<endl;
-                            auto vlc = static_cast<VLC_Wrapper *>(p_data) ;
-                            auto observer = static_cast<IObserver *>(vlc->observer);
-                            observer->update();
-                        }, (void *) this);
+                        on_media_pausing, (void *) this);
 
 }
 
 void VLC_Wrapper::stop() {
-    if( libvlc_media_player_is_playing(mediaPlayer)) {
+    if( libvlc_media_player_is_playing(mediaPlayer))
+    {
         libvlc_media_player_stop(mediaPlayer);
-    }else{
+    }else
+    {
         observer->update();
     }
 }
 
-void VLC_Wrapper::onStopVideo() {
-    libvlc_event_attach(mediaPlayerEventManager, libvlc_event_e::libvlc_MediaPlayerStopped,
-                        [](const struct libvlc_event_t *p_event, void *p_data){
-                            cout<<"[libvlc_event_attach] onStopVideo"<<endl;
-                            VLC_Wrapper * vlc = static_cast<VLC_Wrapper *>(p_data) ;
-                            auto vObserver = static_cast<IObserver *>(vlc->observer);
-                            if(vObserver)
-                            {
-                                vObserver->update();
-                            }
+void VLC_Wrapper::on_stop_video() {
 
-                        }, (void *) this);
+    VLC_Callback on_media_stopped = [](const struct libvlc_event_t *p_event, void *p_data){
+        cout<<"[libvlc_event_attach] on_stop_video"<<endl;
+        VLC_Wrapper * vlc = static_cast<VLC_Wrapper *>(p_data) ;
+        IObserver * vObserver = static_cast<IObserver *>(vlc->observer);
+        if(vObserver)
+        {
+            vObserver->update();
+        }
+
+    };
+
+    libvlc_event_attach(mediaPlayerEventManager, libvlc_event_e::libvlc_MediaPlayerStopped,
+                        on_media_stopped, (void *) this);
 
 
 }
 
 void VLC_Wrapper::on_media_end(IObserver *observer) {
+
+    VLC_Callback on_media_reached_end = [](const struct libvlc_event_t *p_event, void *p_data){
+        auto * vObserver = static_cast<IObserver *>(p_data);
+        cout<<"[libvlc_MediaPlayerEndReached]"<<endl;
+        vObserver->update();
+        cout<<"[libvlc_MediaPlayerEndReached]"<<endl;
+    };
+
     libvlc_event_attach(mediaPlayerEventManager, libvlc_event_e::libvlc_MediaPlayerEndReached,
-                        [](const struct libvlc_event_t *p_event, void *p_data){
-                            auto * vObserver = static_cast<IObserver *>(p_data);
-                            cout<<"[libvlc_MediaPlayerEndReached]"<<endl;
-                            vObserver->update();
-                            cout<<"[libvlc_MediaPlayerEndReached]"<<endl;
-                        }, (void *) observer);
+                        on_media_reached_end, (void *) observer);
 }
 
 void VLC_Wrapper::set_fullscreen() {
@@ -151,7 +168,7 @@ void VLC_Wrapper::set_fullscreen() {
 int VLC_Wrapper::increase_volume(){
     int vol = libvlc_audio_get_volume(mediaPlayer);
     int result = vol + 5;
-    result = result <100 ? result : 100;
+    result = result < 100 ? result : 100;
     libvlc_audio_set_volume(mediaPlayer, result);
     return libvlc_audio_get_volume(mediaPlayer);
 
@@ -172,6 +189,13 @@ void VLC_Wrapper::terminate() {
 
 }
 
+
+VLC_Wrapper::~VLC_Wrapper() {
+    cout<<"releasing mediaPlayer"<<endl;
+    libvlc_media_player_release(mediaPlayer);
+    cout<<"releasing vlcInstance"<<endl;
+    libvlc_release(vlcInstance);
+}
 
 
 

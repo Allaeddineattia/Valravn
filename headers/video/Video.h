@@ -32,24 +32,23 @@ public:
 
     [[nodiscard]] unsigned int get_id() const override;
 
-    [[nodiscard]]int getDuration() const;
+    [[nodiscard]]int get_duration() const;
 
-    [[nodiscard]]const Multimedia &getMultimedia() const;
+    [[nodiscard]]const Multimedia &get_multimedia() const;
 
-    [[nodiscard]]string_view getResolution() const;
+    [[nodiscard]]string_view get_resolution() const;
 
     const Video & get_savable() override{
         return *this;
     }
 
-    void setStateHandler(unique_ptr<VideoStateHandler> stateHandler);
+    void set_state_handler(unique_ptr<VideoStateHandler> stateHandler);
 
     void play() override;
 
     void stop() override;
 
     void pause() override;
-
 
     Video(int id, int duration, unique_ptr<Multimedia> multimedia, string_view resolution);
 

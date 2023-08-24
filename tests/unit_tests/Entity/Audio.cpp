@@ -2,9 +2,10 @@
 // Created by ismail on 7‏/11‏/2020.
 //
 
-#include "Entity/Contract/Audio.h"
+
 #include "gtest/gtest.h"
-#include "Shared/CustomError.h"
+#include <core/Error.h>
+#include <audio/Audio.h>
 #include <media_player/Multimedia.h>
 
 TEST(Audio, Creation) {

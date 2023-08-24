@@ -30,20 +30,20 @@ private:
     [[nodiscard]] static string_map getStringMap(const Video& video) {
         string_map map;
         map.insert(string_pair("ID", to_string(video.get_id())));
-        map.insert(string_pair("MULTIMEDIA_ID", to_string(video.getMultimedia().get_id())));
-        map.insert(string_pair("RESOLUTION" , SQLHelpers::to_sql_string(video.getResolution())));
-        map.insert(string_pair("DURATION", to_string(video.getDuration())));
+        map.insert(string_pair("MULTIMEDIA_ID", to_string(video.get_multimedia().get_id())));
+        map.insert(string_pair("RESOLUTION" , SQLHelpers::to_sql_string(video.get_resolution())));
+        map.insert(string_pair("DURATION", to_string(video.get_duration())));
         return map;
     }
 
     [[nodiscard]] static string_map getUpdateStringMap(const Video& oldElement, const Video& newElement) {
         string_map map;
 
-        if(newElement.getResolution() != oldElement.getResolution())
-            map.insert(string_pair("RESOLUTION", SQLHelpers::to_sql_string(newElement.getResolution())));
+        if(newElement.get_resolution() != oldElement.get_resolution())
+            map.insert(string_pair("RESOLUTION", SQLHelpers::to_sql_string(newElement.get_resolution())));
 
-        if(newElement.getDuration() != oldElement.getDuration())
-            map.insert(string_pair("DURATION", to_string(newElement.getDuration())));
+        if(newElement.get_duration() != oldElement.get_duration())
+            map.insert(string_pair("DURATION", to_string(newElement.get_duration())));
 
         return map;
     }
@@ -59,7 +59,7 @@ private:
     void create_element(const Video& element) const {
         dataBase->begin_transaction();
         try {
-            multimediaRepo->save(element.getMultimedia());
+            multimediaRepo->save(element.get_multimedia());
             string_map map = getStringMap(element);
             dataBase->insert_into_table(tableName, map);
         }catch (const std::exception& ex){
@@ -76,7 +76,7 @@ private:
             string_pair id ("ID",to_string(old_element.get_id()));
             dataBase->update_into_table(tableName, id, map);
         }
-        multimediaRepo->save(new_element.getMultimedia());
+        multimediaRepo->save(new_element.get_multimedia());
     }
 
 public:
@@ -132,7 +132,7 @@ public:
         dataBase->begin_transaction();
         try{
             dataBase->delete_by_feature(tableName, feature_selection);
-            multimediaRepo->delete_by_id(video.value()->getMultimedia().get_id());
+            multimediaRepo->delete_by_id(video.value()->get_multimedia().get_id());
         }catch (const std::exception& ex){
             dataBase->abort_transaction();
             throw ;

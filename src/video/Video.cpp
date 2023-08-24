@@ -24,15 +24,15 @@ unsigned int Video::get_id() const {
     return id;
 }
 
-int Video::getDuration() const {
+int Video::get_duration() const {
     return duration;
 }
 
-const Multimedia  & Video::getMultimedia() const {
+const Multimedia  & Video::get_multimedia() const {
     return *multimedia;
 }
 
-string_view Video::getResolution() const {
+string_view Video::get_resolution() const {
     return resolution;
 }
 
@@ -48,7 +48,7 @@ void Video::pause() {
     state_handler->pause();
 }
 
-void Video::setStateHandler(unique_ptr<VideoStateHandler> stateHandler) {
-    Video::state_handler = move(stateHandler);
+void Video::set_state_handler(unique_ptr<VideoStateHandler> stateHandler) {
+    Video::state_handler = std::move(stateHandler);
 }
 

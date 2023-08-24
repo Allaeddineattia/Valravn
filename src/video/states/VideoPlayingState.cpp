@@ -6,11 +6,14 @@
 #include <video/playing_state/VideoPlayingState.h>
 
 void VideoPlayingState::play() {
-    cout<<"VideoPlayingState::play, path: "<<stateHandler.video.getMultimedia().getPath()<<endl;
+    cout << "VideoPlayingState::play, path: " << stateHandler.video.get_multimedia().getPath() << endl;
+    stateHandler.set_update_function([this]() {
+        this->stateHandler.set_state(this->stateHandler.get_playing_state());
+    });
 }
 
 void VideoPlayingState::stop() {
-    cout<<"VideoPlayingState::stop, path: "<<stateHandler.video.getMultimedia().getPath()<<endl;
+    cout << "VideoPlayingState::stop, path: " << stateHandler.video.get_multimedia().getPath() << endl;
     stateHandler.set_update_function([this]() {
         this->stateHandler.set_state(this->stateHandler.get_stopped_state());
     });
@@ -20,13 +23,12 @@ void VideoPlayingState::stop() {
 
 void VideoPlayingState::pause() {
 
-    cout<<"VideoPlayingState::pause, path: "<<stateHandler.video.getMultimedia().getPath()<<endl;
+    cout << "VideoPlayingState::pause, path: " << stateHandler.video.get_multimedia().getPath() << endl;
     stateHandler.set_update_function([this]() {
         cout << "never for ever";
         this->stateHandler.set_state(this->stateHandler.get_paused_state());
     });
     stateHandler.get_vlc().pause();
-
 
 }
 

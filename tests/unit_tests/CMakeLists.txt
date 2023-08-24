@@ -27,7 +27,10 @@ add_executable(Unit_Tests_run
         Repo/image/UpdateImage.cpp
         Repo/image/DeleteImage.cpp
         MediaPlaying/Video/VideoPlaying.cpp
-        Repo/tools.cpp Repo/video/DeleteVideo.cpp Repo/video/SaveVideo.cpp Repo/video/UpdateVideo.cpp Repo/stubs/Videos.cpp Repo/stubs/Videos.h MediaPlaying/mediaParsing.cpp)
+        Repo/tools.cpp
+        Repo/stubs/Videos.cpp
+        Repo/stubs/Videos.h
+        MediaPlaying/mediaParsing.cpp)
 
 target_link_libraries(Unit_Tests_run gtest gtest_main)
 target_link_libraries(Unit_Tests_run ${CMAKE_PROJECT_NAME}_lib)

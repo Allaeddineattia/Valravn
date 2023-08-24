@@ -11,7 +11,7 @@
 #include <oatpp/web/mime/multipart/InMemoryDataProvider.hpp>
 #include <oatpp/web/mime/multipart/PartList.hpp>
 
-#define DOWNLOAD_PATH "/home/alla/Videos/"
+#define DOWNLOAD_PATH "./"
 
 using oatpp::web::protocol::http::incoming::Request;
 template <class T>

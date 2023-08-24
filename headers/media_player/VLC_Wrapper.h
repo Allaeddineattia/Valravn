@@ -19,9 +19,9 @@ class VLC_Wrapper {
     libvlc_event_manager_t * mediaPlayerEventManager;
     libvlc_media_t * media;
     int initialise_counter;
-    void onPlayVideo();
-    void onPauseVideo();
-    void onStopVideo();
+    void on_play_video();
+    void on_pause_video();
+    void on_stop_video();
     IObserver * observer;
 
 public:

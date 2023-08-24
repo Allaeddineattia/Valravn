@@ -5,7 +5,7 @@
 
 #include <image/Image.h>
 #include "gtest/gtest.h"
-#include "Shared/CustomError.h"
+#include <core/Error.h>
 #include <media_player/Multimedia.h>
 
 TEST(Image, ThrowErrorOnInvalidResolution1) {

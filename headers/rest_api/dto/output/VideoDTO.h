@@ -29,9 +29,9 @@ public:
     static Object<VideoDTO> createDtoFromEntity(const Video & video){
         Object<VideoDTO> dto = Object<VideoDTO>::createShared();
         dto->id = video.get_id();
-        dto->resolution = video.getResolution().data();
-        dto->duration = video.getDuration();
-        dto->mulitmedia = MultimediaDto::createDtoFromEntity(video.getMultimedia());
+        dto->resolution = video.get_resolution().data();
+        dto->duration = video.get_duration();
+        dto->mulitmedia = MultimediaDto::createDtoFromEntity(video.get_multimedia());
         return dto;
     }
 

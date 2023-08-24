@@ -2,7 +2,7 @@
 // Created by alro on 29‏/11‏/2020.
 //
 
-#include <Shared/DependencyInjector.h>
+#include <core/DependencyInjector.h>
 #include "gtest/gtest.h"
 #include "../tools/Database.h"
 #include "../stubs/Images.h"

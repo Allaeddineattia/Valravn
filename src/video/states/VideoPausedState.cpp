@@ -6,7 +6,7 @@
 #include <video/playing_state/VideoPausedState.h>
 
 void VideoPausedState::play() {
-    cout<<"VideoPausedState::play, path: "<<stateHandler.video.getMultimedia().getPath()<<endl;
+    cout << "VideoPausedState::play, path: " << stateHandler.video.get_multimedia().getPath() << endl;
     stateHandler.set_update_function([this]() {
         this->stateHandler.set_state(this->stateHandler.get_playing_state());
     });
@@ -16,7 +16,7 @@ void VideoPausedState::play() {
 }
 
 void VideoPausedState::stop() {
-    cout<<"VideoPausedState::stop, path: "<<stateHandler.video.getMultimedia().getPath()<<endl;
+    cout << "VideoPausedState::stop, path: " << stateHandler.video.get_multimedia().getPath() << endl;
     stateHandler.set_update_function([this]() {
         this->stateHandler.set_state(this->stateHandler.get_stopped_state());
     });
@@ -24,7 +24,7 @@ void VideoPausedState::stop() {
 }
 
 void VideoPausedState::pause() {
-    cout<<"VideoPausedState::stop, path: "<<stateHandler.video.getMultimedia().getPath()<<endl;
+    cout << "VideoPausedState::stop, path: " << stateHandler.video.get_multimedia().getPath() << endl;
 }
 
 VideoPausedState::VideoPausedState(VideoStateHandler & stateHandler) : stateHandler(stateHandler) {}

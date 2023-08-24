@@ -148,6 +148,67 @@ public:
         return createResponse(Status::CODE_404, error_msg.data());
     }
 
+
+    ENDPOINT_INFO(pauseMedia) {
+        info->summary = "Pause media";
+
+        info->addResponse<Object<ImageDto>>(Status::CODE_200, "application/json");
+        info->addResponse<Object<VideoDTO>>(Status::CODE_200, "application/json");
+        info->addResponse<Object<StatusDto>>(Status::CODE_404, "application/json");
+        info->addResponse<Object<StatusDto>>(Status::CODE_500, "application/json");
+    }
+    ENDPOINT("POST", "media/pause", pauseMedia)
+    {
+        Video* current = service->get_current_vid();
+        if(current)
+        {
+            current->pause();
+            return createResponse(Status::CODE_200, "media is paused");
+        }
+        return createResponse(Status::CODE_404, "no media is playing");
+
+    }
+
+    ENDPOINT_INFO(resumeMedia) {
+        info->summary = "resume media";
+
+        info->addResponse<Object<ImageDto>>(Status::CODE_200, "application/json");
+        info->addResponse<Object<VideoDTO>>(Status::CODE_200, "application/json");
+        info->addResponse<Object<StatusDto>>(Status::CODE_404, "application/json");
+        info->addResponse<Object<StatusDto>>(Status::CODE_500, "application/json");
+    }
+    ENDPOINT("POST", "media/resume", resumeMedia)
+    {
+        Video* current = service->get_current_vid();
+        if(current)
+        {
+            current->play();
+            return createResponse(Status::CODE_200, "media is paused");
+        }
+        return createResponse(Status::CODE_404, "no media available");
+
+    }
+
+    ENDPOINT_INFO(stopMedia) {
+        info->summary = "stop media";
+
+        info->addResponse<Object<ImageDto>>(Status::CODE_200, "application/json");
+        info->addResponse<Object<VideoDTO>>(Status::CODE_200, "application/json");
+        info->addResponse<Object<StatusDto>>(Status::CODE_404, "application/json");
+        info->addResponse<Object<StatusDto>>(Status::CODE_500, "application/json");
+    }
+    ENDPOINT("POST", "media/stop", stopMedia)
+    {
+        Video* current = service->get_current_vid();
+        if(current)
+        {
+            current->stop();
+            return createResponse(Status::CODE_200, "media is paused");
+        }
+        return createResponse(Status::CODE_404, "no media available");
+
+    }
+
     /*
     ENDPOINT_INFO(playlistAdd) {
         info->summary = "add medias to PlayList";

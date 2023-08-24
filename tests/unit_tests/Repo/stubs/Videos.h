@@ -6,7 +6,7 @@
 #define VALRAVEN_VIDEOS_H
 
 #include <video/Video.h>
-#include <Shared/DependencyInjector.h>
+#include <core/DependencyInjector.h>
 
 
 using namespace std;

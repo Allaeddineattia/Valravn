@@ -20,7 +20,6 @@ public:
 
         return distr(eng);
     }
-
 };
 
 #endif //VALRAVEN_TOOLS_H

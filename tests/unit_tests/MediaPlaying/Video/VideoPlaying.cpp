@@ -1,7 +1,7 @@
 //
 // Created by alro on 14‏/12‏/2020.
 //
-#include <Shared/DependencyInjector.h>
+#include <core/DependencyInjector.h>
 #include "gtest/gtest.h"
 #include <media_player/Multimedia.h>
 #include <video/Video.h>
@@ -46,7 +46,7 @@ TEST(VideoPlaying, PlayVVideo) {
     auto video = make_unique<Video>(2, duration, move(multimedia), "1920:1080");
 
     auto stateHandler = make_unique<VideoStateHandler>(di, *video);
-    video->setStateHandler(move(stateHandler));
+    video->set_state_handler(move(stateHandler));
 
     video->play();
 
@@ -72,7 +72,7 @@ TEST(VideoPlaying, PlayVideoPlaylist) {
         auto video = make_unique<Video>(2, duration, move(multimedia), "1920:1080");
 
         auto stateHandler = make_unique<VideoStateHandler>(di, *video);
-        video->setStateHandler(move(stateHandler));
+        video->set_state_handler(move(stateHandler));
 
         auto playlist = make_unique<Playlist>(4);
 
@@ -86,7 +86,7 @@ TEST(VideoPlaying, PlayVideoPlaylist) {
 
         video = make_unique<Video>(2, duration, move(multimedia), "1920:1080");
         stateHandler = make_unique<VideoStateHandler>(di, *video);
-        video->setStateHandler(move(stateHandler));
+        video->set_state_handler(move(stateHandler));
 
         parameter = make_unique<Parameter>(true, 50, 100, 0.5);
 
